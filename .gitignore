@@ -1,0 +1,20 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Xcode
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+DerivedData/
+build/
+.build/
+.xcode-home/
+
+# Swift Package Manager
+Package.resolved
+
+# Logs and local output
+*.log
+*.xcresult

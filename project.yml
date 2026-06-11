@@ -1,0 +1,55 @@
+name: MacPlayLauncher
+options:
+  bundleIdPrefix: ugur
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: YES
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Automatic
+targets:
+  MacPlayLauncher:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - App
+      - Core
+      - UI
+    resources:
+      - Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ugur.MacPlayLauncher
+        PRODUCT_NAME: MacPlayLauncher
+        CODE_SIGN_ENTITLEMENTS: MacPlay.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: MacPlay Launcher
+        INFOPLIST_KEY_LSMinimumSystemVersion: "14.0"
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 Ugur"
+  MacPlayLauncherTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    hostApplication: MacPlayLauncher
+    sources:
+      - Tests/MacPlayLauncherTests
+    dependencies:
+      - target: MacPlayLauncher
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ugur.MacPlayLauncherTests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  MacPlayLauncher:
+    build:
+      targets:
+        MacPlayLauncher: all
+        MacPlayLauncherTests: [test]
+    test:
+      targets:
+        - MacPlayLauncherTests

@@ -1,0 +1,234 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "accessibility.addGameButton" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add game" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun ekle" } }
+      }
+    },
+    "accessibility.emptyLibrary" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Game library is empty. Add a game to begin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun kitaplığı boş. Başlamak için oyun ekleyin." } }
+      }
+    },
+    "accessibility.gameCard" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Game profile: %@" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun profili: %@" } }
+      }
+    },
+    "accessibility.nav.addGame" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game navigation item" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle gezinme öğesi" } }
+      }
+    },
+    "accessibility.nav.diagnostics" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Diagnostics navigation item" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanılama gezinme öğesi" } }
+      }
+    },
+    "accessibility.nav.library" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Library navigation item" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kitaplık gezinme öğesi" } }
+      }
+    },
+    "accessibility.nav.settings" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings navigation item" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarlar gezinme öğesi" } }
+      }
+    },
+    "addGame.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Game selection and bookmark support will be added in Sprint 2." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun seçimi ve kalıcı erişim desteği Sprint 2'de eklenecek." } }
+      }
+    },
+    "addGame.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle" } }
+      }
+    },
+    "app.name" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "MacPlay Launcher" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "MacPlay Launcher" } }
+      }
+    },
+    "diagnostics.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Runtime and system diagnostics are placeholders in Sprint 1." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Runtime ve sistem tanılama alanları Sprint 1'de yer tutucudur." } }
+      }
+    },
+    "diagnostics.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Diagnostics" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanılama" } }
+      }
+    },
+    "emptyLibrary.addButton" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle" } }
+      }
+    },
+    "emptyLibrary.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add an existing Windows game folder in a later sprint." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sonraki sprintte mevcut Windows oyun klasörü eklenecek." } }
+      }
+    },
+    "emptyLibrary.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No Games Yet" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz Oyun Yok" } }
+      }
+    },
+    "error.bookmarkStale" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The saved folder permission is stale." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kaydedilmiş klasör izni artık geçerli değil." } }
+      }
+    },
+    "error.bookmarkUnavailable" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bookmark support is not implemented in Sprint 1." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kalıcı erişim desteği Sprint 1'de uygulanmadı." } }
+      }
+    },
+    "error.generic" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Something went wrong." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bir sorun oluştu." } }
+      }
+    },
+    "error.invalidPath" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The selected path is not valid." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Seçilen yol geçerli değil." } }
+      }
+    },
+    "error.profileNotFound" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The game profile was not found." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun profili bulunamadı." } }
+      }
+    },
+    "error.unsupportedSchemaVersion" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unsupported schema version: %d" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmeyen şema sürümü: %d" } }
+      }
+    },
+    "game.performanceMode" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Performance mode" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Performans modu" } }
+      }
+    },
+    "game.playStats" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%d launches - %d minutes played" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "%d açılış - %d dakika oynandı" } }
+      }
+    },
+    "game.runtime" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Runtime" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Runtime" } }
+      }
+    },
+    "library.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Game Library" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Kitaplığı" } }
+      }
+    },
+    "menu.addGame" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle" } }
+      }
+    },
+    "menu.diagnostics" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Diagnostics" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanılama" } }
+      }
+    },
+    "menu.navigate" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Navigate" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gezin" } }
+      }
+    },
+    "menu.settings" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarlar" } }
+      }
+    },
+    "nav.addGame" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle" } }
+      }
+    },
+    "nav.diagnostics" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Diagnostics" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanılama" } }
+      }
+    },
+    "nav.library" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Library" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kitaplık" } }
+      }
+    },
+    "nav.settings" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarlar" } }
+      }
+    },
+    "settings.general" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "General" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Genel" } }
+      }
+    },
+    "settings.placeholder" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings are placeholders in Sprint 1." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarlar Sprint 1'de yer tutucudur." } }
+      }
+    },
+    "settings.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarlar" } }
+      }
+    },
+    "setup.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Setup checks are planned for later sprints." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kurulum kontrolleri sonraki sprintlerde planlandı." } }
+      }
+    },
+    "setup.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Setup Wizard" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kurulum Sihirbazı" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

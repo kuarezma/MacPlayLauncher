@@ -1,0 +1,39 @@
+{
+  "dependencies" : [
+    {
+      "dependsOn" : [
+
+      ],
+      "displayName" : "Core Fonts",
+      "id" : "corefonts",
+      "installOrder" : 1,
+      "installed" : false,
+      "required" : false
+    }
+  ],
+  "displayName" : "Cossacks 3",
+  "environment" : {
+    "WINEARCH" : "win64"
+  },
+  "executableBookmarkData" : null,
+  "executablePath" : null,
+  "id" : "cossacks3",
+  "knownIssues" : [
+    "Steam login is not part of V1."
+  ],
+  "lastPlayedAt" : null,
+  "launchArguments" : [
+
+  ],
+  "launchCount" : 0,
+  "performanceMode" : "balanced",
+  "prefixPath" : "Prefixes/cossacks3",
+  "runtime" : "wineDXVKMoltenVK",
+  "schemaVersion" : 1,
+  "totalPlayTimeMinutes" : 0,
+  "windowsVersion" : "win10",
+  "wineArch" : "win64",
+  "workingDirectory" : null,
+  "workingDirectoryBookmarkData" : null
+}
+
