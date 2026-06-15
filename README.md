@@ -63,6 +63,15 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - `FakeCommandRunner` supports deterministic command tests without depending on the local system.
 - Production diagnostics remain static/passive; real Rosetta and Wine detection are deferred to a later sprint.
 
+## Sprint 5B Features
+
+- Read-only Rosetta and Wine diagnostic providers for future production diagnostics.
+- Rosetta detection uses the existing command boundary and does not install Rosetta or request admin privileges.
+- Wine detection checks only explicit allowed paths and runs only `wine --version`; it does not use `PATH` lookup or `which wine`.
+- DXVK and MoltenVK remain passive because prefix/runtime strategy is not implemented yet.
+- `RealDependencyDiagnosticService` is implemented for tests and future wiring, but production still uses `StaticDependencyDiagnosticService`.
+- UI, game launch, prefix creation, runtime download/install, shell execution, and user `.exe` execution remain out of scope.
+
 ## Development
 
 Generate the Xcode project:
@@ -91,6 +100,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 5B: Added read-only Rosetta/Wine diagnostic providers and a non-default real diagnostics service; production diagnostics remain static.
 - Sprint 5A: Added a safe diagnostic command boundary with fake runner tests; production diagnostics remain static.
 - Sprint 4: Added passive Run Readiness Gate with blocker explanations and Turkish diagnostics UI, without launch/runtime execution.
 - Sprint 3: Added passive runtime diagnostics preparation with Turkish readiness UI, static dependency status service, setup guidance, and tests.

@@ -63,3 +63,17 @@ Sprint 5A introduces the command execution boundary needed for future real runti
 - `StaticDependencyDiagnosticService` remains the production diagnostics implementation.
 
 Sprint 5A still excludes game launch, user-selected executable execution, Wine launch command composition, runtime install/download, prefix creation, Steam automation, bookmark resolve/access, and shell script generation.
+
+## Sprint 5B Read-only Runtime Diagnostics
+
+Sprint 5B adds real Rosetta and Wine diagnostic providers behind the Sprint 5A command boundary, but does not make them the production default.
+
+- `RuntimeDiagnosticProviding` is the shared provider protocol for runtime dependency rows.
+- `RosettaDiagnosticProvider` checks Apple Silicon Rosetta readiness with `/usr/bin/arch -x86_64 /usr/bin/true`. It does not install Rosetta, request admin privileges, or show an install prompt.
+- `WineDiagnosticProvider` checks only `/opt/homebrew/bin/wine` and `/usr/local/bin/wine`, then runs `wine --version` through `CommandRunning`. It does not trust `PATH`, call `which wine`, compose game launch commands, or run user-selected `.exe` files.
+- `FileChecking` is a narrow diagnostics-only abstraction so Wine path checks can be tested without depending on the local system.
+- `PassiveRuntimeDiagnosticProvider` keeps DXVK and MoltenVK static because prefix/runtime layout is not defined yet.
+- `RealDependencyDiagnosticService` combines Rosetta, Wine, passive DXVK, passive MoltenVK, and the same game profile readiness rule used by static diagnostics.
+- `AppEnvironment.live` still wires `StaticDependencyDiagnosticService`; no UI, debug flag, or production default change is introduced in Sprint 5B.
+
+Sprint 5B still excludes game launch, launch buttons, shell scripts, `sh -c`, runtime download/install, prefix creation, Steam automation, bookmark resolve/access, and security-scoped resource access.
