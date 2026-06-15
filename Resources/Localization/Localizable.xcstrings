@@ -169,10 +169,298 @@
         "tr" : { "stringUnit" : { "state" : "translated", "value" : "Runtime ve sistem tanılama alanları Sprint 1'de yer tutucudur." } }
       }
     },
+    "diagnostics.dependencies.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bileşenler" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bileşenler" } }
+      }
+    },
+    "diagnostics.dxvk.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "DirectX çağrılarını Vulkan katmanına taşımak için ileride kullanılacak bileşendir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "DirectX çağrılarını Vulkan katmanına taşımak için ileride kullanılacak bileşendir." } }
+      }
+    },
+    "diagnostics.dxvk.guide.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bu ekranda yalnızca hazırlık durumu gösterilir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu ekranda yalnızca hazırlık durumu gösterilir." } }
+      }
+    },
+    "diagnostics.dxvk.guide.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "DXVK kurulumu ve yapılandırması sonraki sprintlerde ele alınacak." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "DXVK kurulumu ve yapılandırması sonraki sprintlerde ele alınacak." } }
+      }
+    },
+    "diagnostics.dxvk.guide.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "DXVK rehberi" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "DXVK rehberi" } }
+      }
+    },
+    "diagnostics.dxvk.notConfigured" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "DXVK henüz yapılandırılmadı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "DXVK henüz yapılandırılmadı." } }
+      }
+    },
+    "diagnostics.dxvk.suggestedAction" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Şimdilik işlem yapmayın; otomatik kurulum bu sprintte yok." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Şimdilik işlem yapmayın; otomatik kurulum bu sprintte yok." } }
+      }
+    },
+    "diagnostics.gameProfile.displayName" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun profili" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun profili" } }
+      }
+    },
+    "diagnostics.gameProfile.missing" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Henüz kayıtlı oyun profili yok." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz kayıtlı oyun profili yok." } }
+      }
+    },
+    "diagnostics.gameProfile.missingReason" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık durumunu tamamlamak için önce oyun profili eklenmelidir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık durumunu tamamlamak için önce oyun profili eklenmelidir." } }
+      }
+    },
+    "diagnostics.gameProfile.ready" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kayıtlı oyun profili bulundu." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kayıtlı oyun profili bulundu." } }
+      }
+    },
+    "diagnostics.gameProfile.suggestedAction" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle ekranından Cossacks 3 klasörünü seçin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle ekranından Cossacks 3 klasörünü seçin." } }
+      }
+    },
+    "diagnostics.manualSetup.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Manuel kurulum notu" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Manuel kurulum notu" } }
+      }
+    },
+    "diagnostics.moltenVK.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Vulkan çağrılarını Metal üzerinde çalıştırmak için ileride kullanılacak bileşendir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Vulkan çağrılarını Metal üzerinde çalıştırmak için ileride kullanılacak bileşendir." } }
+      }
+    },
+    "diagnostics.moltenVK.guide.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "MoltenVK durumu bu sprintte gerçek sistemden okunmaz." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "MoltenVK durumu bu sprintte gerçek sistemden okunmaz." } }
+      }
+    },
+    "diagnostics.moltenVK.guide.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kurulum yolu ve doğrulama kuralları sonraki sprintlerde belirlenecek." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kurulum yolu ve doğrulama kuralları sonraki sprintlerde belirlenecek." } }
+      }
+    },
+    "diagnostics.moltenVK.guide.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "MoltenVK rehberi" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "MoltenVK rehberi" } }
+      }
+    },
+    "diagnostics.moltenVK.notConfigured" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "MoltenVK henüz yapılandırılmadı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "MoltenVK henüz yapılandırılmadı." } }
+      }
+    },
+    "diagnostics.moltenVK.suggestedAction" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Şimdilik işlem yapmayın; bu sprint yalnızca hazırlık ekranıdır." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Şimdilik işlem yapmayın; bu sprint yalnızca hazırlık ekranıdır." } }
+      }
+    },
+    "diagnostics.note.launchLater" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun çalıştırma sonraki sprintte ele alınacak." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun çalıştırma sonraki sprintte ele alınacak." } }
+      }
+    },
+    "diagnostics.note.manualSetupRequired" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Eksik bileşenleri manuel kurmanız gerekir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Eksik bileşenleri manuel kurmanız gerekir." } }
+      }
+    },
+    "diagnostics.note.noAutomaticInstall" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bu uygulama şu anda kurulum yapmaz." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu uygulama şu anda kurulum yapmaz." } }
+      }
+    },
+    "diagnostics.overall.loading" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık durumu yükleniyor" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık durumu yükleniyor" } }
+      }
+    },
+    "diagnostics.overall.loading.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bileşen listesi hazırlanıyor." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bileşen listesi hazırlanıyor." } }
+      }
+    },
+    "diagnostics.overall.missing" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Eksikler var" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Eksikler var" } }
+      }
+    },
+    "diagnostics.overall.missing.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bazı bileşenler eksik veya henüz yapılandırılmadı. Bu ekran kurulum yapmaz." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bazı bileşenler eksik veya henüz yapılandırılmadı. Bu ekran kurulum yapmaz." } }
+      }
+    },
+    "diagnostics.overall.ready" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hazır" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hazır" } }
+      }
+    },
+    "diagnostics.overall.ready.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Modelde tüm bileşenler hazır görünüyor." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Modelde tüm bileşenler hazır görünüyor." } }
+      }
+    },
+    "diagnostics.overall.unknown" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Durum bilinmiyor" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Durum bilinmiyor" } }
+      }
+    },
+    "diagnostics.overall.unknown.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bu sprintte gerçek sistem kontrolü yapılmaz." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu sprintte gerçek sistem kontrolü yapılmaz." } }
+      }
+    },
+    "diagnostics.readiness.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık Durumu" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık Durumu" } }
+      }
+    },
+    "diagnostics.rosetta.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta, ileride bazı Intel/x86_64 yardımcı bileşenler ve Wine uyumluluk senaryoları için gerekebilir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta, ileride bazı Intel/x86_64 yardımcı bileşenler ve Wine uyumluluk senaryoları için gerekebilir." } }
+      }
+    },
+    "diagnostics.rosetta.guide.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sprint 3 gerçek Rosetta kontrolü yapmaz." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sprint 3 gerçek Rosetta kontrolü yapmaz." } }
+      }
+    },
+    "diagnostics.rosetta.guide.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta gereksinimi sonraki runtime sprintlerinde netleştirilecek." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta gereksinimi sonraki runtime sprintlerinde netleştirilecek." } }
+      }
+    },
+    "diagnostics.rosetta.guide.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta rehberi" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta rehberi" } }
+      }
+    },
+    "diagnostics.rosetta.suggestedAction" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Şimdilik yalnızca not alın; uygulama Rosetta kurmaz veya kontrol etmez." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Şimdilik yalnızca not alın; uygulama Rosetta kurmaz veya kontrol etmez." } }
+      }
+    },
+    "diagnostics.rosetta.unknown" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta durumu bilinmiyor." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Rosetta durumu bilinmiyor." } }
+      }
+    },
+    "diagnostics.status.missing" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Eksik" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Eksik" } }
+      }
+    },
+    "diagnostics.status.notRequired" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Gerekmiyor" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gerekmiyor" } }
+      }
+    },
+    "diagnostics.status.ready" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hazır" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hazır" } }
+      }
+    },
+    "diagnostics.status.unknown" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bilinmiyor" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bilinmiyor" } }
+      }
+    },
+    "diagnostics.status.unsupported" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmiyor" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmiyor" } }
+      }
+    },
     "diagnostics.title" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Diagnostics" } },
         "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanılama" } }
+      }
+    },
+    "diagnostics.wine.description" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Wine, Windows oyununu macOS üzerinde çalıştırma katmanı olarak ileride değerlendirilecek." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Wine, Windows oyununu macOS üzerinde çalıştırma katmanı olarak ileride değerlendirilecek." } }
+      }
+    },
+    "diagnostics.wine.guide.step1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sprint 3 Wine kurulumu veya yol kontrolü yapmaz." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sprint 3 Wine kurulumu veya yol kontrolü yapmaz." } }
+      }
+    },
+    "diagnostics.wine.guide.step2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Gerçek Wine doğrulaması sonraki sprintlerde ayrı bir servisle tasarlanacak." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gerçek Wine doğrulaması sonraki sprintlerde ayrı bir servisle tasarlanacak." } }
+      }
+    },
+    "diagnostics.wine.guide.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Wine rehberi" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Wine rehberi" } }
+      }
+    },
+    "diagnostics.wine.missing" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Wine bulunamadı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Wine bulunamadı." } }
+      }
+    },
+    "diagnostics.wine.suggestedAction" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kurulum bu sprintte yapılmaz; ileride manuel/otomatik seçenekler ayrılacak." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kurulum bu sprintte yapılmaz; ileride manuel/otomatik seçenekler ayrılacak." } }
       }
     },
     "emptyLibrary.addButton" : {

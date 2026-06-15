@@ -17,7 +17,8 @@ final class AddGameProfileCreationTests: XCTestCase {
                 bundledProfileLoader: BundledGameProfileLoader(bundle: .main),
                 fileSelectionService: FakeFileSelectionService(folderURL: gameFolderURL, executableURL: executableURL),
                 bookmarkManager: FakeBookmarkManager(),
-                gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem())
+                gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
+                dependencyDiagnosticService: StaticDependencyDiagnosticService()
             )
         )
 
@@ -48,7 +49,8 @@ final class AddGameProfileCreationTests: XCTestCase {
                 bundledProfileLoader: BundledGameProfileLoader(bundle: .main),
                 fileSelectionService: FakeFileSelectionService(folderURL: gameFolderURL, executableURL: executableURL),
                 bookmarkManager: FakeBookmarkManager(),
-                gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem())
+                gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
+                dependencyDiagnosticService: StaticDependencyDiagnosticService()
             )
         )
 

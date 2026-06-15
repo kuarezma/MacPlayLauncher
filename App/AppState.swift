@@ -128,6 +128,10 @@ final class AppState {
         selectedNavigationItem = .library
     }
 
+    func loadRuntimeDiagnosticSummary() async -> RuntimeDiagnosticSummary {
+        await environment.dependencyDiagnosticService.loadSummary(profiles: profiles)
+    }
+
     private func makeAddGameProfile() throws -> GameProfile {
         guard let folderURL = addGameForm.selectedFolderURL,
               let executableURL = addGameForm.selectedExecutableURL else {

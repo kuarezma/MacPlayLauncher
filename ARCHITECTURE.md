@@ -23,3 +23,14 @@ Sprint 1 persists game profiles as JSON through `JSONStore` and `GameProfileMana
 
 Wine, DXVK, MoltenVK, Rosetta checks, runtime downloading, shell scripts, game launching, and real process execution are intentionally outside Sprint 1.
 
+## Sprint 3 Diagnostics
+
+Sprint 3 adds a passive runtime diagnostics layer. It models readiness for Rosetta, Wine, DXVK, MoltenVK, and game profile presence without checking the real system.
+
+- `RuntimeDependency` describes one dependency row for the diagnostics UI.
+- `RuntimeDiagnosticSummary` aggregates dependency statuses into an overall readiness state.
+- `DependencyDiagnosticService` is the protocol boundary for future real diagnostics.
+- `StaticDependencyDiagnosticService` is the Sprint 3 implementation and does not run commands, inspect paths, download files, install runtimes, create prefixes, or launch games.
+- `DiagnosticsViewModel` maps diagnostic state to Turkish UI labels and badges.
+
+Real runtime detection and security-scoped access lifecycle for launch/file access remain future work.

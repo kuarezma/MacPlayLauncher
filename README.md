@@ -36,6 +36,14 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Manual profile creation using existing profile persistence.
 - Safe path containment validation so executables outside the selected folder are rejected.
 
+## Sprint 3 Features
+
+- Turkish runtime readiness diagnostics screen.
+- Passive dependency models for Rosetta, Wine, DXVK, MoltenVK, and game profile readiness.
+- Static diagnostic service that does not run system commands or inspect real runtime installs.
+- Manual setup guide text explaining that installation and launch are handled in later sprints.
+- Unit tests for diagnostic aggregation, static diagnostic output, and view model mapping.
+
 ## Development
 
 Generate the Xcode project:
@@ -64,5 +72,6 @@ swiftlint
 
 ## Changelog
 
+- Sprint 3: Added passive runtime diagnostics preparation with Turkish readiness UI, static dependency status service, setup guidance, and tests.
 - Sprint 2: Added localized Add Game profile creation flow with folder/executable selection, bookmarks, Cossacks 3 detection, containment validation, and focused tests.
 - Sprint 1: Initial XcodeGen project skeleton, models, persistence, localized SwiftUI shell, tests, and documentation.
