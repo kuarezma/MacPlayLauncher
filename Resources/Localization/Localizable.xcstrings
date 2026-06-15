@@ -219,14 +219,14 @@
     },
     "diagnostics.gameProfile.missing" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Henüz kayıtlı oyun profili yok." } },
-        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz kayıtlı oyun profili yok." } }
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kullanıcı tarafından yapılandırılmış oyun profili bulunamadı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kullanıcı tarafından yapılandırılmış oyun profili bulunamadı." } }
       }
     },
     "diagnostics.gameProfile.missingReason" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık durumunu tamamlamak için önce oyun profili eklenmelidir." } },
-        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hazırlık durumunu tamamlamak için önce oyun profili eklenmelidir." } }
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Profilin oyun klasörü, çalıştırılabilir dosyası ve kalıcı erişim izinleri eksik." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Profilin oyun klasörü, çalıştırılabilir dosyası ve kalıcı erişim izinleri eksik." } }
       }
     },
     "diagnostics.gameProfile.ready" : {
@@ -237,8 +237,8 @@
     },
     "diagnostics.gameProfile.suggestedAction" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle ekranından Cossacks 3 klasörünü seçin." } },
-        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle ekranından Cossacks 3 klasörünü seçin." } }
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game ekranından oyun klasörünü ve çalıştırılabilir dosyayı seçin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Add Game ekranından oyun klasörünü ve çalıştırılabilir dosyayı seçin." } }
       }
     },
     "diagnostics.manualSetup.title" : {

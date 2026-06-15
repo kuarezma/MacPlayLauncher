@@ -19,7 +19,6 @@ targets:
       - App
       - Core
       - UI
-    resources:
       - Resources
     settings:
       base:

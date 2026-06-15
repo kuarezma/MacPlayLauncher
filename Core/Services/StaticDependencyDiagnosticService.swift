@@ -8,7 +8,7 @@ struct StaticDependencyDiagnosticService: DependencyDiagnosticServicing {
                 wineDependency(),
                 dxvkDependency(),
                 moltenVKDependency(),
-                gameProfileDependency(hasProfiles: !profiles.isEmpty)
+                gameProfileDependency(hasConfiguredProfile: profiles.contains(where: isConfiguredProfile))
             ],
             notes: [
                 String(localized: "diagnostics.note.noAutomaticInstall"),
@@ -97,18 +97,29 @@ struct StaticDependencyDiagnosticService: DependencyDiagnosticServicing {
         )
     }
 
-    private func gameProfileDependency(hasProfiles: Bool) -> RuntimeDependency {
+    private func isConfiguredProfile(_ profile: GameProfile) -> Bool {
+        hasValue(profile.executablePath)
+            && hasValue(profile.workingDirectory)
+            && profile.executableBookmarkData?.isEmpty == false
+            && profile.workingDirectoryBookmarkData?.isEmpty == false
+    }
+
+    private func hasValue(_ value: String?) -> Bool {
+        value?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+    }
+
+    private func gameProfileDependency(hasConfiguredProfile: Bool) -> RuntimeDependency {
         RuntimeDependency(
             displayName: String(localized: "diagnostics.gameProfile.displayName"),
             kind: .gameProfile,
-            status: hasProfiles ? .ready : .missing,
+            status: hasConfiguredProfile ? .ready : .missing,
             version: nil,
             installPath: nil,
-            userFacingDescription: hasProfiles
+            userFacingDescription: hasConfiguredProfile
                 ? String(localized: "diagnostics.gameProfile.ready")
                 : String(localized: "diagnostics.gameProfile.missing"),
-            missingReason: hasProfiles ? nil : String(localized: "diagnostics.gameProfile.missingReason"),
-            suggestedAction: hasProfiles ? nil : String(localized: "diagnostics.gameProfile.suggestedAction"),
+            missingReason: hasConfiguredProfile ? nil : String(localized: "diagnostics.gameProfile.missingReason"),
+            suggestedAction: hasConfiguredProfile ? nil : String(localized: "diagnostics.gameProfile.suggestedAction"),
             setupGuide: nil
         )
     }

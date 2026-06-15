@@ -41,6 +41,7 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Turkish runtime readiness diagnostics screen.
 - Passive dependency models for Rosetta, Wine, DXVK, MoltenVK, and game profile readiness.
 - Static diagnostic service that does not run system commands or inspect real runtime installs.
+- Game profile readiness based on minimum user-configured profile data, without file access or launch checks.
 - Manual setup guide text explaining that installation and launch are handled in later sprints.
 - Unit tests for diagnostic aggregation, static diagnostic output, and view model mapping.
 

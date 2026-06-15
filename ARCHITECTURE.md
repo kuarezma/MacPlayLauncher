@@ -32,5 +32,6 @@ Sprint 3 adds a passive runtime diagnostics layer. It models readiness for Roset
 - `DependencyDiagnosticService` is the protocol boundary for future real diagnostics.
 - `StaticDependencyDiagnosticService` is the Sprint 3 implementation and does not run commands, inspect paths, download files, install runtimes, create prefixes, or launch games.
 - `DiagnosticsViewModel` maps diagnostic state to Turkish UI labels and badges.
+- Game profile readiness only checks minimum user-configured profile data in memory: executable path, working directory, and stored bookmark data. It does not resolve bookmarks, check file existence, or launch anything.
 
 Real runtime detection and security-scoped access lifecycle for launch/file access remain future work.

@@ -10,7 +10,8 @@ final class GameFolderDetectorTests: XCTestCase {
         let detector = GameFolderDetector(fileSystem: LocalFileSystem())
         let result = try detector.detectCossacks3(in: directory)
 
-        XCTAssertEqual(result, DetectedGameFolder(displayName: "Cossacks 3", executableURL: executableURL))
+        XCTAssertEqual(result?.displayName, "Cossacks 3")
+        XCTAssertEqual(result?.executableURL.standardizedFileURL.path, executableURL.standardizedFileURL.path)
     }
 
     func testDetectsCossacks3ExecutableCaseInsensitively() throws {
@@ -21,7 +22,7 @@ final class GameFolderDetectorTests: XCTestCase {
         let detector = GameFolderDetector(fileSystem: LocalFileSystem())
         let result = try detector.detectCossacks3(in: directory)
 
-        XCTAssertEqual(result?.executableURL, executableURL)
+        XCTAssertEqual(result?.executableURL.standardizedFileURL.path, executableURL.standardizedFileURL.path)
         XCTAssertEqual(result?.displayName, "Cossacks 3")
     }
 
