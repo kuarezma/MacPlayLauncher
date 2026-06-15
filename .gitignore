@@ -8,6 +8,7 @@
 *.xcworkspace
 xcuserdata/
 DerivedData/
+.DerivedData/
 build/
 .build/
 .xcode-home/
