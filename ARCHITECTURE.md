@@ -49,3 +49,17 @@ Sprint 4 adds a pure readiness decision layer for future launch gating. It expla
 - The Diagnostics UI shows Turkish readiness explanations and blocker lists, but has no launch button or install/fix action.
 
 Sprint 4 still excludes process execution, shell scripts, Wine command/path detection, runtime download/install, prefix creation, real dependency detection, Steam automation, and security-scoped file access.
+
+## Sprint 5A Diagnostic Command Boundary
+
+Sprint 5A introduces the command execution boundary needed for future real runtime diagnostics. It does not connect real Rosetta, Wine, DXVK, or MoltenVK detection to the app.
+
+- `CommandRunning` is the single protocol for future read-only diagnostic commands.
+- `ProcessCommandRunner` is the only place where `Process` is allowed.
+- Commands are launched with an executable URL and argument array, never shell strings.
+- Allowed executables are whitelisted, shell executables are rejected, and `-c` arguments are rejected.
+- Each command has a timeout and bounded stdout/stderr capture.
+- `FakeCommandRunner` gives tests deterministic success and failure paths without running local system commands.
+- `StaticDependencyDiagnosticService` remains the production diagnostics implementation.
+
+Sprint 5A still excludes game launch, user-selected executable execution, Wine launch command composition, runtime install/download, prefix creation, Steam automation, bookmark resolve/access, and shell script generation.

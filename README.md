@@ -54,6 +54,15 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - `ready` status is only a domain result for future launch gating; the app still does not run games and `canLaunch` remains false in Sprint 4.
 - Unit tests for readiness status priority, blocker order, configured profile requirements, and UI mapping.
 
+## Sprint 5A Features
+
+- Diagnostic command boundary for future real runtime checks.
+- `CommandRunning` abstraction with request/result/error models.
+- `ProcessCommandRunner` keeps process execution behind a whitelist, timeout, and output limit.
+- Shell execution, `sh -c`, game launch, runtime install/download, and prefix creation remain out of scope.
+- `FakeCommandRunner` supports deterministic command tests without depending on the local system.
+- Production diagnostics remain static/passive; real Rosetta and Wine detection are deferred to a later sprint.
+
 ## Development
 
 Generate the Xcode project:
@@ -82,6 +91,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 5A: Added a safe diagnostic command boundary with fake runner tests; production diagnostics remain static.
 - Sprint 4: Added passive Run Readiness Gate with blocker explanations and Turkish diagnostics UI, without launch/runtime execution.
 - Sprint 3: Added passive runtime diagnostics preparation with Turkish readiness UI, static dependency status service, setup guidance, and tests.
 - Sprint 2: Added localized Add Game profile creation flow with folder/executable selection, bookmarks, Cossacks 3 detection, containment validation, and focused tests.
