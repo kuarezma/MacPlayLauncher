@@ -1,0 +1,37 @@
+---
+description: Sprint doğrulamasında hızlı script kullan; uzun komutları bekleme
+alwaysApply: true
+---
+
+# Sprint doğrulama — tıkanmayı önle
+
+Sprint 5B (ve benzeri sprint kapanış) doğrulaması yaparken **manuel `git diff`, `rg` taraması veya `xcodebuild test` çalıştırma**. Bunlar yanıtı keser veya dakikalarca bekletir.
+
+## Yapılacak
+
+Tek komut çalıştır:
+
+```sh
+./scripts/verify-sprint-5b.sh
+```
+
+Çıktıyı olduğu gibi raporla. Script saniyeler içinde biter.
+
+Tam test gerekiyorsa (kullanıcı istemedikçe çalıştırma):
+
+```sh
+./scripts/verify-sprint-5b.sh --full
+```
+
+## Yapılmayacak
+
+- `git diff` (tüm diff) — yerine script'in `git diff --name-only` kontrolü yeterli
+- `xcodebuild test` varsayılan doğrulama adımı olarak
+- Uzun shell komutlarını arka planda beklemek
+- Doğrulama listesini sıfırdan yazmak — script çıktısı + `ARCHITECTURE.md` Sprint 5B bölümü yeterli
+
+## Sprint 5B özet kriterleri
+
+- `RealDependencyDiagnosticService` var ama `AppEnvironment.live` hâlâ `StaticDependencyDiagnosticService` kullanır
+- `Process()` yalnızca `ProcessCommandRunner.swift` içinde
+- Oyun launch, prefix/install, `sh -c`, `which wine`, `softwareupdate` production kodda yok

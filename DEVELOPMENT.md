@@ -6,6 +6,20 @@
 - XcodeGen 2.45+.
 - SwiftLint is optional locally for Sprint 1. If available, run `swiftlint`.
 
+## Sprint verification
+
+Fast Sprint 5B checks (seconds, safe for agent loops):
+
+```sh
+./scripts/verify-sprint-5b.sh
+```
+
+Optional full test run (minutes):
+
+```sh
+./scripts/verify-sprint-5b.sh --full
+```
+
 ## Commands
 
 Generate the project:
