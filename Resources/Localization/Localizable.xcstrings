@@ -45,13 +45,115 @@
     },
     "addGame.description" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Game selection and bookmark support will be added in Sprint 2." } },
-        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun seçimi ve kalıcı erişim desteği Sprint 2'de eklenecek." } }
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun klasörü ve EXE dosyası seçin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun klasörü ve EXE dosyası seçin." } }
+      }
+    },
+    "addGame.cancel" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "İptal" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İptal" } }
+      }
+    },
+    "addGame.detection.cossacks3" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Seçilen klasörde Cossacks 3 algılandı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Seçilen klasörde Cossacks 3 algılandı." } }
+      }
+    },
+    "addGame.detection.notFound" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cossacks 3 otomatik algılanamadı. EXE dosyasını seçin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Cossacks 3 otomatik algılanamadı. EXE dosyasını seçin." } }
+      }
+    },
+    "addGame.detection.status" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Algılama Durumu" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Algılama Durumu" } }
+      }
+    },
+    "addGame.detection.waiting" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Henüz oyun klasörü seçilmedi." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz oyun klasörü seçilmedi." } }
+      }
+    },
+    "addGame.error.selectFolderFirst" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Önce oyun klasörü seçin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Önce oyun klasörü seçin." } }
+      }
+    },
+    "addGame.exe.select" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "EXE Dosyası Seç" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "EXE Dosyası Seç" } }
+      }
+    },
+    "addGame.exe.selected" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Seçilen EXE" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Seçilen EXE" } }
+      }
+    },
+    "addGame.exePicker.prompt" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Seç" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Seç" } }
+      }
+    },
+    "addGame.exePicker.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "EXE Dosyası Seç" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "EXE Dosyası Seç" } }
+      }
+    },
+    "addGame.folder.select" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Klasörü Seç" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Klasörü Seç" } }
+      }
+    },
+    "addGame.folder.selected" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Seçilen Klasör" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Seçilen Klasör" } }
+      }
+    },
+    "addGame.folderPicker.prompt" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Seç" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Seç" } }
+      }
+    },
+    "addGame.folderPicker.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Klasörü Seç" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Klasörü Seç" } }
+      }
+    },
+    "addGame.name" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Adı" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Adı" } }
+      }
+    },
+    "addGame.save" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Profil Kaydet" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Profil Kaydet" } }
+      }
+    },
+    "addGame.save.success" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Profil başarıyla kaydedildi." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Profil başarıyla kaydedildi." } }
       }
     },
     "addGame.title" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle" } },
         "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun Ekle" } }
       }
     },
@@ -99,8 +201,14 @@
     },
     "error.bookmarkUnavailable" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bookmark support is not implemented in Sprint 1." } },
-        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kalıcı erişim desteği Sprint 1'de uygulanmadı." } }
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kalıcı erişim izni oluşturulamadı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kalıcı erişim izni oluşturulamadı." } }
+      }
+    },
+    "error.executableOutsideGameFolder" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "EXE dosyası seçilen oyun klasörünün içinde olmalıdır." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "EXE dosyası seçilen oyun klasörünün içinde olmalıdır." } }
       }
     },
     "error.generic" : {

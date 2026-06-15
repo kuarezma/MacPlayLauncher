@@ -38,7 +38,7 @@ struct GameLibraryView: View {
         case .library, .none:
             libraryDetail
         case .addGame:
-            AddGameView()
+            AddGameView(appState: appState)
         case .diagnostics:
             DiagnosticsView()
         case .settings:
@@ -65,4 +65,3 @@ struct GameLibraryView: View {
         }
     }
 }
-

@@ -27,6 +27,15 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Keyboard shortcuts for Add Game, Settings, and Diagnostics.
 - XCTest unit tests for models and persistence.
 
+## Sprint 2 Features
+
+- Turkish Add Game form for selecting a local game folder and `.exe` file.
+- `NSOpenPanel` based folder and executable selection behind a testable file selection service.
+- Security-scoped bookmark creation and stale bookmark resolution handling.
+- Cossacks 3 executable detection inside the selected game folder.
+- Manual profile creation using existing profile persistence.
+- Safe path containment validation so executables outside the selected folder are rejected.
+
 ## Development
 
 Generate the Xcode project:
@@ -55,5 +64,5 @@ swiftlint
 
 ## Changelog
 
+- Sprint 2: Added localized Add Game profile creation flow with folder/executable selection, bookmarks, Cossacks 3 detection, containment validation, and focused tests.
 - Sprint 1: Initial XcodeGen project skeleton, models, persistence, localized SwiftUI shell, tests, and documentation.
-
