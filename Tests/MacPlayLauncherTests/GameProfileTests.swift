@@ -2,6 +2,17 @@ import XCTest
 @testable import MacPlayLauncher
 
 final class GameProfileTests: XCTestCase {
+    func testBundledCossacks3ProfileDecodes() throws {
+        let profile = try BundledGameProfileLoader(bundle: .main).loadCossacks3Profile()
+
+        XCTAssertEqual(profile.id, "cossacks3")
+        XCTAssertEqual(profile.schemaVersion, 1)
+        XCTAssertEqual(profile.wineArch, .win64)
+        XCTAssertEqual(profile.windowsVersion, .win10)
+        XCTAssertEqual(profile.runtime, .wineDXVKMoltenVK)
+        XCTAssertEqual(profile.performanceMode, .balanced)
+    }
+
     func testSampleCossacks3EncodeDecode() throws {
         let profile = GameProfile.sampleCossacks3
         let data = try JSONEncoder.testEncoder.encode(profile)
@@ -15,4 +26,3 @@ final class GameProfileTests: XCTestCase {
         XCTAssertEqual(decoded.performanceMode, .balanced)
     }
 }
-

@@ -26,13 +26,22 @@ final class AppState {
         do {
             profiles = try environment.profileManager.loadProfiles()
             if profiles.isEmpty {
-                profiles = [GameProfile.sampleCossacks3]
+                profiles = [loadBundledCossacks3Profile()]
             }
             selectedProfileID = profiles.first?.id
         } catch {
             loadErrorMessage = ErrorPresenter.message(for: error)
-            profiles = [GameProfile.sampleCossacks3]
+            profiles = [loadBundledCossacks3Profile()]
             selectedProfileID = profiles.first?.id
+        }
+    }
+
+    private func loadBundledCossacks3Profile() -> GameProfile {
+        do {
+            return try environment.bundledProfileLoader.loadCossacks3Profile()
+        } catch {
+            loadErrorMessage = ErrorPresenter.message(for: error)
+            return .sampleCossacks3
         }
     }
 
@@ -48,4 +57,3 @@ final class AppState {
         selectedNavigationItem = .settings
     }
 }
-
