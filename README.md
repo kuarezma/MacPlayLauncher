@@ -45,6 +45,15 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Manual setup guide text explaining that installation and launch are handled in later sprints.
 - Unit tests for diagnostic aggregation, static diagnostic output, and view model mapping.
 
+## Sprint 4 Features
+
+- Run Readiness Gate domain model for explaining whether a future launch would be allowed.
+- Pure readiness evaluator based only on `GameProfile` and `RuntimeDiagnosticSummary`.
+- Turkish Diagnostics UI section that lists readiness blockers and passive suggested actions.
+- No launch button, launch affordance, process execution, shell script, runtime download/install, prefix creation, or real file/bookmark access.
+- `ready` status is only a domain result for future launch gating; the app still does not run games and `canLaunch` remains false in Sprint 4.
+- Unit tests for readiness status priority, blocker order, configured profile requirements, and UI mapping.
+
 ## Development
 
 Generate the Xcode project:
@@ -73,6 +82,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 4: Added passive Run Readiness Gate with blocker explanations and Turkish diagnostics UI, without launch/runtime execution.
 - Sprint 3: Added passive runtime diagnostics preparation with Turkish readiness UI, static dependency status service, setup guidance, and tests.
 - Sprint 2: Added localized Add Game profile creation flow with folder/executable selection, bookmarks, Cossacks 3 detection, containment validation, and focused tests.
 - Sprint 1: Initial XcodeGen project skeleton, models, persistence, localized SwiftUI shell, tests, and documentation.

@@ -5,9 +5,30 @@ import SwiftUI
 @Observable
 final class DiagnosticsViewModel {
     private(set) var summary: RuntimeDiagnosticSummary?
+    private(set) var readinessResult: RunReadinessResult?
 
     var dependencies: [RuntimeDependency] {
         summary?.dependencies ?? []
+    }
+
+    var readinessTitle: String {
+        readinessResult?.title ?? String(localized: "readiness.unknown.title")
+    }
+
+    var readinessMessage: String {
+        readinessResult?.message ?? String(localized: "readiness.unknown.message")
+    }
+
+    var readinessBlockers: [RunReadinessBlocker] {
+        readinessResult?.blockers ?? []
+    }
+
+    var launchNotImplementedText: String {
+        String(localized: "readiness.launchNotImplemented")
+    }
+
+    var noLaunchThisSprintText: String {
+        String(localized: "readiness.noLaunchThisSprint")
     }
 
     var overallTitle: String {
@@ -40,6 +61,11 @@ final class DiagnosticsViewModel {
         self.summary = summary
     }
 
+    func update(summary: RuntimeDiagnosticSummary, readinessResult: RunReadinessResult) {
+        self.summary = summary
+        self.readinessResult = readinessResult
+    }
+
     func badgeText(for status: RuntimeDependencyStatus) -> String {
         switch status {
         case .ready:
@@ -63,6 +89,52 @@ final class DiagnosticsViewModel {
             return .red
         case .unknown:
             return .orange
+        }
+    }
+
+    func readinessBadgeText(for status: RunReadinessStatus) -> String {
+        switch status {
+        case .ready:
+            return String(localized: "readiness.ready.title")
+        case .blocked:
+            return String(localized: "readiness.blocked.title")
+        case .unknown:
+            return String(localized: "readiness.unknown.title")
+        case .unsupported:
+            return String(localized: "readiness.unsupported.title")
+        }
+    }
+
+    func readinessBadgeColor(for status: RunReadinessStatus) -> Color {
+        switch status {
+        case .ready:
+            return .green
+        case .blocked, .unsupported:
+            return .red
+        case .unknown:
+            return .orange
+        }
+    }
+
+    func severityText(for severity: RunReadinessSeverity) -> String {
+        switch severity {
+        case .info:
+            return String(localized: "readiness.severity.info")
+        case .warning:
+            return String(localized: "readiness.severity.warning")
+        case .blocking:
+            return String(localized: "readiness.severity.blocking")
+        }
+    }
+
+    func severityColor(for severity: RunReadinessSeverity) -> Color {
+        switch severity {
+        case .info:
+            return .blue
+        case .warning:
+            return .orange
+        case .blocking:
+            return .red
         }
     }
 }

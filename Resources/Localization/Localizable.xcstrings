@@ -595,6 +595,144 @@
         "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarlar" } }
       }
     },
+    "readiness.blocked.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Çalıştırmaya hazır değil" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çalıştırmaya hazır değil" } }
+      }
+    },
+    "readiness.fixMissingBeforeLaunch" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Eksikler giderilmeden çalıştırma aktif olmayacak." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Eksikler giderilmeden çalıştırma aktif olmayacak." } }
+      }
+    },
+    "readiness.launchNotImplemented" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Şu anda oyun çalıştırma özelliği ekli değildir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Şu anda oyun çalıştırma özelliği ekli değildir." } }
+      }
+    },
+    "readiness.missingRuntimeDependency.message" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bu bileşen hazır görünmediği için çalıştırma aktif olmayacak." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu bileşen hazır görünmediği için çalıştırma aktif olmayacak." } }
+      }
+    },
+    "readiness.missingRuntimeDependency.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Gerekli bileşen eksik" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gerekli bileşen eksik" } }
+      }
+    },
+    "readiness.missingUserGameProfile.action" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Game ekranından oyun klasörünü ve çalıştırılabilir dosyayı seçin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Add Game ekranından oyun klasörünü ve çalıştırılabilir dosyayı seçin." } }
+      }
+    },
+    "readiness.missingUserGameProfile.message" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oyun klasörü ve çalıştırılabilir dosya bilgisi tamamlanmamış." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oyun klasörü ve çalıştırılabilir dosya bilgisi tamamlanmamış." } }
+      }
+    },
+    "readiness.missingUserGameProfile.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kullanıcı tarafından yapılandırılmış oyun profili bulunamadı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kullanıcı tarafından yapılandırılmış oyun profili bulunamadı." } }
+      }
+    },
+    "readiness.noLaunchThisSprint" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bu ekran yalnızca hazırlık durumunu gösterir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu ekran yalnızca hazırlık durumunu gösterir." } }
+      }
+    },
+    "readiness.ready.message" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Gerekli hazırlık kontrolleri tamam görünüyor. Şu anda oyun çalıştırma özelliği ekli değildir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gerekli hazırlık kontrolleri tamam görünüyor. Şu anda oyun çalıştırma özelliği ekli değildir." } }
+      }
+    },
+    "readiness.ready.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Çalıştırmaya hazır" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çalıştırmaya hazır" } }
+      }
+    },
+    "readiness.severity.blocking" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Engel" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Engel" } }
+      }
+    },
+    "readiness.severity.info" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bilgi" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bilgi" } }
+      }
+    },
+    "readiness.severity.warning" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Uyarı" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Uyarı" } }
+      }
+    },
+    "readiness.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Çalıştırma Hazırlığı" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çalıştırma Hazırlığı" } }
+      }
+    },
+    "readiness.unknown.message" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bazı bileşenlerin durumu bilinmediği için çalıştırma aktif edilmeyecek." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bazı bileşenlerin durumu bilinmediği için çalıştırma aktif edilmeyecek." } }
+      }
+    },
+    "readiness.unknown.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Durum bilinmiyor" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Durum bilinmiyor" } }
+      }
+    },
+    "readiness.unknownDependency.message" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Durum bilinmediği için çalıştırma aktif edilmeyecek." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Durum bilinmediği için çalıştırma aktif edilmeyecek." } }
+      }
+    },
+    "readiness.unknownDependency.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bileşen durumu bilinmiyor" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bileşen durumu bilinmiyor" } }
+      }
+    },
+    "readiness.unsupported.message" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmeyen bileşenler nedeniyle çalıştırma hazır değil." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmeyen bileşenler nedeniyle çalıştırma hazır değil." } }
+      }
+    },
+    "readiness.unsupported.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmeyen bileşen var" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmeyen bileşen var" } }
+      }
+    },
+    "readiness.unsupportedDependency.message" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bu bileşen desteklenmediği için çalıştırma hazır değil." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu bileşen desteklenmediği için çalıştırma hazır değil." } }
+      }
+    },
+    "readiness.unsupportedDependency.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmeyen bileşen" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenmeyen bileşen" } }
+      }
+    },
     "settings.general" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "General" } },

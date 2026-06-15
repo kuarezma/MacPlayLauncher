@@ -132,6 +132,13 @@ final class AppState {
         await environment.dependencyDiagnosticService.loadSummary(profiles: profiles)
     }
 
+    func evaluateRunReadiness(diagnosticSummary: RuntimeDiagnosticSummary) -> RunReadinessResult {
+        environment.runReadinessEvaluator.evaluate(
+            profiles: profiles,
+            diagnosticSummary: diagnosticSummary
+        )
+    }
+
     private func makeAddGameProfile() throws -> GameProfile {
         guard let folderURL = addGameForm.selectedFolderURL,
               let executableURL = addGameForm.selectedExecutableURL else {

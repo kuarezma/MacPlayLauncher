@@ -35,3 +35,17 @@ Sprint 3 adds a passive runtime diagnostics layer. It models readiness for Roset
 - Game profile readiness only checks minimum user-configured profile data in memory: executable path, working directory, and stored bookmark data. It does not resolve bookmarks, check file existence, or launch anything.
 
 Real runtime detection and security-scoped access lifecycle for launch/file access remain future work.
+
+## Sprint 4 Run Readiness Gate
+
+Sprint 4 adds a pure readiness decision layer for future launch gating. It explains whether the app would allow launch later and why it is currently blocked, without launching anything.
+
+- `RunReadinessResult` describes the future launch gate status, passive message, blockers, and `canLaunch`.
+- `RunReadinessBlocker` describes one game profile or runtime dependency reason with severity, source, and optional suggested action.
+- `DefaultRunReadinessEvaluator` evaluates only in-memory `GameProfile` values and `RuntimeDiagnosticSummary` dependencies.
+- Game profile readiness requires executable path, working directory, and stored bookmark data, but does not resolve bookmarks or check file existence.
+- Runtime blockers are derived from diagnostic dependency statuses in deterministic order: game profile, unsupported, missing, unknown.
+- `canLaunch` is always false in Sprint 4. A `ready` result only means the domain gate could be opened in a future launch sprint.
+- The Diagnostics UI shows Turkish readiness explanations and blocker lists, but has no launch button or install/fix action.
+
+Sprint 4 still excludes process execution, shell scripts, Wine command/path detection, runtime download/install, prefix creation, real dependency detection, Steam automation, and security-scoped file access.

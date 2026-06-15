@@ -7,6 +7,7 @@ struct AppEnvironment: Sendable {
     let bookmarkManager: any BookmarkManaging
     let gameFolderDetector: any GameFolderDetecting
     let dependencyDiagnosticService: any DependencyDiagnosticServicing
+    let runReadinessEvaluator: any RunReadinessEvaluating
 
     @MainActor
     static var live: AppEnvironment {
@@ -23,7 +24,8 @@ struct AppEnvironment: Sendable {
             fileSelectionService: FileSelectionService(),
             bookmarkManager: BookmarkManager(),
             gameFolderDetector: GameFolderDetector(fileSystem: fileSystem),
-            dependencyDiagnosticService: StaticDependencyDiagnosticService()
+            dependencyDiagnosticService: StaticDependencyDiagnosticService(),
+            runReadinessEvaluator: DefaultRunReadinessEvaluator()
         )
     }
 }

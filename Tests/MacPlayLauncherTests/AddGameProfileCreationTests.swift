@@ -18,7 +18,8 @@ final class AddGameProfileCreationTests: XCTestCase {
                 fileSelectionService: FakeFileSelectionService(folderURL: gameFolderURL, executableURL: executableURL),
                 bookmarkManager: FakeBookmarkManager(),
                 gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
-                dependencyDiagnosticService: StaticDependencyDiagnosticService()
+                dependencyDiagnosticService: StaticDependencyDiagnosticService(),
+                runReadinessEvaluator: DefaultRunReadinessEvaluator()
             )
         )
 
@@ -50,7 +51,8 @@ final class AddGameProfileCreationTests: XCTestCase {
                 fileSelectionService: FakeFileSelectionService(folderURL: gameFolderURL, executableURL: executableURL),
                 bookmarkManager: FakeBookmarkManager(),
                 gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
-                dependencyDiagnosticService: StaticDependencyDiagnosticService()
+                dependencyDiagnosticService: StaticDependencyDiagnosticService(),
+                runReadinessEvaluator: DefaultRunReadinessEvaluator()
             )
         )
 

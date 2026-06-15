@@ -8,6 +8,7 @@ struct DiagnosticsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 overallSection
+                readinessSection
                 dependencySection
                 passiveNoticeSection
             }
@@ -17,7 +18,8 @@ struct DiagnosticsView: View {
         .navigationTitle(String(localized: "diagnostics.readiness.title"))
         .task {
             let summary = await appState.loadRuntimeDiagnosticSummary()
-            viewModel.update(summary: summary)
+            let readinessResult = appState.evaluateRunReadiness(diagnosticSummary: summary)
+            viewModel.update(summary: summary, readinessResult: readinessResult)
         }
     }
 
@@ -31,6 +33,80 @@ struct DiagnosticsView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private var readinessSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(String(localized: "readiness.title"))
+                .font(.headline)
+
+            HStack(alignment: .firstTextBaseline) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(viewModel.readinessTitle)
+                        .font(.title3.weight(.semibold))
+                    Text(viewModel.readinessMessage)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                if let status = viewModel.readinessResult?.status {
+                    Text(viewModel.readinessBadgeText(for: status))
+                        .font(.caption.weight(.semibold))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .foregroundStyle(.white)
+                        .background(viewModel.readinessBadgeColor(for: status), in: Capsule())
+                }
+            }
+
+            if !viewModel.readinessBlockers.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(viewModel.readinessBlockers) { blocker in
+                        readinessBlockerRow(blocker)
+                    }
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(viewModel.launchNotImplementedText)
+                Text(viewModel.noLaunchThisSprintText)
+            }
+            .font(.callout)
+            .foregroundStyle(.secondary)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func readinessBlockerRow(_ blocker: RunReadinessBlocker) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(blocker.title)
+                    .font(.headline)
+
+                Spacer()
+
+                Text(viewModel.severityText(for: blocker.severity))
+                    .font(.caption.weight(.semibold))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .foregroundStyle(.white)
+                    .background(viewModel.severityColor(for: blocker.severity), in: Capsule())
+            }
+
+            Text(blocker.message)
+                .foregroundStyle(.secondary)
+
+            if let suggestedAction = blocker.suggestedAction {
+                Text(suggestedAction)
+                    .font(.callout)
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
     }
 
     private var dependencySection: some View {
