@@ -118,6 +118,11 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Settings screen diagnostics section with policy notes and current in-memory session source label.
 - Reuses existing navigation to Diagnostics; no policy toggles or automatic real checks.
 
+## Sprint 13 Features
+
+- ADR-002 documents the Wine prefix strategy: per-game prefixes under Application Support, `WINEPREFIX` mapping, and deferred creation in Sprint 14.
+- No prefix directories are created and no Wine prefix bootstrap commands run in Sprint 13.
+
 ## Development
 
 Generate the Xcode project:
@@ -146,6 +151,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 13: Added ADR-002 prefix strategy planning; no prefix creation or launch behavior.
 - Sprint 12: Added Settings diagnostics overview with policy notes and current session source label.
 - Sprint 11: Added passive readiness strip to the Game Library with navigation to Diagnostics.
 - Sprint 10: Added in-memory diagnostics session state so manual real-check results survive navigation within the app session.

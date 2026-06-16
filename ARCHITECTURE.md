@@ -163,3 +163,14 @@ Sprint 12 adds passive diagnostics policy information to the Settings screen.
 - `Tanılamayı aç` navigates to Diagnostics; no policy toggles, automatic real checks, or launch affordances are added.
 
 Sprint 12 still excludes game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 13 Prefix Strategy Planning
+
+Sprint 13 documents the Wine prefix strategy without implementing prefix creation or launch behavior.
+
+- ADR-002 defines per-game prefixes under `Application Support/MacPlayLauncher/Prefixes/{profileID}/`.
+- `GameProfile.prefixPath` remains a relative path (`Prefixes/{profileID}`) resolved against app support in later sprints.
+- `WINEPREFIX` mapping is documented for future launch work but not applied at runtime in Sprint 13.
+- Prefix creation, Wine bootstrap commands, runtime install/download, and DXVK/MoltenVK real detection remain deferred to later sprints.
+
+Sprint 13 still excludes game launch, prefix directory creation, runtime download/install, shell usage, and any change to `canLaunch`.
