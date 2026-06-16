@@ -186,3 +186,14 @@ Sprint 14 implements explicit prefix directory creation behind a narrow filesyst
 - No `wineprefixcreate`, `WINEPREFIX` runtime wiring, Wine bootstrap, DXVK/MoltenVK install, or game launch is introduced.
 
 Sprint 14 still excludes game launch, Wine prefix bootstrap commands, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 15 Wine Runtime Strategy Planning
+
+Sprint 15 finalizes runtime acquisition strategy without implementing runtime download, install, or launch behavior.
+
+- ADR-001 accepts V1 user-managed Homebrew Wine discovery via the existing `WineDiagnosticProvider` allowlist.
+- Bundled runtime, launcher-driven install, and `PATH`-based discovery are rejected for V1.
+- DXVK and MoltenVK remain passive in diagnostics; supply-chain layout is documented for later launch work.
+- Future bundled runtime options require checksum validation and a separate implementation sprint.
+
+Sprint 15 still excludes runtime download/install, Wine prefix bootstrap, `WINEPREFIX` runtime wiring, game launch, and any change to `canLaunch`.

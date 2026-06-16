@@ -128,6 +128,11 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - `PrefixManager` creates per-game prefix directories under Application Support on explicit user action from Diagnostics.
 - Path validation keeps writes inside `Prefixes/`; no Wine bootstrap, `WINEPREFIX`, or launch behavior is added.
 
+## Sprint 15 Features
+
+- ADR-001 finalizes V1 runtime strategy: user-managed Homebrew Wine via allowlist discovery; no launcher runtime download or install.
+- DXVK and MoltenVK remain passive; supply-chain notes are documented for later launch work.
+
 ## Development
 
 Generate the Xcode project:
@@ -156,6 +161,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 15: Finalized ADR-001 runtime acquisition strategy; no runtime download, install, or launch behavior.
 - Sprint 14: Added explicit prefix directory creation boundary with Diagnostics UI; no Wine bootstrap or launch.
 - Sprint 13: Added ADR-002 prefix strategy planning; no prefix creation or launch behavior.
 - Sprint 12: Added Settings diagnostics overview with policy notes and current session source label.
