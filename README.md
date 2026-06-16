@@ -123,6 +123,11 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - ADR-002 documents the Wine prefix strategy: per-game prefixes under Application Support, `WINEPREFIX` mapping, and deferred creation in Sprint 14.
 - No prefix directories are created and no Wine prefix bootstrap commands run in Sprint 13.
 
+## Sprint 14 Features
+
+- `PrefixManager` creates per-game prefix directories under Application Support on explicit user action from Diagnostics.
+- Path validation keeps writes inside `Prefixes/`; no Wine bootstrap, `WINEPREFIX`, or launch behavior is added.
+
 ## Development
 
 Generate the Xcode project:
@@ -151,6 +156,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 14: Added explicit prefix directory creation boundary with Diagnostics UI; no Wine bootstrap or launch.
 - Sprint 13: Added ADR-002 prefix strategy planning; no prefix creation or launch behavior.
 - Sprint 12: Added Settings diagnostics overview with policy notes and current session source label.
 - Sprint 11: Added passive readiness strip to the Game Library with navigation to Diagnostics.

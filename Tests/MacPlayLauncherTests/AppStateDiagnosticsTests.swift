@@ -161,7 +161,11 @@ final class AppStateDiagnosticsTests: XCTestCase {
                 gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
                 dependencyDiagnosticService: diagnosticService,
                 diagnosticActivationPolicy: policy,
-                runReadinessEvaluator: DefaultRunReadinessEvaluator()
+                runReadinessEvaluator: DefaultRunReadinessEvaluator(),
+                prefixManager: PrefixManager(
+                    appSupportURL: FileManager.default.temporaryDirectory,
+                    fileSystem: LocalFileSystem()
+                )
             )
         )
     }

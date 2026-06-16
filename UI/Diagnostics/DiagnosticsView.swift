@@ -11,6 +11,7 @@ struct DiagnosticsView: View {
                 sourceInfoCard
                 overallSection
                 readinessSection
+                prefixSection
                 dependencySection
                 passiveNoticeSection
             }
@@ -20,11 +21,37 @@ struct DiagnosticsView: View {
         .navigationTitle(String(localized: "diagnostics.readiness.title"))
         .task {
             viewModel.setAllowsManualRealCheck(appState.canRunManualRealDiagnosticCheck)
+            refreshPrefixState()
             if let cached = appState.restoreCachedDiagnosticsIfAvailable() {
                 viewModel.update(summary: cached.summary, readinessResult: cached.readinessResult)
             } else {
                 await reloadDiagnostics(mode: .staticOnly)
             }
+        }
+    }
+
+    private func refreshPrefixState() {
+        viewModel.setPrefixFeedbackMessage(nil)
+        do {
+            viewModel.updatePrefixState(try appState.loadPrefixDirectoryState())
+        } catch {
+            viewModel.updatePrefixState(nil)
+            viewModel.setPrefixFeedbackMessage(ErrorPresenter.message(for: error))
+        }
+    }
+
+    private func createPrefixDirectory() async {
+        viewModel.setCreatingPrefix(true)
+        defer { viewModel.setCreatingPrefix(false) }
+
+        do {
+            let state = try appState.createPrefixDirectory()
+            viewModel.updatePrefixState(state)
+            if state.availability == .exists {
+                viewModel.setPrefixFeedbackMessage(String(localized: "diagnostics.prefix.createSuccess"))
+            }
+        } catch {
+            viewModel.setPrefixFeedbackMessage(ErrorPresenter.message(for: error))
         }
     }
 
@@ -166,6 +193,62 @@ struct DiagnosticsView: View {
             }
             .font(.callout)
             .foregroundStyle(.secondary)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private var prefixSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(viewModel.prefixTitle)
+                .font(.headline)
+
+            Text(viewModel.prefixSubtitle)
+                .foregroundStyle(.secondary)
+
+            if let prefixState = viewModel.prefixState {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(viewModel.profileLabel(for: prefixState))
+                    Text(viewModel.relativePathLabel(for: prefixState))
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                    Text(viewModel.absolutePathLabel(for: prefixState))
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                    Text(viewModel.prefixStatusText(for: prefixState.availability))
+                        .font(.callout.weight(.semibold))
+                }
+
+                if viewModel.isCreatingPrefix {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text(viewModel.prefixCreatingTitle)
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
+                } else if viewModel.showsPrefixCreateButton {
+                    Button(viewModel.prefixCreateButtonTitle) {
+                        Task {
+                            await createPrefixDirectory()
+                        }
+                    }
+                }
+            } else {
+                Text(viewModel.prefixNoProfileText)
+                    .foregroundStyle(.secondary)
+            }
+
+            if let prefixFeedbackMessage = viewModel.prefixFeedbackMessage {
+                Text(prefixFeedbackMessage)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(viewModel.prefixWineBootstrapNote)
+                .font(.callout)
+                .foregroundStyle(.secondary)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)

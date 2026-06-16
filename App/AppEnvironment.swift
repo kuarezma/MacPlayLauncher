@@ -9,6 +9,7 @@ struct AppEnvironment: Sendable {
     let dependencyDiagnosticService: any DependencyDiagnosticServicing
     let diagnosticActivationPolicy: DiagnosticActivationPolicy?
     let runReadinessEvaluator: any RunReadinessEvaluating
+    let prefixManager: any PrefixManaging
 
     init(
         profileManager: GameProfileManaging,
@@ -18,7 +19,8 @@ struct AppEnvironment: Sendable {
         gameFolderDetector: any GameFolderDetecting,
         dependencyDiagnosticService: any DependencyDiagnosticServicing,
         diagnosticActivationPolicy: DiagnosticActivationPolicy? = nil,
-        runReadinessEvaluator: any RunReadinessEvaluating
+        runReadinessEvaluator: any RunReadinessEvaluating,
+        prefixManager: any PrefixManaging
     ) {
         self.profileManager = profileManager
         self.bundledProfileLoader = bundledProfileLoader
@@ -28,6 +30,7 @@ struct AppEnvironment: Sendable {
         self.dependencyDiagnosticService = dependencyDiagnosticService
         self.diagnosticActivationPolicy = diagnosticActivationPolicy
         self.runReadinessEvaluator = runReadinessEvaluator
+        self.prefixManager = prefixManager
     }
 
     @MainActor
@@ -50,7 +53,8 @@ struct AppEnvironment: Sendable {
                 policy: .production
             ),
             diagnosticActivationPolicy: .production,
-            runReadinessEvaluator: DefaultRunReadinessEvaluator()
+            runReadinessEvaluator: DefaultRunReadinessEvaluator(),
+            prefixManager: PrefixManager(appSupportURL: appSupportURL, fileSystem: fileSystem)
         )
     }
 
@@ -68,7 +72,8 @@ struct AppEnvironment: Sendable {
                 policy: .internalRealReadOnly
             ),
             diagnosticActivationPolicy: .internalRealReadOnly,
-            runReadinessEvaluator: live.runReadinessEvaluator
+            runReadinessEvaluator: live.runReadinessEvaluator,
+            prefixManager: live.prefixManager
         )
     }
 }

@@ -6,6 +6,7 @@ enum MacPlayError: LocalizedError, Equatable, Sendable {
     case bookmarkUnavailable
     case bookmarkStale
     case executableOutsideGameFolder
+    case invalidPrefixPath
     case unsupportedSchemaVersion(Int)
 
     var errorDescription: String? {
@@ -20,6 +21,8 @@ enum MacPlayError: LocalizedError, Equatable, Sendable {
             return String(localized: "error.bookmarkStale")
         case .executableOutsideGameFolder:
             return String(localized: "error.executableOutsideGameFolder")
+        case .invalidPrefixPath:
+            return String(localized: "error.invalidPrefixPath")
         case .unsupportedSchemaVersion(let version):
             return String(format: String(localized: "error.unsupportedSchemaVersion"), version)
         }

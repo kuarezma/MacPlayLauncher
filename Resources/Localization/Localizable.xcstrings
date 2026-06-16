@@ -1127,6 +1127,210 @@
         }
       }
     },
+    "diagnostics.prefix.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix hazırlığı"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix hazırlığı"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Her oyun profili için Application Support altında ayrı bir prefix klasörü oluşturulur. Bu adım yalnızca dizin oluşturur; Wine bootstrap veya oyun çalıştırma yapmaz."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Her oyun profili için Application Support altında ayrı bir prefix klasörü oluşturulur. Bu adım yalnızca dizin oluşturur; Wine bootstrap veya oyun çalıştırma yapmaz."
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.profile" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil: %@"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.relativePath" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Göreli yol: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Göreli yol: %@"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.absolutePath" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tam yol: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tam yol: %@"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.status.missing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durum: Prefix klasörü henüz oluşturulmadı"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durum: Prefix klasörü henüz oluşturulmadı"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.status.exists" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durum: Prefix klasörü mevcut"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durum: Prefix klasörü mevcut"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.createButton" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix klasörünü oluştur"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix klasörünü oluştur"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.creating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix klasörü oluşturuluyor…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix klasörü oluşturuluyor…"
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.createSuccess" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix klasörü oluşturuldu."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix klasörü oluşturuldu."
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.noProfile" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix oluşturmak için önce bir oyun profili gerekir."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefix oluşturmak için önce bir oyun profili gerekir."
+          }
+        }
+      }
+    },
+    "diagnostics.prefix.wineBootstrapNote" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix bootstrap, WINEPREFIX ve oyun başlatma sonraki sprintlerde ele alınacak."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix bootstrap, WINEPREFIX ve oyun başlatma sonraki sprintlerde ele alınacak."
+          }
+        }
+      }
+    },
     "diagnostics.dependency.version" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1735,6 +1939,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seçilen yol geçerli değil."
+          }
+        }
+      }
+    },
+    "error.invalidPrefixPath" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix yolu geçerli değil."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix yolu geçerli değil."
           }
         }
       }

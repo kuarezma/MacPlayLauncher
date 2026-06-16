@@ -19,7 +19,11 @@ final class AddGameProfileCreationTests: XCTestCase {
                 bookmarkManager: FakeBookmarkManager(),
                 gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
                 dependencyDiagnosticService: StaticDependencyDiagnosticService(),
-                runReadinessEvaluator: DefaultRunReadinessEvaluator()
+                runReadinessEvaluator: DefaultRunReadinessEvaluator(),
+                prefixManager: PrefixManager(
+                    appSupportURL: profileStoreURL.deletingLastPathComponent(),
+                    fileSystem: LocalFileSystem()
+                )
             )
         )
 
@@ -52,7 +56,11 @@ final class AddGameProfileCreationTests: XCTestCase {
                 bookmarkManager: FakeBookmarkManager(),
                 gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
                 dependencyDiagnosticService: StaticDependencyDiagnosticService(),
-                runReadinessEvaluator: DefaultRunReadinessEvaluator()
+                runReadinessEvaluator: DefaultRunReadinessEvaluator(),
+                prefixManager: PrefixManager(
+                    appSupportURL: profileStoreURL.deletingLastPathComponent(),
+                    fileSystem: LocalFileSystem()
+                )
             )
         )
 

@@ -174,3 +174,15 @@ Sprint 13 documents the Wine prefix strategy without implementing prefix creatio
 - Prefix creation, Wine bootstrap commands, runtime install/download, and DXVK/MoltenVK real detection remain deferred to later sprints.
 
 Sprint 13 still excludes game launch, prefix directory creation, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 14 Prefix Creation Boundary
+
+Sprint 14 implements explicit prefix directory creation behind a narrow filesystem boundary.
+
+- `PrefixManaging` and `PrefixManager` resolve `GameProfile.prefixPath` under Application Support and create only `{appSupport}/Prefixes/{profileID}/`.
+- `PrefixPathValidator` rejects traversal, nested paths, and profile ID mismatches before any write.
+- Diagnostics UI shows prefix status for the selected profile and a manual `Prefix klasörünü oluştur` action.
+- Prefix creation is user-initiated only; app launch and profile load do not create prefixes automatically.
+- No `wineprefixcreate`, `WINEPREFIX` runtime wiring, Wine bootstrap, DXVK/MoltenVK install, or game launch is introduced.
+
+Sprint 14 still excludes game launch, Wine prefix bootstrap commands, runtime download/install, shell usage, and any change to `canLaunch`.

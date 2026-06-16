@@ -200,6 +200,31 @@ final class AppState {
         }
     }
 
+    var prefixTargetProfile: GameProfile? {
+        if let selectedProfileID,
+           let selected = profiles.first(where: { $0.id == selectedProfileID }) {
+            return selected
+        }
+
+        return profiles.first
+    }
+
+    func loadPrefixDirectoryState() throws -> PrefixDirectoryState? {
+        guard let profile = prefixTargetProfile else {
+            return nil
+        }
+
+        return try environment.prefixManager.directoryState(for: profile)
+    }
+
+    func createPrefixDirectory() throws -> PrefixDirectoryState {
+        guard let profile = prefixTargetProfile else {
+            throw MacPlayError.profileNotFound
+        }
+
+        return try environment.prefixManager.createPrefixDirectory(for: profile)
+    }
+
     private func makeAddGameProfile() throws -> GameProfile {
         guard let folderURL = addGameForm.selectedFolderURL,
               let executableURL = addGameForm.selectedExecutableURL else {

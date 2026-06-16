@@ -8,16 +8,16 @@
 
 ## Sprint verification
 
-Fast Sprint 6 checks (seconds, safe for agent loops):
+Fast Sprint 13 checks (seconds, safe for agent loops):
+
+```sh
+./scripts/verify-sprint-13.sh
+```
+
+Sprint 6 regression checks:
 
 ```sh
 ./scripts/verify-sprint-6.sh
-```
-
-Sprint 5B regression checks:
-
-```sh
-./scripts/verify-sprint-5b.sh
 ```
 
 Optional full test run (minutes; terminal `xcodebuild` may hang locally):
