@@ -37,10 +37,38 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
         wineArch: .win64,
         windowsVersion: .win10,
         dependencies: [
-            Dependency(id: "corefonts", displayName: "Core Fonts", required: false, installed: false, installOrder: 1, dependsOn: []),
-            Dependency(id: "vcrun2015", displayName: "Microsoft Visual C++ 2015 Runtime", required: true, installed: false, installOrder: 2, dependsOn: []),
-            Dependency(id: "d3dx9", displayName: "DirectX 9 Helper Libraries", required: true, installed: false, installOrder: 3, dependsOn: []),
-            Dependency(id: "xact", displayName: "XAudio/XACT Runtime", required: false, installed: false, installOrder: 4, dependsOn: ["vcrun2015"])
+            Dependency(
+                id: "corefonts",
+                displayName: "Core Fonts",
+                required: false,
+                installed: false,
+                installOrder: 1,
+                dependsOn: []
+            ),
+            Dependency(
+                id: "vcrun2015",
+                displayName: "Microsoft Visual C++ 2015 Runtime",
+                required: true,
+                installed: false,
+                installOrder: 2,
+                dependsOn: []
+            ),
+            Dependency(
+                id: "d3dx9",
+                displayName: "DirectX 9 Helper Libraries",
+                required: true,
+                installed: false,
+                installOrder: 3,
+                dependsOn: []
+            ),
+            Dependency(
+                id: "xact",
+                displayName: "XAudio/XACT Runtime",
+                required: false,
+                installed: false,
+                installOrder: 4,
+                dependsOn: ["vcrun2015"]
+            )
         ],
         environment: [
             "WINEARCH": "win64",
@@ -56,4 +84,3 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
         launchCount: 0
     )
 }
-

@@ -48,7 +48,10 @@ enum LibraryReadinessPlanner {
             realSystemCheckStep(hasRealSystemCheck: hasRealSystemCheck),
             wineStep(hasRealSystemCheck: hasRealSystemCheck, wineReady: wineReady),
             prefixStep(prefixState: prefixState, hasUserProfile: hasUserProfile),
-            experimentalStep(experimentalReadinessResult: experimentalReadinessResult, experimentalReady: experimentalReady)
+            experimentalStep(
+                experimentalReadinessResult: experimentalReadinessResult,
+                experimentalReady: experimentalReady
+            )
         ]
 
         let firstOpenStep = steps.first { $0.status != .complete }
