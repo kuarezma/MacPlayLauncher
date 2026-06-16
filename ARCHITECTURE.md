@@ -208,3 +208,15 @@ Sprint 16 documents the experimental game launch plan without implementing launc
 - No launch service, launch UI, bookmark access calls, or `canLaunch` changes are introduced.
 
 Sprint 16 still excludes game launch, bookmark access runtime, Wine prefix bootstrap, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 17 Minimal Launch Prototype
+
+Sprint 17 adds a controlled experimental launch path behind ADR-003 without making production readiness launchable by default.
+
+- `DefaultGameLaunchPlanner`, `DefaultGameLauncher`, and `ProcessGameLaunchExecutor` build and start allowlisted Wine commands with `WINEPREFIX`, `WINEARCH`, and bookmark-scoped file access.
+- `SecurityScopedAccessManager` acquires and releases security-scoped access only during launch.
+- `ExperimentalRunReadinessEvaluator` may return `canLaunch: true` after real diagnostics, prefix existence, and Wine readiness checks; `DefaultRunReadinessEvaluator` still returns `canLaunch: false`.
+- Diagnostics exposes a separate `Deneysel: Oyunu başlat` action with explicit Turkish warnings.
+- No `wineprefixcreate`, runtime install/download, Steam automation, or production launch button is introduced.
+
+Sprint 17 still excludes Wine prefix bootstrap automation, runtime download/install, shell usage, and production-default launch gating changes.

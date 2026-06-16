@@ -138,6 +138,11 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - ADR-003 documents the launch plan: Wine command shape, env mapping, bookmark access lifecycle, and experimental gating for Sprint 17.
 - No launch button, launch services, or bookmark access runtime calls are added in Sprint 16.
 
+## Sprint 17 Features
+
+- Experimental launch flow wires ADR-003: Wine command start, `WINEPREFIX`/`WINEARCH`, bookmark access lifecycle, and bounded failure messaging.
+- Production readiness still reports `canLaunch: false`; experimental launch requires real diagnostics, prefix folder, and explicit user action.
+
 ## Development
 
 Generate the Xcode project:
@@ -166,6 +171,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 17: Added experimental minimal launch prototype with bookmark access and experimental readiness gating.
 - Sprint 16: Added ADR-003 launch plan; no launch implementation or bookmark access runtime.
 - Sprint 15: Finalized ADR-001 runtime acquisition strategy; no runtime download, install, or launch behavior.
 - Sprint 14: Added explicit prefix directory creation boundary with Diagnostics UI; no Wine bootstrap or launch.

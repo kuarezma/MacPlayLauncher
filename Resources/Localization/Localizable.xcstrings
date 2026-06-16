@@ -1320,13 +1320,115 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wine prefix bootstrap, WINEPREFIX ve oyun başlatma sonraki sprintlerde ele alınacak."
+            "value" : "Wine prefix bootstrap hâlâ otomatik değil. Deneysel başlatma yalnızca dizin ve Wine komut kablolamasını test eder."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wine prefix bootstrap, WINEPREFIX ve oyun başlatma sonraki sprintlerde ele alınacak."
+            "value" : "Wine prefix bootstrap hâlâ otomatik değil. Deneysel başlatma yalnızca dizin ve Wine komut kablolamasını test eder."
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel oyun başlatma"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel oyun başlatma"
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu adım deneyseldir. Gerçek sistem kontrolü, prefix klasörü ve Wine hazır olduğunda görünür. Oyunun açılması garanti değildir."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu adım deneyseldir. Gerçek sistem kontrolü, prefix klasörü ve Wine hazır olduğunda görünür. Oyunun açılması garanti değildir."
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel: Oyunu başlat"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel: Oyunu başlat"
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.loading" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel başlatma deneniyor…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel başlatma deneniyor…"
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.disabledNote" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel başlatma şu an kapalı. Önce gerçek sistem kontrolü yapın, prefix oluşturun ve eksikleri giderin."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneysel başlatma şu an kapalı. Önce gerçek sistem kontrolü yapın, prefix oluşturun ve eksikleri giderin."
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.success" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine süreci başlatıldı (PID %d). Oyun açılmazsa Wine prefix bootstrap eksik olabilir."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine süreci başlatıldı (PID %d). Oyun açılmazsa Wine prefix bootstrap eksik olabilir."
           }
         }
       }
@@ -1960,6 +2062,91 @@
         }
       }
     },
+    "error.prefixDirectoryMissing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix klasörü henüz oluşturulmadı."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine prefix klasörü henüz oluşturulmadı."
+          }
+        }
+      }
+    },
+    "error.wineNotFound" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desteklenen konumlarda Wine bulunamadı."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desteklenen konumlarda Wine bulunamadı."
+          }
+        }
+      }
+    },
+    "error.securityScopedAccessDenied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oyun dosyalarına erişim izni alınamadı."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oyun dosyalarına erişim izni alınamadı."
+          }
+        }
+      }
+    },
+    "error.launchPreparationFailed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlatma hazırlığı tamamlanamadı."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlatma hazırlığı tamamlanamadı."
+          }
+        }
+      }
+    },
+    "error.launchWineNotAllowed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçilen Wine yolu izin verilen listede değil."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçilen Wine yolu izin verilen listede değil."
+          }
+        }
+      }
+    },
     "error.profileNotFound" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2400,6 +2587,97 @@
             "value" : "Gerekli hazırlık kontrolleri tamam görünüyor. Şu anda oyun çalıştırma özelliği ekli değildir."
           }
         }
+      }
+    },
+    "readiness.experimental.ready.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatmaya hazır" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatmaya hazır" } }
+      }
+    },
+    "readiness.experimental.ready.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatma için gerekli kontroller tamam. Oyunun açılması garanti değildir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatma için gerekli kontroller tamam. Oyunun açılması garanti değildir." } }
+      }
+    },
+    "readiness.experimental.blocked.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatma kapalı" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatma kapalı" } }
+      }
+    },
+    "readiness.experimental.blocked.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatmadan önce eksik adımları tamamlayın." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatmadan önce eksik adımları tamamlayın." } }
+      }
+    },
+    "readiness.experimental.requiresRealDiagnostics.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Gerçek sistem kontrolü gerekli" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gerçek sistem kontrolü gerekli" } }
+      }
+    },
+    "readiness.experimental.requiresRealDiagnostics.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatma yalnızca gerçek sistem kontrolünden sonra kullanılabilir." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatma yalnızca gerçek sistem kontrolünden sonra kullanılabilir." } }
+      }
+    },
+    "readiness.experimental.requiresRealDiagnostics.action" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tanılama ekranından gerçek sistemi kontrol edin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanılama ekranından gerçek sistemi kontrol edin." } }
+      }
+    },
+    "readiness.experimental.prefixMissing.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Prefix klasörü eksik" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Prefix klasörü eksik" } }
+      }
+    },
+    "readiness.experimental.prefixMissing.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatmadan önce prefix klasörünü oluşturun." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Deneysel başlatmadan önce prefix klasörünü oluşturun." } }
+      }
+    },
+    "readiness.experimental.prefixMissing.action" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Prefix klasörünü oluştur düğmesini kullanın." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Prefix klasörünü oluştur düğmesini kullanın." } }
+      }
+    },
+    "readiness.experimental.wineMissing.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Wine bulunamadı" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Wine bulunamadı" } }
+      }
+    },
+    "readiness.experimental.wineMissing.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenen Homebrew Wine yolu bulunamadı." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Desteklenen Homebrew Wine yolu bulunamadı." } }
+      }
+    },
+    "readiness.experimental.wineMissing.action" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Wine'ı Homebrew ile kurun ve gerçek kontrolü yenileyin." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Wine'ı Homebrew ile kurun ve gerçek kontrolü yenileyin." } }
       }
     },
     "readiness.ready.title" : {

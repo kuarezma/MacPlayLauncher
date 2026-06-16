@@ -155,6 +155,29 @@ final class AppState {
         )
     }
 
+    func evaluateExperimentalRunReadiness(diagnosticSummary: RuntimeDiagnosticSummary) -> RunReadinessResult {
+        environment.experimentalRunReadinessEvaluator.evaluate(
+            profiles: profiles,
+            diagnosticSummary: diagnosticSummary
+        )
+    }
+
+    var isExperimentalLaunchEnabled: Bool {
+        environment.experimentalLaunchPolicy.isEnabled
+    }
+
+    func launchExperimentalGame() throws -> GameLaunchResult {
+        guard environment.experimentalLaunchPolicy.isEnabled else {
+            throw MacPlayError.launchPreparationFailed
+        }
+
+        guard let profile = prefixTargetProfile else {
+            throw MacPlayError.profileNotFound
+        }
+
+        return try environment.gameLauncher.launch(profile: profile)
+    }
+
     func restoreCachedDiagnosticsIfAvailable() -> (summary: RuntimeDiagnosticSummary, readinessResult: RunReadinessResult)? {
         guard diagnosticsDisplayMode == .realReadOnly,
               let summary = cachedDiagnosticSummary,

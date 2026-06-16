@@ -5,6 +5,7 @@ enum CommandPurpose: Equatable, Hashable, Sendable {
     case wineVersionCheck
     case dxvkFileCheck
     case moltenVKFileCheck
+    case gameLaunch
 }
 
 struct CommandRequest: Equatable, Hashable, Sendable {

@@ -12,6 +12,7 @@ struct DiagnosticsView: View {
                 overallSection
                 readinessSection
                 prefixSection
+                experimentalLaunchSection
                 dependencySection
                 passiveNoticeSection
             }
@@ -21,9 +22,16 @@ struct DiagnosticsView: View {
         .navigationTitle(String(localized: "diagnostics.readiness.title"))
         .task {
             viewModel.setAllowsManualRealCheck(appState.canRunManualRealDiagnosticCheck)
+            viewModel.setExperimentalLaunchEnabled(appState.isExperimentalLaunchEnabled)
             refreshPrefixState()
             if let cached = appState.restoreCachedDiagnosticsIfAvailable() {
-                viewModel.update(summary: cached.summary, readinessResult: cached.readinessResult)
+                viewModel.update(
+                    summary: cached.summary,
+                    readinessResult: cached.readinessResult,
+                    experimentalReadinessResult: appState.evaluateExperimentalRunReadiness(
+                        diagnosticSummary: cached.summary
+                    )
+                )
             } else {
                 await reloadDiagnostics(mode: .staticOnly)
             }
@@ -49,6 +57,7 @@ struct DiagnosticsView: View {
             viewModel.updatePrefixState(state)
             if state.availability == .exists {
                 viewModel.setPrefixFeedbackMessage(String(localized: "diagnostics.prefix.createSuccess"))
+                await reloadDiagnostics(mode: appState.diagnosticsDisplayMode)
             }
         } catch {
             viewModel.setPrefixFeedbackMessage(ErrorPresenter.message(for: error))
@@ -58,12 +67,32 @@ struct DiagnosticsView: View {
     private func reloadDiagnostics(mode: DiagnosticMode) async {
         let summary = await appState.loadRuntimeDiagnosticSummary(mode: mode)
         let readinessResult = appState.evaluateRunReadiness(diagnosticSummary: summary)
-        viewModel.update(summary: summary, readinessResult: readinessResult)
+        let experimentalReadinessResult = appState.evaluateExperimentalRunReadiness(diagnosticSummary: summary)
+        viewModel.update(
+            summary: summary,
+            readinessResult: readinessResult,
+            experimentalReadinessResult: experimentalReadinessResult
+        )
         appState.storeDiagnosticsSession(
             mode: mode,
             summary: summary,
             readinessResult: readinessResult
         )
+    }
+
+    private func launchExperimentalGame() {
+        viewModel.setExperimentalLaunchFeedbackMessage(nil)
+        viewModel.setLaunchingExperimental(true)
+        defer { viewModel.setLaunchingExperimental(false) }
+
+        do {
+            let result = try appState.launchExperimentalGame()
+            viewModel.setExperimentalLaunchFeedbackMessage(
+                String(format: String(localized: "diagnostics.experimentalLaunch.success"), result.processIdentifier)
+            )
+        } catch {
+            viewModel.setExperimentalLaunchFeedbackMessage(ErrorPresenter.message(for: error))
+        }
     }
 
     private func returnToStaticPreparation() async {
@@ -197,6 +226,61 @@ struct DiagnosticsView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    @ViewBuilder
+    private var experimentalLaunchSection: some View {
+        if viewModel.isExperimentalLaunchEnabled {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(viewModel.experimentalLaunchTitle)
+                    .font(.headline)
+
+                Text(viewModel.experimentalLaunchSubtitle)
+                    .foregroundStyle(.secondary)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(viewModel.experimentalReadinessTitle)
+                        .font(.title3.weight(.semibold))
+                    Text(viewModel.experimentalReadinessMessage)
+                        .foregroundStyle(.secondary)
+                }
+
+                if !viewModel.experimentalReadinessBlockers.isEmpty {
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(viewModel.experimentalReadinessBlockers) { blocker in
+                            readinessBlockerRow(blocker)
+                        }
+                    }
+                }
+
+                if viewModel.isLaunchingExperimental {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text(viewModel.experimentalLaunchLoadingTitle)
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
+                } else if viewModel.showsExperimentalLaunchButton {
+                    Button(viewModel.experimentalLaunchButtonTitle) {
+                        launchExperimentalGame()
+                    }
+                } else {
+                    Text(viewModel.experimentalLaunchDisabledNote)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+
+                if let experimentalLaunchFeedbackMessage = viewModel.experimentalLaunchFeedbackMessage {
+                    Text(experimentalLaunchFeedbackMessage)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+        }
     }
 
     private var prefixSection: some View {

@@ -12,6 +12,60 @@ final class DiagnosticsViewModel {
     private(set) var prefixState: PrefixDirectoryState?
     private(set) var isCreatingPrefix = false
     private(set) var prefixFeedbackMessage: String?
+    private(set) var experimentalReadinessResult: RunReadinessResult?
+    private(set) var isExperimentalLaunchEnabled = false
+    private(set) var isLaunchingExperimental = false
+    private(set) var experimentalLaunchFeedbackMessage: String?
+
+    var experimentalLaunchTitle: String {
+        String(localized: "diagnostics.experimentalLaunch.title")
+    }
+
+    var experimentalLaunchSubtitle: String {
+        String(localized: "diagnostics.experimentalLaunch.subtitle")
+    }
+
+    var experimentalLaunchButtonTitle: String {
+        String(localized: "diagnostics.experimentalLaunch.button")
+    }
+
+    var experimentalLaunchLoadingTitle: String {
+        String(localized: "diagnostics.experimentalLaunch.loading")
+    }
+
+    var experimentalLaunchDisabledNote: String {
+        String(localized: "diagnostics.experimentalLaunch.disabledNote")
+    }
+
+    var showsExperimentalLaunchButton: Bool {
+        isExperimentalLaunchEnabled
+            && experimentalReadinessResult?.canLaunch == true
+            && !isLaunchingExperimental
+    }
+
+    var experimentalReadinessTitle: String {
+        experimentalReadinessResult?.title ?? String(localized: "readiness.unknown.title")
+    }
+
+    var experimentalReadinessMessage: String {
+        experimentalReadinessResult?.message ?? String(localized: "readiness.unknown.message")
+    }
+
+    var experimentalReadinessBlockers: [RunReadinessBlocker] {
+        experimentalReadinessResult?.blockers ?? []
+    }
+
+    func setExperimentalLaunchEnabled(_ value: Bool) {
+        isExperimentalLaunchEnabled = value
+    }
+
+    func setLaunchingExperimental(_ value: Bool) {
+        isLaunchingExperimental = value
+    }
+
+    func setExperimentalLaunchFeedbackMessage(_ message: String?) {
+        experimentalLaunchFeedbackMessage = message
+    }
 
     var prefixTitle: String {
         String(localized: "diagnostics.prefix.title")
@@ -252,6 +306,16 @@ final class DiagnosticsViewModel {
     func update(summary: RuntimeDiagnosticSummary, readinessResult: RunReadinessResult) {
         self.summary = summary
         self.readinessResult = readinessResult
+    }
+
+    func update(
+        summary: RuntimeDiagnosticSummary,
+        readinessResult: RunReadinessResult,
+        experimentalReadinessResult: RunReadinessResult
+    ) {
+        self.summary = summary
+        self.readinessResult = readinessResult
+        self.experimentalReadinessResult = experimentalReadinessResult
     }
 
     func badgeText(for status: RuntimeDependencyStatus) -> String {

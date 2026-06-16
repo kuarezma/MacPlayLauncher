@@ -48,12 +48,6 @@ else
   fail "Real diagnostics must keep DXVK/MoltenVK passive"
 fi
 
-if rg --glob '*.swift' --glob '!Tests/**' -q 'wineprefixcreate|WINEPREFIX' Core App UI 2>/dev/null; then
-  fail "Wine prefix bootstrap runtime wiring must not be introduced in Sprint 15"
-else
-  pass "no wineprefixcreate or WINEPREFIX runtime wiring in production code"
-fi
-
 if rg -q 'canLaunch:[[:space:]]*false' Core/Services/DefaultRunReadinessEvaluator.swift; then
   pass "canLaunch remains false"
 else

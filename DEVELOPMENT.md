@@ -8,10 +8,10 @@
 
 ## Sprint verification
 
-Fast Sprint 16 checks (seconds, safe for agent loops):
+Fast Sprint 17 checks (seconds, safe for agent loops):
 
 ```sh
-./scripts/verify-sprint-16.sh
+./scripts/verify-sprint-17.sh
 ```
 
 Sprint 6 regression checks:

@@ -110,11 +110,11 @@ struct ProcessCommandRunner: CommandRunning {
         )
     }
 
-    private static func normalizedURL(_ url: URL) -> URL {
+    fileprivate static func normalizedURL(_ url: URL) -> URL {
         url.standardizedFileURL.resolvingSymlinksInPath()
     }
 
-    private static func isShellExecutable(_ url: URL) -> Bool {
+    fileprivate static func isShellExecutable(_ url: URL) -> Bool {
         let path = normalizedURL(url).path
         let name = url.lastPathComponent
         return path == "/bin/sh"
@@ -126,12 +126,53 @@ struct ProcessCommandRunner: CommandRunning {
     }
 
     private static var defaultAllowedExecutableURLs: Set<URL> {
-        [
+        defaultAllowedWineURLs.union([
             URL(fileURLWithPath: "/usr/bin/true"),
-            URL(fileURLWithPath: "/usr/bin/arch"),
+            URL(fileURLWithPath: "/usr/bin/arch")
+        ])
+    }
+
+    fileprivate static var defaultAllowedWineURLs: Set<URL> {
+        [
             URL(fileURLWithPath: "/opt/homebrew/bin/wine"),
             URL(fileURLWithPath: "/usr/local/bin/wine")
         ]
+    }
+}
+
+struct ProcessGameLaunchExecutor: GameLaunchExecuting {
+    private let allowedWineURLs: Set<URL>
+
+    init(allowedWineURLs: Set<URL> = ProcessCommandRunner.defaultAllowedWineURLs) {
+        self.allowedWineURLs = Set(allowedWineURLs.map { ProcessCommandRunner.normalizedURL($0) })
+    }
+
+    func start(plan: GameLaunchPlan) throws -> GameLaunchResult {
+        let wineURL = ProcessCommandRunner.normalizedURL(plan.wineURL)
+        guard allowedWineURLs.contains(wineURL), !ProcessCommandRunner.isShellExecutable(wineURL) else {
+            throw MacPlayError.launchFailed(String(localized: "error.launchWineNotAllowed"))
+        }
+
+        guard !plan.arguments.contains("-c") else {
+            throw MacPlayError.launchPreparationFailed
+        }
+
+        let process = Process()
+        process.executableURL = wineURL
+        process.arguments = plan.arguments
+        process.currentDirectoryURL = plan.workingDirectoryURL
+        process.environment = plan.environment
+
+        do {
+            try process.run()
+        } catch {
+            throw MacPlayError.launchFailed(error.localizedDescription)
+        }
+
+        return GameLaunchResult(
+            profileID: plan.profileID,
+            processIdentifier: process.processIdentifier
+        )
     }
 }
 

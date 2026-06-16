@@ -10,6 +10,9 @@ struct AppEnvironment: Sendable {
     let diagnosticActivationPolicy: DiagnosticActivationPolicy?
     let runReadinessEvaluator: any RunReadinessEvaluating
     let prefixManager: any PrefixManaging
+    let experimentalLaunchPolicy: ExperimentalLaunchPolicy
+    let experimentalRunReadinessEvaluator: any RunReadinessEvaluating
+    let gameLauncher: any GameLaunching
 
     init(
         profileManager: GameProfileManaging,
@@ -20,7 +23,10 @@ struct AppEnvironment: Sendable {
         dependencyDiagnosticService: any DependencyDiagnosticServicing,
         diagnosticActivationPolicy: DiagnosticActivationPolicy? = nil,
         runReadinessEvaluator: any RunReadinessEvaluating,
-        prefixManager: any PrefixManaging
+        prefixManager: any PrefixManaging,
+        experimentalLaunchPolicy: ExperimentalLaunchPolicy = .disabled,
+        experimentalRunReadinessEvaluator: any RunReadinessEvaluating? = nil,
+        gameLauncher: (any GameLaunching)? = nil
     ) {
         self.profileManager = profileManager
         self.bundledProfileLoader = bundledProfileLoader
@@ -31,6 +37,9 @@ struct AppEnvironment: Sendable {
         self.diagnosticActivationPolicy = diagnosticActivationPolicy
         self.runReadinessEvaluator = runReadinessEvaluator
         self.prefixManager = prefixManager
+        self.experimentalLaunchPolicy = experimentalLaunchPolicy
+        self.experimentalRunReadinessEvaluator = experimentalRunReadinessEvaluator ?? runReadinessEvaluator
+        self.gameLauncher = gameLauncher ?? DisabledGameLauncher()
     }
 
     @MainActor
@@ -42,11 +51,21 @@ struct AppEnvironment: Sendable {
         ).first ?? FileManager.default.temporaryDirectory
         let appSupportURL = baseURL.appending(path: "MacPlayLauncher", directoryHint: .isDirectory)
         let store = JSONStore<GameProfile>(directoryURL: appSupportURL.appending(path: "Profiles"), fileSystem: fileSystem)
+        let bookmarkManager = BookmarkManager()
+        let prefixManager = PrefixManager(appSupportURL: appSupportURL, fileSystem: fileSystem)
+        let gameLauncher = DefaultGameLauncher(
+            planner: DefaultGameLaunchPlanner(
+                bookmarkManager: bookmarkManager,
+                prefixManager: prefixManager
+            ),
+            executor: ProcessGameLaunchExecutor(),
+            accessManager: SecurityScopedAccessManager()
+        )
         return AppEnvironment(
             profileManager: GameProfileManager(store: store),
             bundledProfileLoader: BundledGameProfileLoader(),
             fileSelectionService: FileSelectionService(),
-            bookmarkManager: BookmarkManager(),
+            bookmarkManager: bookmarkManager,
             gameFolderDetector: GameFolderDetector(fileSystem: fileSystem),
             dependencyDiagnosticService: SelectableDependencyDiagnosticService(
                 mode: .staticOnly,
@@ -54,7 +73,13 @@ struct AppEnvironment: Sendable {
             ),
             diagnosticActivationPolicy: .production,
             runReadinessEvaluator: DefaultRunReadinessEvaluator(),
-            prefixManager: PrefixManager(appSupportURL: appSupportURL, fileSystem: fileSystem)
+            prefixManager: prefixManager,
+            experimentalLaunchPolicy: .experimental,
+            experimentalRunReadinessEvaluator: ExperimentalRunReadinessEvaluator(
+                prefixManager: prefixManager,
+                policy: .experimental
+            ),
+            gameLauncher: gameLauncher
         )
     }
 
@@ -73,7 +98,10 @@ struct AppEnvironment: Sendable {
             ),
             diagnosticActivationPolicy: .internalRealReadOnly,
             runReadinessEvaluator: live.runReadinessEvaluator,
-            prefixManager: live.prefixManager
+            prefixManager: live.prefixManager,
+            experimentalLaunchPolicy: live.experimentalLaunchPolicy,
+            experimentalRunReadinessEvaluator: live.experimentalRunReadinessEvaluator,
+            gameLauncher: live.gameLauncher
         )
     }
 }
