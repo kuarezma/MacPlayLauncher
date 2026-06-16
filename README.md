@@ -157,6 +157,12 @@ Build:
 xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' build
 ```
 
+Build, test, and launch:
+
+```sh
+./script/build_and_run.sh
+```
+
 Test:
 
 ```sh
@@ -173,6 +179,7 @@ Continuous integration runs XcodeGen, SwiftLint, sprint verification, and XCTest
 
 ## Changelog
 
+- Chore: Added a project-local build/run script and Codex Run action.
 - Chore: Added GitHub Actions CI for XcodeGen, SwiftLint, sprint verification, and XCTest.
 - Fix: Restored Swift 6/Xcode test compatibility for environment wiring and launch planner tests.
 - Sprint 17: Added experimental minimal launch prototype with bookmark access and experimental readiness gating.

@@ -61,6 +61,18 @@ Run tests:
 xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test
 ```
 
+Build, test, and launch from the project-local run entrypoint:
+
+```sh
+./script/build_and_run.sh
+```
+
+Verify the app starts:
+
+```sh
+./script/build_and_run.sh --verify
+```
+
 ## Conventions
 
 - Commit `project.yml`, not the generated `.xcodeproj`.
