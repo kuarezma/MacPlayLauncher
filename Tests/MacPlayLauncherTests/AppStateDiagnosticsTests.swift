@@ -105,6 +105,32 @@ final class AppStateDiagnosticsTests: XCTestCase {
         XCTAssertFalse(result.blockers.isEmpty)
     }
 
+    func testDiagnosticsSessionSourceLabelReflectsCachedSession() {
+        let appState = makeAppState(policy: .production)
+
+        XCTAssertEqual(
+            appState.diagnosticsSessionSourceLabel,
+            String(localized: "diagnostics.source.static.title")
+        )
+
+        appState.storeDiagnosticsSession(
+            mode: .realReadOnly,
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .realSystemCheck),
+            readinessResult: RunReadinessResult(
+                status: .blocked,
+                title: "blocked",
+                message: "message",
+                blockers: [],
+                canLaunch: false
+            )
+        )
+
+        XCTAssertEqual(
+            appState.diagnosticsSessionSourceLabel,
+            String(localized: "diagnostics.source.real.title")
+        )
+    }
+
     private func makeAppState(policy: DiagnosticActivationPolicy?) -> AppState {
         let diagnosticService = SelectableDependencyDiagnosticService(
             mode: .staticOnly,

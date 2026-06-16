@@ -191,6 +191,15 @@ final class AppState {
         return evaluateRunReadiness(diagnosticSummary: summary)
     }
 
+    var diagnosticsSessionSourceLabel: String {
+        switch cachedDiagnosticSummary?.source {
+        case .realSystemCheck:
+            return String(localized: "diagnostics.source.real.title")
+        case .staticPreparation, .none:
+            return String(localized: "diagnostics.source.static.title")
+        }
+    }
+
     private func makeAddGameProfile() throws -> GameProfile {
         guard let folderURL = addGameForm.selectedFolderURL,
               let executableURL = addGameForm.selectedExecutableURL else {

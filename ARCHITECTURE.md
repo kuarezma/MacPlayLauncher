@@ -153,3 +153,13 @@ Sprint 11 surfaces passive readiness information on the Game Library screen with
 - No launch button, disk persistence, or automatic real diagnostics are introduced.
 
 Sprint 11 still excludes game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 12 Settings Diagnostics Overview
+
+Sprint 12 adds passive diagnostics policy information to the Settings screen.
+
+- Settings explains that static preparation is the default and real checks require the manual Diagnostics button.
+- `AppState.diagnosticsSessionSourceLabel` shows the current in-memory session source when available.
+- `Tanılamayı aç` navigates to Diagnostics; no policy toggles, automatic real checks, or launch affordances are added.
+
+Sprint 12 still excludes game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.

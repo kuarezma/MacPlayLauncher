@@ -2419,6 +2419,91 @@
         }
       }
     },
+    "settings.about.personalUse" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MacPlay Launcher kişisel kullanım içindir; otomatik kurulum veya oyun çalıştırma yapmaz."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MacPlay Launcher kişisel kullanım içindir; otomatik kurulum veya oyun çalıştırma yapmaz."
+          }
+        }
+      }
+    },
+    "settings.diagnostics.currentSource" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçerli oturum kaynağı"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçerli oturum kaynağı"
+          }
+        }
+      }
+    },
+    "settings.diagnostics.manualRealCheck" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü yalnızca Tanılama ekranındaki manuel butonla çalışır."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü yalnızca Tanılama ekranındaki manuel butonla çalışır."
+          }
+        }
+      }
+    },
+    "settings.diagnostics.staticDefault" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan tanılama modu hazırlık rehberidir; otomatik gerçek kontrol yapılmaz."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan tanılama modu hazırlık rehberidir; otomatik gerçek kontrol yapılmaz."
+          }
+        }
+      }
+    },
+    "settings.diagnostics.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanılama"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanılama"
+          }
+        }
+      }
+    },
     "settings.placeholder" : {
       "extractionState" : "stale",
       "localizations" : {

@@ -43,7 +43,7 @@ struct GameLibraryView: View {
         case .diagnostics:
             DiagnosticsView(appState: appState)
         case .settings:
-            SettingsView()
+            SettingsView(appState: appState)
         }
     }
 

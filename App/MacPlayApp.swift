@@ -33,7 +33,7 @@ struct MacPlayApp: App {
         }
 
         Settings {
-            SettingsView()
+            SettingsView(appState: appState)
         }
     }
 }
