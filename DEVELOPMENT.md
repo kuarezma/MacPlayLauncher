@@ -4,7 +4,20 @@
 
 - Xcode 26.5 or compatible.
 - XcodeGen 2.45+.
-- SwiftLint is optional locally for Sprint 1. If available, run `swiftlint`.
+- SwiftLint is optional locally but required in CI. If available, run `swiftlint lint`.
+
+## Continuous integration
+
+GitHub Actions runs on every push and pull request to `main`.
+
+CI steps:
+
+```sh
+xcodegen generate
+swiftlint lint
+./scripts/verify-sprint-17.sh
+xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test
+```
 
 ## Sprint verification
 
@@ -59,4 +72,3 @@ xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test
 ## Localization
 
 English is the base language. Turkish placeholder localization lives in `Resources/Localization/Localizable.xcstrings`.
-

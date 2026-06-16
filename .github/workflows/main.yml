@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  macos:
+    name: macOS Build and Test
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          brew install xcodegen swiftlint
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Lint Swift code
+        run: swiftlint lint
+
+      - name: Run sprint verification
+        run: ./scripts/verify-sprint-17.sh
+
+      - name: Run XCTest suite
+        run: xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test

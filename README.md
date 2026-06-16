@@ -166,11 +166,14 @@ xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test
 Run SwiftLint if installed:
 
 ```sh
-swiftlint
+swiftlint lint
 ```
+
+Continuous integration runs XcodeGen, SwiftLint, sprint verification, and XCTest on every push and pull request to `main`.
 
 ## Changelog
 
+- Chore: Added GitHub Actions CI for XcodeGen, SwiftLint, sprint verification, and XCTest.
 - Fix: Restored Swift 6/Xcode test compatibility for environment wiring and launch planner tests.
 - Sprint 17: Added experimental minimal launch prototype with bookmark access and experimental readiness gating.
 - Sprint 16: Added ADR-003 launch plan; no launch implementation or bookmark access runtime.
