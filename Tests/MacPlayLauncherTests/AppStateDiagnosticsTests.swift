@@ -165,7 +165,8 @@ final class AppStateDiagnosticsTests: XCTestCase {
                 prefixManager: PrefixManager(
                     appSupportURL: FileManager.default.temporaryDirectory,
                     fileSystem: LocalFileSystem()
-                )
+                ),
+                steamInstallService: FakeSteamInstallService()
             )
         )
     }

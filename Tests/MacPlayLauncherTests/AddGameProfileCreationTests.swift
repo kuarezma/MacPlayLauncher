@@ -23,7 +23,8 @@ final class AddGameProfileCreationTests: XCTestCase {
                 prefixManager: PrefixManager(
                     appSupportURL: profileStoreURL.deletingLastPathComponent(),
                     fileSystem: LocalFileSystem()
-                )
+                ),
+                steamInstallService: FakeSteamInstallService()
             )
         )
 
@@ -61,7 +62,8 @@ final class AddGameProfileCreationTests: XCTestCase {
                 prefixManager: PrefixManager(
                     appSupportURL: profileStoreURL.deletingLastPathComponent(),
                     fileSystem: LocalFileSystem()
-                )
+                ),
+                steamInstallService: FakeSteamInstallService()
             )
         )
 
