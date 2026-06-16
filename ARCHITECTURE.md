@@ -131,3 +131,14 @@ Sprint 9 surfaces read-only metadata from manual real checks without changing di
 - No persistence, auto-refresh, launch affordance, or service/policy changes are introduced.
 
 Sprint 9 still excludes automatic diagnostics, game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 10 Diagnostics Session State
+
+Sprint 10 keeps the latest diagnostics screen state in memory for the current app session only.
+
+- `AppState` caches the active diagnostics mode, summary, and readiness result after each reload.
+- Returning to Diagnostics restores a prior manual real-check result without re-running providers.
+- `Hazırlık rehberine dön` and saving a new game profile reset the session back to static preparation.
+- No disk persistence, auto real-check, launch affordance, or policy changes are introduced.
+
+Sprint 10 still excludes automatic diagnostics, game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.

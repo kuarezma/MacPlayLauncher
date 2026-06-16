@@ -25,6 +25,9 @@ final class AppState {
     var profiles: [GameProfile] = []
     var loadErrorMessage: String?
     var addGameForm = AddGameFormState()
+    private(set) var diagnosticsDisplayMode: DiagnosticMode = .staticOnly
+    private(set) var cachedDiagnosticSummary: RuntimeDiagnosticSummary?
+    private(set) var cachedReadinessResult: RunReadinessResult?
 
     private let environment: AppEnvironment
 
@@ -118,6 +121,7 @@ final class AppState {
             selectedProfileID = profile.id
             selectedNavigationItem = .library
             addGameForm = AddGameFormState(successMessage: String(localized: "addGame.save.success"))
+            resetDiagnosticsSessionToStaticPreparation()
         } catch {
             addGameForm.errorMessage = ErrorPresenter.message(for: error)
         }
@@ -149,6 +153,33 @@ final class AppState {
             profiles: profiles,
             diagnosticSummary: diagnosticSummary
         )
+    }
+
+    func restoreCachedDiagnosticsIfAvailable() -> (summary: RuntimeDiagnosticSummary, readinessResult: RunReadinessResult)? {
+        guard diagnosticsDisplayMode == .realReadOnly,
+              let summary = cachedDiagnosticSummary,
+              let readinessResult = cachedReadinessResult,
+              summary.source == .realSystemCheck else {
+            return nil
+        }
+
+        return (summary, readinessResult)
+    }
+
+    func storeDiagnosticsSession(
+        mode: DiagnosticMode,
+        summary: RuntimeDiagnosticSummary,
+        readinessResult: RunReadinessResult
+    ) {
+        diagnosticsDisplayMode = mode
+        cachedDiagnosticSummary = summary
+        cachedReadinessResult = readinessResult
+    }
+
+    func resetDiagnosticsSessionToStaticPreparation() {
+        diagnosticsDisplayMode = .staticOnly
+        cachedDiagnosticSummary = nil
+        cachedReadinessResult = nil
     }
 
     private func makeAddGameProfile() throws -> GameProfile {

@@ -20,7 +20,11 @@ struct DiagnosticsView: View {
         .navigationTitle(String(localized: "diagnostics.readiness.title"))
         .task {
             viewModel.setAllowsManualRealCheck(appState.canRunManualRealDiagnosticCheck)
-            await reloadDiagnostics(mode: .staticOnly)
+            if let cached = appState.restoreCachedDiagnosticsIfAvailable() {
+                viewModel.update(summary: cached.summary, readinessResult: cached.readinessResult)
+            } else {
+                await reloadDiagnostics(mode: .staticOnly)
+            }
         }
     }
 
@@ -28,6 +32,16 @@ struct DiagnosticsView: View {
         let summary = await appState.loadRuntimeDiagnosticSummary(mode: mode)
         let readinessResult = appState.evaluateRunReadiness(diagnosticSummary: summary)
         viewModel.update(summary: summary, readinessResult: readinessResult)
+        appState.storeDiagnosticsSession(
+            mode: mode,
+            summary: summary,
+            readinessResult: readinessResult
+        )
+    }
+
+    private func returnToStaticPreparation() async {
+        appState.resetDiagnosticsSessionToStaticPreparation()
+        await reloadDiagnostics(mode: .staticOnly)
     }
 
     private func runRealSystemCheck() async {
@@ -83,7 +97,7 @@ struct DiagnosticsView: View {
             } else if viewModel.showsReturnToPreparationButton {
                 Button(viewModel.returnToPreparationButtonTitle) {
                     Task {
-                        await reloadDiagnostics(mode: .staticOnly)
+                        await returnToStaticPreparation()
                     }
                 }
             }

@@ -101,6 +101,12 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Detail lines appear only after a manual real check; static preparation UI stays unchanged.
 - No persistence, policy change, or launch affordance.
 
+## Sprint 10 Features
+
+- In-memory diagnostics session state preserves manual real-check results while navigating within the app.
+- Returning to Diagnostics restores the cached real-check summary until the user resets to preparation or saves a new profile.
+- No disk persistence, automatic real-check, or launch affordance.
+
 ## Development
 
 Generate the Xcode project:
@@ -129,6 +135,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 10: Added in-memory diagnostics session state so manual real-check results survive navigation within the app session.
 - Sprint 9: Added real-check result details for timestamp, version, and install path on the Diagnostics screen.
 - Sprint 8: Added manual real diagnostics check button with per-request mode routing; static preparation remains the default load.
 - Sprint 7: Added diagnostics source info card and clearer passive preparation messaging; no real-check button.

@@ -27,6 +27,54 @@ final class AppStateDiagnosticsTests: XCTestCase {
         XCTAssertEqual(realSummary.dependencies.first(where: { $0.kind == .wine })?.status, .ready)
     }
 
+    func testStoreAndRestoreRealDiagnosticsSession() {
+        let appState = makeAppState(policy: .production)
+        let summary = RuntimeDiagnosticSummary(
+            dependencies: [makeDependency(kind: .wine, status: .ready)],
+            source: .realSystemCheck
+        )
+        let readiness = RunReadinessResult(
+            status: .blocked,
+            title: "blocked",
+            message: "message",
+            blockers: [],
+            canLaunch: false
+        )
+
+        appState.storeDiagnosticsSession(
+            mode: .realReadOnly,
+            summary: summary,
+            readinessResult: readiness
+        )
+
+        let restored = appState.restoreCachedDiagnosticsIfAvailable()
+
+        XCTAssertEqual(appState.diagnosticsDisplayMode, .realReadOnly)
+        XCTAssertEqual(restored?.summary.source, .realSystemCheck)
+        XCTAssertEqual(restored?.readinessResult.canLaunch, false)
+    }
+
+    func testResetDiagnosticsSessionClearsRealCache() {
+        let appState = makeAppState(policy: .production)
+        appState.storeDiagnosticsSession(
+            mode: .realReadOnly,
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .realSystemCheck),
+            readinessResult: RunReadinessResult(
+                status: .blocked,
+                title: "blocked",
+                message: "message",
+                blockers: [],
+                canLaunch: false
+            )
+        )
+
+        appState.resetDiagnosticsSessionToStaticPreparation()
+
+        XCTAssertEqual(appState.diagnosticsDisplayMode, .staticOnly)
+        XCTAssertNil(appState.restoreCachedDiagnosticsIfAvailable())
+        XCTAssertNil(appState.cachedDiagnosticSummary)
+    }
+
     private func makeAppState(policy: DiagnosticActivationPolicy?) -> AppState {
         let diagnosticService = SelectableDependencyDiagnosticService(
             mode: .staticOnly,
