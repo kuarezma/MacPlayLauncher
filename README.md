@@ -88,6 +88,13 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Real source mapping remains testable for future use; production still uses `staticOnly`.
 - No manual real-check button, no real diagnostics execution, and no production policy change.
 
+## Sprint 8 Features
+
+- Manual `Gerçek sistemi kontrol et` button on the Diagnostics screen for read-only Rosetta/Wine checks.
+- Loading state and `Hazırlık rehberine dön` action after a real result.
+- Per-request diagnostic mode routing through `SelectableDependencyDiagnosticService`; initial load remains static preparation.
+- Production policy allows real diagnostics only with explicit user action; `canLaunch` remains false.
+
 ## Development
 
 Generate the Xcode project:
@@ -116,6 +123,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 8: Added manual real diagnostics check button with per-request mode routing; static preparation remains the default load.
 - Sprint 7: Added diagnostics source info card and clearer passive preparation messaging; no real-check button.
 - Sprint 6: Added real diagnostics activation gate, selectable diagnostic service, and passive source labeling; production remains static-only.
 - Sprint 5B: Added read-only Rosetta/Wine diagnostic providers and a non-default real diagnostics service; production diagnostics remain static.

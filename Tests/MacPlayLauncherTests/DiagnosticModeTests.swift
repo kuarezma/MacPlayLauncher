@@ -6,7 +6,7 @@ final class DiagnosticModeTests: XCTestCase {
         let policy = DiagnosticActivationPolicy.production
 
         XCTAssertEqual(policy.defaultMode, .staticOnly)
-        XCTAssertFalse(policy.allowsRealDiagnostics)
+        XCTAssertTrue(policy.allowsRealDiagnostics)
         XCTAssertTrue(policy.requiresExplicitUserAction)
     }
 

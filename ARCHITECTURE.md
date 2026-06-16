@@ -108,3 +108,15 @@ Sprint 7 polishes the Diagnostics screen source presentation without changing di
 - Manual real-check UI remains a future Sprint 8 topic.
 
 Sprint 7 still excludes game launch, real diagnostics auto-execution, prefix creation, runtime download/install, shell usage, and any change to `canLaunch` or production activation policy.
+
+## Sprint 8 Manual Real Diagnostics Check
+
+Sprint 8 adds an explicit user-triggered read-only real diagnostics path without making it the default app behavior.
+
+- `DiagnosticActivationPolicy.production` allows real diagnostics only after explicit user action; default load remains `staticOnly`.
+- `ModeAwareDependencyDiagnosticServicing` and `SelectableDependencyDiagnosticService.loadSummary(profiles:mode:)` route per request without changing the stored production wiring mode.
+- Diagnostics UI shows `Gerçek sistemi kontrol et` while static preparation is active, a loading state during the check, and `Hazırlık rehberine dön` after a real result.
+- Initial screen load still uses static preparation only; real Rosetta/Wine providers run only after the button action.
+- `canLaunch` remains false, DXVK/MoltenVK remain passive, and there is still no install/download/launch automation.
+
+Sprint 8 still excludes automatic real diagnostics on app open, game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.

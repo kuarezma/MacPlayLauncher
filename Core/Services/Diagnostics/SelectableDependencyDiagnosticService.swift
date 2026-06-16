@@ -1,6 +1,6 @@
 import Foundation
 
-struct SelectableDependencyDiagnosticService: DependencyDiagnosticServicing {
+struct SelectableDependencyDiagnosticService: DependencyDiagnosticServicing, ModeAwareDependencyDiagnosticServicing {
     let mode: DiagnosticMode
     let policy: DiagnosticActivationPolicy
     let staticService: any DependencyDiagnosticServicing
@@ -19,7 +19,11 @@ struct SelectableDependencyDiagnosticService: DependencyDiagnosticServicing {
     }
 
     func loadSummary(profiles: [GameProfile]) async -> RuntimeDiagnosticSummary {
-        switch mode {
+        await loadSummary(profiles: profiles, mode: mode)
+    }
+
+    func loadSummary(profiles: [GameProfile], mode requestedMode: DiagnosticMode) async -> RuntimeDiagnosticSummary {
+        switch requestedMode {
         case .staticOnly:
             var summary = await staticService.loadSummary(profiles: profiles)
             summary.source = .staticPreparation

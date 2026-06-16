@@ -42,9 +42,14 @@ final class SelectableDependencyDiagnosticServiceTests: XCTestCase {
 
     func testRealModeFallsBackToStaticWhenPolicyBlocksRealDiagnostics() async {
         let staticDependency = makeDependency(kind: .wine, status: .missing)
+        let blockedPolicy = DiagnosticActivationPolicy(
+            defaultMode: .staticOnly,
+            allowsRealDiagnostics: false,
+            requiresExplicitUserAction: true
+        )
         let service = SelectableDependencyDiagnosticService(
             mode: .realReadOnly,
-            policy: .production,
+            policy: blockedPolicy,
             staticService: FakeDependencyDiagnosticService(
                 summary: RuntimeDiagnosticSummary(dependencies: [staticDependency])
             ),
@@ -57,6 +62,29 @@ final class SelectableDependencyDiagnosticServiceTests: XCTestCase {
 
         XCTAssertEqual(summary.source, .staticPreparation)
         XCTAssertEqual(summary.dependencies.first?.status, .missing)
+    }
+
+    func testRequestedModeOverridesStoredMode() async {
+        let service = SelectableDependencyDiagnosticService(
+            mode: .staticOnly,
+            policy: .production,
+            staticService: FakeDependencyDiagnosticService(
+                summary: RuntimeDiagnosticSummary(dependencies: [makeDependency(kind: .wine, status: .missing)])
+            ),
+            realService: FakeDependencyDiagnosticService(
+                summary: RuntimeDiagnosticSummary(dependencies: [makeDependency(kind: .wine, status: .ready)])
+            )
+        )
+
+        let realSummary = await service.loadSummary(profiles: [], mode: .realReadOnly)
+
+        XCTAssertEqual(realSummary.source, .realSystemCheck)
+        XCTAssertEqual(realSummary.dependencies.first?.status, .ready)
+
+        let staticSummary = await service.loadSummary(profiles: [], mode: .staticOnly)
+
+        XCTAssertEqual(staticSummary.source, .staticPreparation)
+        XCTAssertEqual(staticSummary.dependencies.first?.status, .missing)
     }
 
     func testRealModeKeepsPassiveDXVKAndMoltenVKFromRealService() async {

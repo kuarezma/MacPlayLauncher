@@ -7,6 +7,8 @@ import Observation
 final class DiagnosticsViewModel {
     private(set) var summary: RuntimeDiagnosticSummary?
     private(set) var readinessResult: RunReadinessResult?
+    private(set) var isRunningRealCheck = false
+    private(set) var allowsManualRealCheck = false
 
     var dependencies: [RuntimeDependency] {
         summary?.dependencies ?? []
@@ -85,13 +87,28 @@ final class DiagnosticsViewModel {
         }
     }
 
-    var sourceFutureRealCheckNote: String? {
-        switch summary?.source {
-        case .realSystemCheck:
-            return nil
-        case .staticPreparation, .none:
-            return String(localized: "diagnostics.source.static.futureRealCheck")
-        }
+    var realCheckButtonTitle: String {
+        String(localized: "diagnostics.realCheck.button")
+    }
+
+    var realCheckLoadingTitle: String {
+        String(localized: "diagnostics.realCheck.loading")
+    }
+
+    var returnToPreparationButtonTitle: String {
+        String(localized: "diagnostics.realCheck.returnToPreparation")
+    }
+
+    var showsManualRealCheckButton: Bool {
+        allowsManualRealCheck
+            && summary?.source != .realSystemCheck
+            && !isRunningRealCheck
+    }
+
+    var showsReturnToPreparationButton: Bool {
+        allowsManualRealCheck
+            && summary?.source == .realSystemCheck
+            && !isRunningRealCheck
     }
 
     var sourceBadgeText: String {
@@ -109,6 +126,14 @@ final class DiagnosticsViewModel {
 
     var sourceDxvkMoltenVKLaterNote: String {
         String(localized: "diagnostics.source.dxvkMoltenVKLater")
+    }
+
+    func setAllowsManualRealCheck(_ value: Bool) {
+        allowsManualRealCheck = value
+    }
+
+    func setRunningRealCheck(_ value: Bool) {
+        isRunningRealCheck = value
     }
 
     func update(summary: RuntimeDiagnosticSummary) {

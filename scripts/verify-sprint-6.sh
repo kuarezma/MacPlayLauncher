@@ -115,10 +115,17 @@ else
   fail "DefaultRunReadinessEvaluator must keep canLaunch false"
 fi
 
-if rg_swift -q 'allowsRealDiagnostics:[[:space:]]*false' Core/Models/DiagnosticMode.swift; then
-  pass "production policy blocks real diagnostics by default"
+if rg_swift -q 'requiresExplicitUserAction:[[:space:]]*true' Core/Models/DiagnosticMode.swift \
+  && rg_swift -q 'defaultMode:[[:space:]]*\.staticOnly' Core/Models/DiagnosticMode.swift; then
+  pass "production policy requires explicit user action and defaults to staticOnly"
 else
-  fail "DiagnosticActivationPolicy.production must set allowsRealDiagnostics false"
+  fail "DiagnosticActivationPolicy.production must require explicit user action and default to staticOnly"
+fi
+
+if rg_swift -q 'mode:[[:space:]]*\.staticOnly' App/AppEnvironment.swift; then
+  pass "AppEnvironment.live keeps staticOnly as wired default mode"
+else
+  fail "AppEnvironment.live must wire staticOnly mode"
 fi
 
 section "7. Build hygiene (fast)"

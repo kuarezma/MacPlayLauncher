@@ -1059,6 +1059,57 @@
         }
       }
     },
+    "diagnostics.realCheck.button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistemi kontrol et"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistemi kontrol et"
+          }
+        }
+      }
+    },
+    "diagnostics.realCheck.loading" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü çalışıyor…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü çalışıyor…"
+          }
+        }
+      }
+    },
+    "diagnostics.realCheck.returnToPreparation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık rehberine dön"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık rehberine dön"
+          }
+        }
+      }
+    },
     "diagnostics.source.real.title" : {
       "extractionState" : "manual",
       "localizations" : {

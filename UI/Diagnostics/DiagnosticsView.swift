@@ -19,10 +19,22 @@ struct DiagnosticsView: View {
         }
         .navigationTitle(String(localized: "diagnostics.readiness.title"))
         .task {
-            let summary = await appState.loadRuntimeDiagnosticSummary()
-            let readinessResult = appState.evaluateRunReadiness(diagnosticSummary: summary)
-            viewModel.update(summary: summary, readinessResult: readinessResult)
+            viewModel.setAllowsManualRealCheck(appState.canRunManualRealDiagnosticCheck)
+            await reloadDiagnostics(mode: .staticOnly)
         }
+    }
+
+    private func reloadDiagnostics(mode: DiagnosticMode) async {
+        let summary = await appState.loadRuntimeDiagnosticSummary(mode: mode)
+        let readinessResult = appState.evaluateRunReadiness(diagnosticSummary: summary)
+        viewModel.update(summary: summary, readinessResult: readinessResult)
+    }
+
+    private func runRealSystemCheck() async {
+        viewModel.setRunningRealCheck(true)
+        defer { viewModel.setRunningRealCheck(false) }
+
+        await reloadDiagnostics(mode: .realReadOnly)
     }
 
     private var sourceInfoCard: some View {
@@ -48,10 +60,26 @@ struct DiagnosticsView: View {
                     .foregroundStyle(.secondary)
             }
 
-            if let futureRealCheckNote = viewModel.sourceFutureRealCheckNote {
-                Text(futureRealCheckNote)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+            if viewModel.isRunningRealCheck {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .controlSize(.small)
+                    Text(viewModel.realCheckLoadingTitle)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+            } else if viewModel.showsManualRealCheckButton {
+                Button(viewModel.realCheckButtonTitle) {
+                    Task {
+                        await runRealSystemCheck()
+                    }
+                }
+            } else if viewModel.showsReturnToPreparationButton {
+                Button(viewModel.returnToPreparationButtonTitle) {
+                    Task {
+                        await reloadDiagnostics(mode: .staticOnly)
+                    }
+                }
             }
 
             Text(viewModel.sourceNoInstallNote)

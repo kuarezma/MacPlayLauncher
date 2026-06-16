@@ -12,7 +12,7 @@ struct DiagnosticActivationPolicy: Sendable, Equatable {
 
     static let production = DiagnosticActivationPolicy(
         defaultMode: .staticOnly,
-        allowsRealDiagnostics: false,
+        allowsRealDiagnostics: true,
         requiresExplicitUserAction: true
     )
 

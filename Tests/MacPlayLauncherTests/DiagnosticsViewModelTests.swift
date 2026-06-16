@@ -77,7 +77,6 @@ final class DiagnosticsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.sourceTitle, String(localized: "diagnostics.source.static.title"))
         XCTAssertEqual(viewModel.sourceSubtitle, String(localized: "diagnostics.source.static.subtitle"))
         XCTAssertEqual(viewModel.sourceNote, String(localized: "diagnostics.source.static.note"))
-        XCTAssertEqual(viewModel.sourceFutureRealCheckNote, String(localized: "diagnostics.source.static.futureRealCheck"))
         XCTAssertEqual(viewModel.sourceBadgeText, String(localized: "diagnostics.source.static.badge"))
         XCTAssertEqual(viewModel.sourceNoInstallNote, String(localized: "diagnostics.source.noInstall"))
         XCTAssertEqual(viewModel.sourceDxvkMoltenVKLaterNote, String(localized: "diagnostics.source.dxvkMoltenVKLater"))
@@ -95,7 +94,6 @@ final class DiagnosticsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.sourceTitle, String(localized: "diagnostics.source.real.title"))
         XCTAssertEqual(viewModel.sourceSubtitle, String(localized: "diagnostics.source.real.subtitle"))
         XCTAssertNil(viewModel.sourceNote)
-        XCTAssertNil(viewModel.sourceFutureRealCheckNote)
         XCTAssertEqual(viewModel.sourceBadgeText, String(localized: "diagnostics.source.real.badge"))
     }
 
@@ -134,6 +132,45 @@ final class DiagnosticsViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.sourceTitle, String(localized: "diagnostics.source.static.title"))
         XCTAssertEqual(viewModel.sourceBadgeText, String(localized: "diagnostics.source.static.badge"))
+    }
+
+    func testManualRealCheckButtonVisibility() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.setAllowsManualRealCheck(true)
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .staticPreparation)
+        )
+
+        XCTAssertTrue(viewModel.showsManualRealCheckButton)
+        XCTAssertFalse(viewModel.showsReturnToPreparationButton)
+
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .realSystemCheck)
+        )
+
+        XCTAssertFalse(viewModel.showsManualRealCheckButton)
+        XCTAssertTrue(viewModel.showsReturnToPreparationButton)
+    }
+
+    func testManualRealCheckButtonHiddenWhileRunning() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.setAllowsManualRealCheck(true)
+        viewModel.setRunningRealCheck(true)
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .staticPreparation)
+        )
+
+        XCTAssertFalse(viewModel.showsManualRealCheckButton)
+        XCTAssertFalse(viewModel.showsReturnToPreparationButton)
+    }
+
+    func testManualRealCheckButtonRequiresPolicyAllowance() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .staticPreparation)
+        )
+
+        XCTAssertFalse(viewModel.showsManualRealCheckButton)
     }
 
     private func makeDependency(kind: RuntimeDependencyKind, status: RuntimeDependencyStatus) -> RuntimeDependency {

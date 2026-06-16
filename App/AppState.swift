@@ -128,8 +128,20 @@ final class AppState {
         selectedNavigationItem = .library
     }
 
-    func loadRuntimeDiagnosticSummary() async -> RuntimeDiagnosticSummary {
-        await environment.dependencyDiagnosticService.loadSummary(profiles: profiles)
+    var canRunManualRealDiagnosticCheck: Bool {
+        guard let policy = environment.diagnosticActivationPolicy else {
+            return false
+        }
+
+        return policy.allowsRealDiagnostics && policy.requiresExplicitUserAction
+    }
+
+    func loadRuntimeDiagnosticSummary(mode: DiagnosticMode = .staticOnly) async -> RuntimeDiagnosticSummary {
+        if let modeAware = environment.dependencyDiagnosticService as? any ModeAwareDependencyDiagnosticServicing {
+            return await modeAware.loadSummary(profiles: profiles, mode: mode)
+        }
+
+        return await environment.dependencyDiagnosticService.loadSummary(profiles: profiles)
     }
 
     func evaluateRunReadiness(diagnosticSummary: RuntimeDiagnosticSummary) -> RunReadinessResult {

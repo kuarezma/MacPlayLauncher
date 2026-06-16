@@ -7,7 +7,28 @@ struct AppEnvironment: Sendable {
     let bookmarkManager: any BookmarkManaging
     let gameFolderDetector: any GameFolderDetecting
     let dependencyDiagnosticService: any DependencyDiagnosticServicing
+    let diagnosticActivationPolicy: DiagnosticActivationPolicy?
     let runReadinessEvaluator: any RunReadinessEvaluating
+
+    init(
+        profileManager: GameProfileManaging,
+        bundledProfileLoader: BundledGameProfileLoader,
+        fileSelectionService: any FileSelectionServicing,
+        bookmarkManager: any BookmarkManaging,
+        gameFolderDetector: any GameFolderDetecting,
+        dependencyDiagnosticService: any DependencyDiagnosticServicing,
+        diagnosticActivationPolicy: DiagnosticActivationPolicy? = nil,
+        runReadinessEvaluator: any RunReadinessEvaluating
+    ) {
+        self.profileManager = profileManager
+        self.bundledProfileLoader = bundledProfileLoader
+        self.fileSelectionService = fileSelectionService
+        self.bookmarkManager = bookmarkManager
+        self.gameFolderDetector = gameFolderDetector
+        self.dependencyDiagnosticService = dependencyDiagnosticService
+        self.diagnosticActivationPolicy = diagnosticActivationPolicy
+        self.runReadinessEvaluator = runReadinessEvaluator
+    }
 
     @MainActor
     static var live: AppEnvironment {
@@ -28,6 +49,7 @@ struct AppEnvironment: Sendable {
                 mode: .staticOnly,
                 policy: .production
             ),
+            diagnosticActivationPolicy: .production,
             runReadinessEvaluator: DefaultRunReadinessEvaluator()
         )
     }
@@ -45,6 +67,7 @@ struct AppEnvironment: Sendable {
                 mode: .realReadOnly,
                 policy: .internalRealReadOnly
             ),
+            diagnosticActivationPolicy: .internalRealReadOnly,
             runReadinessEvaluator: live.runReadinessEvaluator
         )
     }
