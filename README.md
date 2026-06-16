@@ -143,6 +143,14 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Experimental launch flow wires ADR-003: Wine command start, `WINEPREFIX`/`WINEARCH`, bookmark access lifecycle, and bounded failure messaging.
 - Production readiness still reports `canLaunch: false`; experimental launch requires real diagnostics, prefix folder, and explicit user action.
 
+## Sprint 18 Features
+
+- Game Library now shows an actionable `Eksikleri gider` panel with ordered setup steps for game folder, real system check, Wine, prefix, and experimental launch readiness.
+- Game cards use Turkish user-facing runtime, performance, Windows version, and profile type labels instead of raw enum values.
+- Diagnostics starts with a `Sıradaki adım` card that routes real check, prefix creation, and experimental launch actions from one place.
+- Settings shows diagnostics source, experimental launch status, and the application data folder.
+- Production launch remains disabled; only the controlled experimental flow can become available after real diagnostics, Wine, and prefix requirements pass.
+
 ## Development
 
 Generate the Xcode project:
@@ -185,6 +193,7 @@ Regenerate app icons:
 
 ## Changelog
 
+- Sprint 18: Added actionable readiness guidance across Library, Diagnostics, and Settings while keeping production launch disabled; stabilized Xcode 26 local build/test settings.
 - Chore: Added generated MacPlay Launcher app icons and reusable launcher symbol assets.
 - Chore: Added a project-local build/run script and Codex Run action.
 - Chore: Added GitHub Actions CI for XcodeGen, SwiftLint, sprint verification, and XCTest.

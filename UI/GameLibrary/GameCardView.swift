@@ -8,11 +8,23 @@ struct GameCardView: View {
             Label(profile.displayName, systemImage: "gamecontroller.fill")
                 .font(.headline)
 
-            Text(String(localized: "game.runtime") + ": \(profile.runtime.rawValue)")
+            Text(String(localized: "game.profileType") + ": \(GameProfileDisplayFormatter.profileKindTitle(for: profile))")
                 .foregroundStyle(.secondary)
 
-            Text(String(localized: "game.performanceMode") + ": \(profile.performanceMode.rawValue)")
+            Text(String(localized: "game.runtime") + ": \(GameProfileDisplayFormatter.runtimeTitle(for: profile.runtime))")
                 .foregroundStyle(.secondary)
+
+            Text(String(localized: "game.performanceMode") + ": \(GameProfileDisplayFormatter.performanceTitle(for: profile.performanceMode))")
+                .foregroundStyle(.secondary)
+
+            Text(String(localized: "game.windowsVersion") + ": \(GameProfileDisplayFormatter.windowsVersionTitle(for: profile.windowsVersion))")
+                .foregroundStyle(.secondary)
+
+            if let setupNote = GameProfileDisplayFormatter.setupNote(for: profile) {
+                Label(setupNote, systemImage: "info.circle")
+                    .font(.callout)
+                    .foregroundStyle(.orange)
+            }
 
             Divider()
 
@@ -28,4 +40,3 @@ struct GameCardView: View {
         .accessibilityLabel(String(format: String(localized: "accessibility.gameCard"), profile.displayName))
     }
 }
-

@@ -22,6 +22,16 @@ struct SettingsView: View {
                     value: appState.diagnosticsSessionSourceLabel
                 )
 
+                LabeledContent(
+                    String(localized: "settings.experimentalLaunch.status"),
+                    value: appState.experimentalLaunchStatusLabel
+                )
+
+                LabeledContent(String(localized: "settings.appDataFolder")) {
+                    Text(appState.appDataFolderPath)
+                        .textSelection(.enabled)
+                }
+
                 Button(String(localized: "library.readiness.openDiagnostics")) {
                     appState.showDiagnostics()
                 }

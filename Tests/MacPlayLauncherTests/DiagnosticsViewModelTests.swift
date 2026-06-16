@@ -233,6 +233,77 @@ final class DiagnosticsViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.dependencyInstallPathText(for: detailedDependency))
     }
 
+    func testNextStepSuggestsRealCheckBeforeOtherActions() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.setAllowsManualRealCheck(true)
+        viewModel.setExperimentalLaunchEnabled(true)
+        viewModel.updatePrefixState(makePrefixState(.missing))
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [makeDependency(kind: .wine, status: .missing)],
+                source: .staticPreparation
+            ),
+            readinessResult: makeReadiness(canLaunch: false),
+            experimentalReadinessResult: makeReadiness(canLaunch: false)
+        )
+
+        XCTAssertEqual(viewModel.nextAction, .realSystemCheck)
+        XCTAssertEqual(viewModel.nextStepButtonTitle, String(localized: "diagnostics.realCheck.button"))
+    }
+
+    func testNextStepShowsWinePreparationBeforePrefixOrLaunch() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.setAllowsManualRealCheck(true)
+        viewModel.setExperimentalLaunchEnabled(true)
+        viewModel.updatePrefixState(makePrefixState(.missing))
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [makeDependency(kind: .wine, status: .missing)],
+                source: .realSystemCheck
+            ),
+            readinessResult: makeReadiness(canLaunch: false),
+            experimentalReadinessResult: makeReadiness(canLaunch: false)
+        )
+
+        XCTAssertNil(viewModel.nextAction)
+        XCTAssertEqual(viewModel.nextStepTitle, String(localized: "diagnostics.nextStep.wine.title"))
+        XCTAssertFalse(viewModel.showsNextStepButton)
+    }
+
+    func testNextStepSuggestsPrefixWhenWineIsReadyAndPrefixMissing() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.setExperimentalLaunchEnabled(true)
+        viewModel.updatePrefixState(makePrefixState(.missing))
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [makeDependency(kind: .wine, status: .ready)],
+                source: .realSystemCheck
+            ),
+            readinessResult: makeReadiness(canLaunch: false),
+            experimentalReadinessResult: makeReadiness(canLaunch: false)
+        )
+
+        XCTAssertEqual(viewModel.nextAction, .createPrefix)
+        XCTAssertEqual(viewModel.nextStepButtonTitle, String(localized: "diagnostics.prefix.createButton"))
+    }
+
+    func testNextStepSuggestsExperimentalLaunchWhenReady() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.setExperimentalLaunchEnabled(true)
+        viewModel.updatePrefixState(makePrefixState(.exists))
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [makeDependency(kind: .wine, status: .ready)],
+                source: .realSystemCheck
+            ),
+            readinessResult: makeReadiness(canLaunch: false),
+            experimentalReadinessResult: makeReadiness(canLaunch: true)
+        )
+
+        XCTAssertEqual(viewModel.nextAction, .launchExperimental)
+        XCTAssertEqual(viewModel.nextStepButtonTitle, String(localized: "diagnostics.experimentalLaunch.button"))
+    }
+
     private func makeDependency(kind: RuntimeDependencyKind, status: RuntimeDependencyStatus) -> RuntimeDependency {
         RuntimeDependency(
             displayName: kind.rawValue,
@@ -244,6 +315,36 @@ final class DiagnosticsViewModelTests: XCTestCase {
             missingReason: nil,
             suggestedAction: nil,
             setupGuide: nil
+        )
+    }
+
+    private func makePrefixState(_ availability: PrefixDirectoryState.Availability) -> PrefixDirectoryState {
+        PrefixDirectoryState(
+            profileID: "user-game",
+            displayName: "User Game",
+            relativePath: "Prefixes/user-game",
+            absolutePath: "/tmp/MacPlayLauncher/Prefixes/user-game",
+            availability: availability
+        )
+    }
+
+    private func makeReadiness(canLaunch: Bool) -> RunReadinessResult {
+        RunReadinessResult(
+            status: canLaunch ? .ready : .blocked,
+            title: canLaunch ? "ready" : "blocked",
+            message: canLaunch ? "ready" : "blocked",
+            blockers: canLaunch ? [] : [
+                RunReadinessBlocker(
+                    id: "blocked",
+                    title: "Eksik",
+                    message: "Deneysel çalıştırma hazır değil.",
+                    severity: .blocking,
+                    source: .unknown,
+                    suggestedAction: nil,
+                    isUserActionable: true
+                )
+            ],
+            canLaunch: canLaunch
         )
     }
 }

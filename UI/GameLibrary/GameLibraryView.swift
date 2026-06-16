@@ -2,7 +2,7 @@ import SwiftUI
 
 struct GameLibraryView: View {
     @Bindable var appState: AppState
-    @State private var libraryReadiness: RunReadinessResult?
+    @State private var libraryReadinessPlan: LibraryReadinessPlan?
 
     var body: some View {
         NavigationSplitView {
@@ -56,9 +56,9 @@ struct GameLibraryView: View {
         } else {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    if let libraryReadiness {
-                        LibraryReadinessStripView(result: libraryReadiness) {
-                            appState.showDiagnostics()
+                    if let libraryReadinessPlan {
+                        LibraryReadinessChecklistView(plan: libraryReadinessPlan) { action in
+                            handleReadinessAction(action)
                         }
                     }
 
@@ -72,8 +72,40 @@ struct GameLibraryView: View {
             }
             .navigationTitle(String(localized: "library.title"))
             .task(id: libraryReadinessRefreshToken) {
-                libraryReadiness = await appState.libraryReadinessResult()
+                libraryReadinessPlan = await makeLibraryReadinessPlan()
             }
+        }
+    }
+
+    private func makeLibraryReadinessPlan() async -> LibraryReadinessPlan {
+        let summary: RuntimeDiagnosticSummary
+        let readinessResult: RunReadinessResult
+
+        if let cached = appState.restoreCachedDiagnosticsIfAvailable() {
+            summary = cached.summary
+            readinessResult = cached.readinessResult
+        } else {
+            summary = await appState.loadRuntimeDiagnosticSummary(mode: .staticOnly)
+            readinessResult = appState.evaluateRunReadiness(diagnosticSummary: summary)
+        }
+
+        let experimentalReadinessResult = appState.evaluateExperimentalRunReadiness(diagnosticSummary: summary)
+        let prefixState = try? appState.loadPrefixDirectoryState()
+        return LibraryReadinessPlanner.make(
+            profiles: appState.profiles,
+            diagnosticSummary: summary,
+            readinessResult: readinessResult,
+            experimentalReadinessResult: experimentalReadinessResult,
+            prefixState: prefixState
+        )
+    }
+
+    private func handleReadinessAction(_ action: LibraryReadinessAction) {
+        switch action {
+        case .addGame:
+            appState.showAddGame()
+        case .openDiagnostics:
+            appState.showDiagnostics()
         }
     }
 

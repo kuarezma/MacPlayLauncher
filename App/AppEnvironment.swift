@@ -13,6 +13,7 @@ struct AppEnvironment: Sendable {
     let experimentalLaunchPolicy: ExperimentalLaunchPolicy
     let experimentalRunReadinessEvaluator: any RunReadinessEvaluating
     let gameLauncher: any GameLaunching
+    let appSupportURL: URL
 
     init(
         profileManager: GameProfileManaging,
@@ -26,7 +27,9 @@ struct AppEnvironment: Sendable {
         prefixManager: any PrefixManaging,
         experimentalLaunchPolicy: ExperimentalLaunchPolicy = .disabled,
         experimentalRunReadinessEvaluator: (any RunReadinessEvaluating)? = nil,
-        gameLauncher: (any GameLaunching)? = nil
+        gameLauncher: (any GameLaunching)? = nil,
+        appSupportURL: URL = FileManager.default.temporaryDirectory
+            .appending(path: "MacPlayLauncher", directoryHint: .isDirectory)
     ) {
         self.profileManager = profileManager
         self.bundledProfileLoader = bundledProfileLoader
@@ -40,6 +43,7 @@ struct AppEnvironment: Sendable {
         self.experimentalLaunchPolicy = experimentalLaunchPolicy
         self.experimentalRunReadinessEvaluator = experimentalRunReadinessEvaluator ?? runReadinessEvaluator
         self.gameLauncher = gameLauncher ?? DisabledGameLauncher()
+        self.appSupportURL = appSupportURL
     }
 
     @MainActor
@@ -79,7 +83,8 @@ struct AppEnvironment: Sendable {
                 prefixManager: prefixManager,
                 policy: .experimental
             ),
-            gameLauncher: gameLauncher
+            gameLauncher: gameLauncher,
+            appSupportURL: appSupportURL
         )
     }
 
@@ -101,7 +106,8 @@ struct AppEnvironment: Sendable {
             prefixManager: live.prefixManager,
             experimentalLaunchPolicy: live.experimentalLaunchPolicy,
             experimentalRunReadinessEvaluator: live.experimentalRunReadinessEvaluator,
-            gameLauncher: live.gameLauncher
+            gameLauncher: live.gameLauncher,
+            appSupportURL: live.appSupportURL
         )
     }
 }

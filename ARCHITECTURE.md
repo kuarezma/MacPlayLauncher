@@ -220,3 +220,15 @@ Sprint 17 adds a controlled experimental launch path behind ADR-003 without maki
 - No `wineprefixcreate`, runtime install/download, Steam automation, or production launch button is introduced.
 
 Sprint 17 still excludes Wine prefix bootstrap automation, runtime download/install, shell usage, and production-default launch gating changes.
+
+## Sprint 18 Actionable Readiness UX
+
+Sprint 18 turns the existing diagnostics and experimental readiness signals into a clearer user workflow without adding new persistence or production launch behavior.
+
+- `GameProfileDisplayFormatter` maps runtime, performance mode, Windows version, and profile kind to Turkish user-facing labels so SwiftUI views do not expose raw enum values.
+- `LibraryReadinessPlanner` builds ordered setup steps from existing `GameProfile`, cached `RuntimeDiagnosticSummary`, `RunReadinessResult`, experimental readiness, and `PrefixDirectoryState` inputs.
+- The Game Library shows an `Eksikleri gider` panel with one clear action per missing step. Non-library actions navigate to Diagnostics; real system checks, prefix creation, and experimental launch still execute only from Diagnostics.
+- Diagnostics owns the task actions and adds a `Sıradaki adım` decision layer: real system check first, Wine preparation before prefix/launch, prefix creation next, and experimental launch only when readiness allows it.
+- Settings exposes read-only operational context: diagnostics source, experimental launch status, and the Application Support data folder.
+
+Sprint 18 still excludes automatic Wine/Rosetta/DXVK/MoltenVK installation, Steam automation, Wine prefix bootstrap commands, and production-default launch enablement. `DefaultRunReadinessEvaluator` remains non-launchable by design.

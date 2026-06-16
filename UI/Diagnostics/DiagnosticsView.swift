@@ -8,6 +8,7 @@ struct DiagnosticsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                nextStepCard
                 sourceInfoCard
                 overallSection
                 readinessSection
@@ -35,6 +36,45 @@ struct DiagnosticsView: View {
             } else {
                 await reloadDiagnostics(mode: .staticOnly)
             }
+        }
+    }
+
+    private var nextStepCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label(String(localized: "diagnostics.nextStep.heading"), systemImage: "arrow.forward.circle.fill")
+                .font(.headline)
+
+            Text(viewModel.nextStepTitle)
+                .font(.title3.weight(.semibold))
+
+            Text(viewModel.nextStepMessage)
+                .foregroundStyle(.secondary)
+
+            if viewModel.showsNextStepButton,
+               let buttonTitle = viewModel.nextStepButtonTitle,
+               let action = viewModel.nextAction {
+                Button(buttonTitle) {
+                    runNextStepAction(action)
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func runNextStepAction(_ action: DiagnosticsNextAction) {
+        switch action {
+        case .realSystemCheck:
+            Task {
+                await runRealSystemCheck()
+            }
+        case .createPrefix:
+            Task {
+                await createPrefixDirectory()
+            }
+        case .launchExperimental:
+            launchExperimentalGame()
         }
     }
 
@@ -449,4 +489,3 @@ struct DiagnosticsView: View {
         .padding(.top, 4)
     }
 }
-

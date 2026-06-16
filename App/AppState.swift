@@ -166,6 +166,16 @@ final class AppState {
         environment.experimentalLaunchPolicy.isEnabled
     }
 
+    var experimentalLaunchStatusLabel: String {
+        isExperimentalLaunchEnabled
+            ? String(localized: "settings.experimentalLaunch.enabled")
+            : String(localized: "settings.experimentalLaunch.disabled")
+    }
+
+    var appDataFolderPath: String {
+        environment.appSupportURL.path
+    }
+
     func launchExperimentalGame() throws -> GameLaunchResult {
         guard environment.experimentalLaunchPolicy.isEnabled else {
             throw MacPlayError.launchPreparationFailed

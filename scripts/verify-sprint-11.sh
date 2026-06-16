@@ -28,10 +28,10 @@ else
   fail "AppState must expose library readiness snapshot"
 fi
 
-if rg -q 'LibraryReadinessStripView' UI/GameLibrary/GameLibraryView.swift; then
-  pass "GameLibraryView shows readiness strip"
+if rg -q 'LibraryReadinessStripView|LibraryReadinessChecklistView' UI/GameLibrary/GameLibraryView.swift; then
+  pass "GameLibraryView shows readiness guidance"
 else
-  fail "GameLibraryView must show readiness strip"
+  fail "GameLibraryView must show readiness guidance"
 fi
 
 if rg -q 'showDiagnostics' UI/GameLibrary/GameLibraryView.swift; then
