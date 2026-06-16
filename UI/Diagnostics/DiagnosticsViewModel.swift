@@ -58,26 +58,57 @@ final class DiagnosticsViewModel {
         }
     }
 
-    var diagnosticsSourceTitle: String {
+    var sourceTitle: String {
         switch summary?.source {
         case .realSystemCheck:
-            return String(localized: "diagnostics.source.realSystemCheck")
+            return String(localized: "diagnostics.source.real.title")
         case .staticPreparation, .none:
-            return String(localized: "diagnostics.source.staticPreparation")
+            return String(localized: "diagnostics.source.static.title")
         }
     }
 
-    var diagnosticsSourceDescription: String {
+    var sourceSubtitle: String {
         switch summary?.source {
         case .realSystemCheck:
-            return String(localized: "diagnostics.source.realDescription")
+            return String(localized: "diagnostics.source.real.subtitle")
         case .staticPreparation, .none:
-            return String(localized: "diagnostics.source.staticDescription")
+            return String(localized: "diagnostics.source.static.subtitle")
         }
     }
 
-    var diagnosticsPassiveComponentsNote: String {
-        String(localized: "diagnostics.source.dxvkPassiveNote")
+    var sourceNote: String? {
+        switch summary?.source {
+        case .realSystemCheck:
+            return nil
+        case .staticPreparation, .none:
+            return String(localized: "diagnostics.source.static.note")
+        }
+    }
+
+    var sourceFutureRealCheckNote: String? {
+        switch summary?.source {
+        case .realSystemCheck:
+            return nil
+        case .staticPreparation, .none:
+            return String(localized: "diagnostics.source.static.futureRealCheck")
+        }
+    }
+
+    var sourceBadgeText: String {
+        switch summary?.source {
+        case .realSystemCheck:
+            return String(localized: "diagnostics.source.real.badge")
+        case .staticPreparation, .none:
+            return String(localized: "diagnostics.source.static.badge")
+        }
+    }
+
+    var sourceNoInstallNote: String {
+        String(localized: "diagnostics.source.noInstall")
+    }
+
+    var sourceDxvkMoltenVKLaterNote: String {
+        String(localized: "diagnostics.source.dxvkMoltenVKLater")
     }
 
     func update(summary: RuntimeDiagnosticSummary) {

@@ -8,7 +8,7 @@ struct DiagnosticsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                sourceSection
+                sourceInfoCard
                 overallSection
                 readinessSection
                 dependencySection
@@ -25,13 +25,40 @@ struct DiagnosticsView: View {
         }
     }
 
-    private var sourceSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(viewModel.diagnosticsSourceTitle)
-                .font(.headline)
-            Text(viewModel.diagnosticsSourceDescription)
+    private var sourceInfoCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(viewModel.sourceTitle)
+                    .font(.headline)
+                Spacer()
+                Text(viewModel.sourceBadgeText)
+                    .font(.caption.weight(.semibold))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .foregroundStyle(.secondary)
+                    .background(.quaternary, in: Capsule())
+            }
+
+            Text(viewModel.sourceSubtitle)
                 .foregroundStyle(.secondary)
-            Text(viewModel.diagnosticsPassiveComponentsNote)
+
+            if let sourceNote = viewModel.sourceNote {
+                Text(sourceNote)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            if let futureRealCheckNote = viewModel.sourceFutureRealCheckNote {
+                Text(futureRealCheckNote)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(viewModel.sourceNoInstallNote)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+
+            Text(viewModel.sourceDxvkMoltenVKLaterNote)
                 .font(.callout)
                 .foregroundStyle(.secondary)
         }

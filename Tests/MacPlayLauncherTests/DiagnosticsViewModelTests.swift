@@ -65,7 +65,7 @@ final class DiagnosticsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.noLaunchThisSprintText, String(localized: "readiness.noLaunchThisSprint"))
     }
 
-    func testViewModelMapsStaticSourceLabel() {
+    func testStaticSourceInfoCardMapping() {
         let viewModel = DiagnosticsViewModel()
         viewModel.update(
             summary: RuntimeDiagnosticSummary(
@@ -74,12 +74,16 @@ final class DiagnosticsViewModelTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(viewModel.diagnosticsSourceTitle, String(localized: "diagnostics.source.staticPreparation"))
-        XCTAssertEqual(viewModel.diagnosticsSourceDescription, String(localized: "diagnostics.source.staticDescription"))
-        XCTAssertEqual(viewModel.diagnosticsPassiveComponentsNote, String(localized: "diagnostics.source.dxvkPassiveNote"))
+        XCTAssertEqual(viewModel.sourceTitle, String(localized: "diagnostics.source.static.title"))
+        XCTAssertEqual(viewModel.sourceSubtitle, String(localized: "diagnostics.source.static.subtitle"))
+        XCTAssertEqual(viewModel.sourceNote, String(localized: "diagnostics.source.static.note"))
+        XCTAssertEqual(viewModel.sourceFutureRealCheckNote, String(localized: "diagnostics.source.static.futureRealCheck"))
+        XCTAssertEqual(viewModel.sourceBadgeText, String(localized: "diagnostics.source.static.badge"))
+        XCTAssertEqual(viewModel.sourceNoInstallNote, String(localized: "diagnostics.source.noInstall"))
+        XCTAssertEqual(viewModel.sourceDxvkMoltenVKLaterNote, String(localized: "diagnostics.source.dxvkMoltenVKLater"))
     }
 
-    func testViewModelMapsRealSourceLabel() {
+    func testRealSourceInfoCardMapping() {
         let viewModel = DiagnosticsViewModel()
         viewModel.update(
             summary: RuntimeDiagnosticSummary(
@@ -88,16 +92,48 @@ final class DiagnosticsViewModelTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(viewModel.diagnosticsSourceTitle, String(localized: "diagnostics.source.realSystemCheck"))
-        XCTAssertEqual(viewModel.diagnosticsSourceDescription, String(localized: "diagnostics.source.realDescription"))
+        XCTAssertEqual(viewModel.sourceTitle, String(localized: "diagnostics.source.real.title"))
+        XCTAssertEqual(viewModel.sourceSubtitle, String(localized: "diagnostics.source.real.subtitle"))
+        XCTAssertNil(viewModel.sourceNote)
+        XCTAssertNil(viewModel.sourceFutureRealCheckNote)
+        XCTAssertEqual(viewModel.sourceBadgeText, String(localized: "diagnostics.source.real.badge"))
+    }
+
+    func testSourceFootnotesAreStableAcrossSources() {
+        let staticViewModel = DiagnosticsViewModel()
+        staticViewModel.update(
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .staticPreparation)
+        )
+
+        let realViewModel = DiagnosticsViewModel()
+        realViewModel.update(
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .realSystemCheck)
+        )
+
+        XCTAssertEqual(staticViewModel.sourceNoInstallNote, realViewModel.sourceNoInstallNote)
+        XCTAssertEqual(staticViewModel.sourceDxvkMoltenVKLaterNote, realViewModel.sourceDxvkMoltenVKLaterNote)
     }
 
     func testViewModelDefaultsToStaticSourceWhenSourceMissing() {
         let viewModel = DiagnosticsViewModel()
         viewModel.update(summary: RuntimeDiagnosticSummary(dependencies: []))
 
-        XCTAssertEqual(viewModel.diagnosticsSourceTitle, String(localized: "diagnostics.source.staticPreparation"))
-        XCTAssertEqual(viewModel.diagnosticsSourceDescription, String(localized: "diagnostics.source.staticDescription"))
+        XCTAssertEqual(viewModel.sourceTitle, String(localized: "diagnostics.source.static.title"))
+        XCTAssertEqual(viewModel.sourceSubtitle, String(localized: "diagnostics.source.static.subtitle"))
+        XCTAssertEqual(viewModel.sourceNote, String(localized: "diagnostics.source.static.note"))
+    }
+
+    func testSourceInfoUnaffectedByMissingDependencies() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [makeDependency(kind: .wine, status: .missing)],
+                source: .staticPreparation
+            )
+        )
+
+        XCTAssertEqual(viewModel.sourceTitle, String(localized: "diagnostics.source.static.title"))
+        XCTAssertEqual(viewModel.sourceBadgeText, String(localized: "diagnostics.source.static.badge"))
     }
 
     private func makeDependency(kind: RuntimeDependencyKind, status: RuntimeDependencyStatus) -> RuntimeDependency {

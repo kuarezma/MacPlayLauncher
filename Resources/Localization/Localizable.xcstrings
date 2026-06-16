@@ -991,41 +991,75 @@
         }
       }
     },
-    "diagnostics.source.dxvkPassiveNote" : {
+    "diagnostics.source.dxvkMoltenVKLater" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DXVK ve MoltenVK sonraki aşamada ele alınacak."
+            "value" : "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "DXVK ve MoltenVK sonraki aşamada ele alınacak."
+            "value" : "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
           }
         }
       }
     },
-    "diagnostics.source.realDescription" : {
+    "diagnostics.source.noInstall" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu kontrol yalnızca Rosetta ve Wine durumunu okur. Kurulum veya oyun çalıştırma yapılmaz."
+            "value" : "Kurulum, indirme veya oyun çalıştırma yapılmaz."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu kontrol yalnızca Rosetta ve Wine durumunu okur. Kurulum veya oyun çalıştırma yapılmaz."
+            "value" : "Kurulum, indirme veya oyun çalıştırma yapılmaz."
           }
         }
       }
     },
-    "diagnostics.source.realSystemCheck" : {
+    "diagnostics.source.real.badge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read-only kontrol"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read-only kontrol"
+          }
+        }
+      }
+    },
+    "diagnostics.source.real.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta ve Wine için read-only sistem kontrolü sonucu gösteriliyor."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta ve Wine için read-only sistem kontrolü sonucu gösteriliyor."
+          }
+        }
+      }
+    },
+    "diagnostics.source.real.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -1042,24 +1076,75 @@
         }
       }
     },
-    "diagnostics.source.staticDescription" : {
+    "diagnostics.source.static.badge" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu ekran şu anda pasif hazırlık durumunu gösterir. Gerçek sistem kontrolü varsayılan değildir."
+            "value" : "Pasif rehber"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu ekran şu anda pasif hazırlık durumunu gösterir. Gerçek sistem kontrolü varsayılan değildir."
+            "value" : "Pasif rehber"
           }
         }
       }
     },
-    "diagnostics.source.staticPreparation" : {
+    "diagnostics.source.static.futureRealCheck" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta ve Wine için gerçek sistem kontrolü sonraki aşamada manuel olarak ele alınabilir."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta ve Wine için gerçek sistem kontrolü sonraki aşamada manuel olarak ele alınabilir."
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.note" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü varsayılan değildir."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü varsayılan değildir."
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasif durum ve kurulum rehberi gösteriliyor."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasif durum ve kurulum rehberi gösteriliyor."
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {

@@ -81,6 +81,13 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - `canLaunch` remains false for all readiness results.
 - Fast agent verification via `./scripts/verify-sprint-6.sh`; GUI build/test remains the primary human verification channel.
 
+## Sprint 7 Features
+
+- Diagnostics source info card with title, badge, subtitle, policy notes, and shared footnotes.
+- Clear Turkish messaging that the screen shows passive preparation guidance, not automatic real system checks.
+- Real source mapping remains testable for future use; production still uses `staticOnly`.
+- No manual real-check button, no real diagnostics execution, and no production policy change.
+
 ## Development
 
 Generate the Xcode project:
@@ -109,6 +116,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 7: Added diagnostics source info card and clearer passive preparation messaging; no real-check button.
 - Sprint 6: Added real diagnostics activation gate, selectable diagnostic service, and passive source labeling; production remains static-only.
 - Sprint 5B: Added read-only Rosetta/Wine diagnostic providers and a non-default real diagnostics service; production diagnostics remain static.
 - Sprint 5A: Added a safe diagnostic command boundary with fake runner tests; production diagnostics remain static.

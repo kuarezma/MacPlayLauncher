@@ -96,3 +96,15 @@ Sprint 6 decides how real read-only diagnostics can be activated safely without 
 Sprint 6 still excludes game launch, launch buttons, shell scripts, `sh -c`, runtime download/install, prefix creation, Steam automation, bookmark resolve/access, security-scoped resource access, install prompts, and automatic fixes.
 
 Agent verification should prefer `./scripts/verify-sprint-6.sh` over manual `git diff` or default terminal `xcodebuild test`.
+
+## Sprint 7 Diagnostics Source UI
+
+Sprint 7 polishes the Diagnostics screen source presentation without changing diagnostic execution or production policy.
+
+- Diagnostics UI shows a passive source info card with badge, subtitle, static-only notes, and shared footnotes.
+- `Hazırlık rehberi` is not a real system check; it explains passive preparation status.
+- Real source copy is mapped in the view model for future manual activation, but production still loads static preparation only.
+- No install, download, launch, automatic fix, or manual real-check button is introduced in Sprint 7.
+- Manual real-check UI remains a future Sprint 8 topic.
+
+Sprint 7 still excludes game launch, real diagnostics auto-execution, prefix creation, runtime download/install, shell usage, and any change to `canLaunch` or production activation policy.
