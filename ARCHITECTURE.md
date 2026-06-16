@@ -197,3 +197,14 @@ Sprint 15 finalizes runtime acquisition strategy without implementing runtime do
 - Future bundled runtime options require checksum validation and a separate implementation sprint.
 
 Sprint 15 still excludes runtime download/install, Wine prefix bootstrap, `WINEPREFIX` runtime wiring, game launch, and any change to `canLaunch`.
+
+## Sprint 16 Launch Plan Planning
+
+Sprint 16 documents the experimental game launch plan without implementing launch behavior.
+
+- ADR-003 defines Wine command composition, environment precedence (`WINEPREFIX`, `WINEARCH`), and working-directory rules.
+- Security-scoped bookmark access lifecycle (`startAccessing` / `stopAccessing`) is specified for Sprint 17 implementation.
+- Process output, failure handling, and experimental `canLaunch` gating rules are documented for the controlled launch prototype.
+- No launch service, launch UI, bookmark access calls, or `canLaunch` changes are introduced.
+
+Sprint 16 still excludes game launch, bookmark access runtime, Wine prefix bootstrap, runtime download/install, shell usage, and any change to `canLaunch`.
