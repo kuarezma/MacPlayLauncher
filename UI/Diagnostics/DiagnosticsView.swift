@@ -1,4 +1,5 @@
 import SwiftUI
+import Observation
 
 struct DiagnosticsView: View {
     @Bindable var appState: AppState
@@ -7,6 +8,7 @@ struct DiagnosticsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                sourceSection
                 overallSection
                 readinessSection
                 dependencySection
@@ -21,6 +23,21 @@ struct DiagnosticsView: View {
             let readinessResult = appState.evaluateRunReadiness(diagnosticSummary: summary)
             viewModel.update(summary: summary, readinessResult: readinessResult)
         }
+    }
+
+    private var sourceSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(viewModel.diagnosticsSourceTitle)
+                .font(.headline)
+            Text(viewModel.diagnosticsSourceDescription)
+                .foregroundStyle(.secondary)
+            Text(viewModel.diagnosticsPassiveComponentsNote)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
     }
 
     private var overallSection: some View {
@@ -178,3 +195,4 @@ struct DiagnosticsView: View {
         .padding(.top, 4)
     }
 }
+

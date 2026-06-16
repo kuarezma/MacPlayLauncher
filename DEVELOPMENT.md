@@ -8,17 +8,25 @@
 
 ## Sprint verification
 
-Fast Sprint 5B checks (seconds, safe for agent loops):
+Fast Sprint 6 checks (seconds, safe for agent loops):
+
+```sh
+./scripts/verify-sprint-6.sh
+```
+
+Sprint 5B regression checks:
 
 ```sh
 ./scripts/verify-sprint-5b.sh
 ```
 
-Optional full test run (minutes):
+Optional full test run (minutes; terminal `xcodebuild` may hang locally):
 
 ```sh
-./scripts/verify-sprint-5b.sh --full
+./scripts/verify-sprint-6.sh --full
 ```
+
+Primary human verification: Xcode GUI → Product > Clean Build Folder, Command+B, Command+U.
 
 ## Commands
 

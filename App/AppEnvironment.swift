@@ -24,8 +24,28 @@ struct AppEnvironment: Sendable {
             fileSelectionService: FileSelectionService(),
             bookmarkManager: BookmarkManager(),
             gameFolderDetector: GameFolderDetector(fileSystem: fileSystem),
-            dependencyDiagnosticService: StaticDependencyDiagnosticService(),
+            dependencyDiagnosticService: SelectableDependencyDiagnosticService(
+                mode: .staticOnly,
+                policy: .production
+            ),
             runReadinessEvaluator: DefaultRunReadinessEvaluator()
+        )
+    }
+
+    @MainActor
+    static var previewWithRealDiagnostics: AppEnvironment {
+        let live = live
+        return AppEnvironment(
+            profileManager: live.profileManager,
+            bundledProfileLoader: live.bundledProfileLoader,
+            fileSelectionService: live.fileSelectionService,
+            bookmarkManager: live.bookmarkManager,
+            gameFolderDetector: live.gameFolderDetector,
+            dependencyDiagnosticService: SelectableDependencyDiagnosticService(
+                mode: .realReadOnly,
+                policy: .internalRealReadOnly
+            ),
+            runReadinessEvaluator: live.runReadinessEvaluator
         )
     }
 }

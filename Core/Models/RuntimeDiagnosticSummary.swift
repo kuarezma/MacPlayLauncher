@@ -11,12 +11,19 @@ struct RuntimeDiagnosticSummary: Codable, Equatable, Sendable {
     var overallStatus: RuntimeDiagnosticOverallStatus
     var generatedAt: Date
     var notes: [String]
+    var source: DiagnosticsSource?
 
-    init(dependencies: [RuntimeDependency], generatedAt: Date = Date(), notes: [String] = []) {
+    init(
+        dependencies: [RuntimeDependency],
+        generatedAt: Date = Date(),
+        notes: [String] = [],
+        source: DiagnosticsSource? = nil
+    ) {
         self.dependencies = dependencies
         self.overallStatus = Self.makeOverallStatus(for: dependencies)
         self.generatedAt = generatedAt
         self.notes = notes
+        self.source = source
     }
 
     static func makeOverallStatus(for dependencies: [RuntimeDependency]) -> RuntimeDiagnosticOverallStatus {

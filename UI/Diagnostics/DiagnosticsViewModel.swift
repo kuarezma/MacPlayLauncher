@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Observation
 
 @MainActor
 @Observable
@@ -55,6 +56,28 @@ final class DiagnosticsViewModel {
         case .none:
             return String(localized: "diagnostics.overall.loading.description")
         }
+    }
+
+    var diagnosticsSourceTitle: String {
+        switch summary?.source {
+        case .realSystemCheck:
+            return String(localized: "diagnostics.source.realSystemCheck")
+        case .staticPreparation, .none:
+            return String(localized: "diagnostics.source.staticPreparation")
+        }
+    }
+
+    var diagnosticsSourceDescription: String {
+        switch summary?.source {
+        case .realSystemCheck:
+            return String(localized: "diagnostics.source.realDescription")
+        case .staticPreparation, .none:
+            return String(localized: "diagnostics.source.staticDescription")
+        }
+    }
+
+    var diagnosticsPassiveComponentsNote: String {
+        String(localized: "diagnostics.source.dxvkPassiveNote")
     }
 
     func update(summary: RuntimeDiagnosticSummary) {
@@ -138,3 +161,4 @@ final class DiagnosticsViewModel {
         }
     }
 }
+

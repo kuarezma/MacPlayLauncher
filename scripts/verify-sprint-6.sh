@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fast Sprint 5B verification — static checks only, completes in seconds.
+# Fast Sprint 6 verification — static checks only, completes in seconds.
 # Use --full to also run xcodebuild test (slow; not for agent loops).
 set -euo pipefail
 
@@ -30,38 +30,47 @@ rg_swift() {
   rg --glob '*.swift' --glob '!Tests/**' "$@" Core App UI 2>/dev/null || true
 }
 
-section "1. Provider implementation"
+section "1. Sprint 6 models and services"
 for file in \
+  Core/Models/DiagnosticMode.swift \
+  Core/Services/Diagnostics/SelectableDependencyDiagnosticService.swift \
   Core/Services/Diagnostics/RosettaDiagnosticProvider.swift \
   Core/Services/Diagnostics/WineDiagnosticProvider.swift \
-  Core/Services/Diagnostics/PassiveRuntimeDiagnosticProvider.swift \
-  Core/Services/Diagnostics/RealDependencyDiagnosticService.swift \
-  Core/Services/Diagnostics/RuntimeDiagnosticProviding.swift \
-  Core/Services/Diagnostics/FileChecking.swift; do
+  Core/Services/Diagnostics/RealDependencyDiagnosticService.swift; do
   if [[ -f "$file" ]]; then pass "$file exists"; else fail "missing $file"; fi
 done
 
-section "2. Test coverage"
+section "2. Sprint 6 test coverage"
 for file in \
-  Tests/MacPlayLauncherTests/RosettaDiagnosticProviderTests.swift \
-  Tests/MacPlayLauncherTests/WineDiagnosticProviderTests.swift \
+  Tests/MacPlayLauncherTests/DiagnosticModeTests.swift \
+  Tests/MacPlayLauncherTests/SelectableDependencyDiagnosticServiceTests.swift \
   Tests/MacPlayLauncherTests/RealDependencyDiagnosticServiceTests.swift; do
   if [[ -f "$file" ]]; then pass "$file exists"; else fail "missing $file"; fi
 done
 
-section "3. Service wiring"
-if rg --glob '*.swift' -q 'RealDependencyDiagnosticService' App/ 2>/dev/null; then
-  fail "RealDependencyDiagnosticService referenced in App/ (production wiring)"
+section "3. Activation gate wiring"
+if rg --glob 'AppEnvironment.swift' -q 'SelectableDependencyDiagnosticService' App/ 2>/dev/null; then
+  pass "AppEnvironment uses SelectableDependencyDiagnosticService"
 else
-  pass "RealDependencyDiagnosticService not wired in App/"
+  fail "AppEnvironment must use SelectableDependencyDiagnosticService"
 fi
 
-if rg_swift -q 'StaticDependencyDiagnosticService\(\)' App/AppEnvironment.swift; then
-  pass "AppEnvironment.live uses StaticDependencyDiagnosticService"
-elif rg --glob 'AppEnvironment.swift' -q 'SelectableDependencyDiagnosticService' App/ 2>/dev/null; then
-  pass "AppEnvironment.live uses activation gate (SelectableDependencyDiagnosticService)"
+if rg --glob 'AppEnvironment.swift' -q 'mode:[[:space:]]*\.staticOnly' App/ 2>/dev/null; then
+  pass "AppEnvironment.live defaults to staticOnly mode"
 else
-  fail "AppEnvironment.live must use static diagnostics wiring"
+  fail "AppEnvironment.live must default to staticOnly mode"
+fi
+
+if rg --glob 'AppEnvironment.swift' -q 'policy:[[:space:]]*\.production' App/ 2>/dev/null; then
+  pass "AppEnvironment.live uses production activation policy"
+else
+  fail "AppEnvironment.live must use production activation policy"
+fi
+
+if rg --glob 'AppEnvironment.swift' -q 'dependencyDiagnosticService:[[:space:]]*RealDependencyDiagnosticService' App/ 2>/dev/null; then
+  fail "RealDependencyDiagnosticService must not be production default in AppEnvironment.live"
+else
+  pass "RealDependencyDiagnosticService is not direct production default"
 fi
 
 section "4. Scope boundary"
@@ -99,13 +108,17 @@ else
   pass "no NSTask usage"
 fi
 
-section "6. Production default"
-if rg --glob 'AppEnvironment.swift' -q 'mode:[[:space:]]*\.staticOnly' App/ 2>/dev/null; then
-  pass "production diagnostics remain static-only via activation gate"
-elif rg --glob 'AppEnvironment.swift' -q 'StaticDependencyDiagnosticService\(\)' App/ 2>/dev/null; then
-  pass "production diagnostics remain static"
+section "6. Production default and canLaunch policy"
+if rg_swift -q 'canLaunch:[[:space:]]*false' Core/Services/DefaultRunReadinessEvaluator.swift; then
+  pass "canLaunch remains false in DefaultRunReadinessEvaluator"
 else
-  fail "AppEnvironment must keep static diagnostics as production default"
+  fail "DefaultRunReadinessEvaluator must keep canLaunch false"
+fi
+
+if rg_swift -q 'allowsRealDiagnostics:[[:space:]]*false' Core/Models/DiagnosticMode.swift; then
+  pass "production policy blocks real diagnostics by default"
+else
+  fail "DiagnosticActivationPolicy.production must set allowsRealDiagnostics false"
 fi
 
 section "7. Build hygiene (fast)"
@@ -130,11 +143,11 @@ if [[ "$RUN_FULL" == true ]]; then
   if xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test 2>&1 | tail -5 | grep -q 'TEST SUCCEEDED'; then
     pass "xcodebuild test"
   else
-    fail "xcodebuild test — run manually: xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test"
+    fail "xcodebuild test — run manually in Xcode GUI: Product > Test"
   fi
 else
   section "8. Full build/test"
-  pass "skipped (use --full to run xcodebuild test)"
+  pass "skipped (use --full to run xcodebuild test; GUI test is preferred)"
 fi
 
 section "Summary"

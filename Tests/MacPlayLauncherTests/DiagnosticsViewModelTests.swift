@@ -65,6 +65,41 @@ final class DiagnosticsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.noLaunchThisSprintText, String(localized: "readiness.noLaunchThisSprint"))
     }
 
+    func testViewModelMapsStaticSourceLabel() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [makeDependency(kind: .wine, status: .missing)],
+                source: .staticPreparation
+            )
+        )
+
+        XCTAssertEqual(viewModel.diagnosticsSourceTitle, String(localized: "diagnostics.source.staticPreparation"))
+        XCTAssertEqual(viewModel.diagnosticsSourceDescription, String(localized: "diagnostics.source.staticDescription"))
+        XCTAssertEqual(viewModel.diagnosticsPassiveComponentsNote, String(localized: "diagnostics.source.dxvkPassiveNote"))
+    }
+
+    func testViewModelMapsRealSourceLabel() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [makeDependency(kind: .wine, status: .ready)],
+                source: .realSystemCheck
+            )
+        )
+
+        XCTAssertEqual(viewModel.diagnosticsSourceTitle, String(localized: "diagnostics.source.realSystemCheck"))
+        XCTAssertEqual(viewModel.diagnosticsSourceDescription, String(localized: "diagnostics.source.realDescription"))
+    }
+
+    func testViewModelDefaultsToStaticSourceWhenSourceMissing() {
+        let viewModel = DiagnosticsViewModel()
+        viewModel.update(summary: RuntimeDiagnosticSummary(dependencies: []))
+
+        XCTAssertEqual(viewModel.diagnosticsSourceTitle, String(localized: "diagnostics.source.staticPreparation"))
+        XCTAssertEqual(viewModel.diagnosticsSourceDescription, String(localized: "diagnostics.source.staticDescription"))
+    }
+
     private func makeDependency(kind: RuntimeDependencyKind, status: RuntimeDependencyStatus) -> RuntimeDependency {
         RuntimeDependency(
             displayName: kind.rawValue,

@@ -124,6 +124,21 @@ final class RunReadinessEvaluatorTests: XCTestCase {
         XCTAssertTrue(cases.allSatisfy { !$0.canLaunch })
     }
 
+    func testCanLaunchRemainsFalseForRealReadySummary() {
+        let result = evaluate(
+            profiles: [configuredProfile()],
+            dependencies: [
+                dependency(kind: .rosetta, status: .ready),
+                dependency(kind: .wine, status: .ready),
+                dependency(kind: .dxvk, status: .missing),
+                dependency(kind: .moltenVK, status: .missing)
+            ]
+        )
+
+        XCTAssertEqual(result.status, .blocked)
+        XCTAssertFalse(result.canLaunch)
+    }
+
     private func evaluate(
         profiles: [GameProfile],
         dependencies: [RuntimeDependency]

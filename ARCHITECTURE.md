@@ -74,6 +74,25 @@ Sprint 5B adds real Rosetta and Wine diagnostic providers behind the Sprint 5A c
 - `FileChecking` is a narrow diagnostics-only abstraction so Wine path checks can be tested without depending on the local system.
 - `PassiveRuntimeDiagnosticProvider` keeps DXVK and MoltenVK static because prefix/runtime layout is not defined yet.
 - `RealDependencyDiagnosticService` combines Rosetta, Wine, passive DXVK, passive MoltenVK, and the same game profile readiness rule used by static diagnostics.
-- `AppEnvironment.live` still wires `StaticDependencyDiagnosticService`; no UI, debug flag, or production default change is introduced in Sprint 5B.
+- `AppEnvironment.live` wired `StaticDependencyDiagnosticService` directly in Sprint 5B; Sprint 6 replaces this with the activation gate while keeping static as the default path.
 
 Sprint 5B still excludes game launch, launch buttons, shell scripts, `sh -c`, runtime download/install, prefix creation, Steam automation, bookmark resolve/access, and security-scoped resource access.
+
+## Sprint 6 Real Diagnostics Activation Gate
+
+Sprint 6 decides how real read-only diagnostics can be activated safely without making them the production default.
+
+- `DiagnosticMode` distinguishes `staticOnly` preparation guidance from `realReadOnly` system checks.
+- `DiagnosticActivationPolicy` defines whether real diagnostics are allowed and whether explicit user action is required.
+- `DiagnosticsSource` labels whether a summary came from static preparation or a real system check.
+- `SelectableDependencyDiagnosticService` delegates to `StaticDependencyDiagnosticService` or `RealDependencyDiagnosticService` based on mode and policy.
+- `AppEnvironment.live` wires `SelectableDependencyDiagnosticService(mode: .staticOnly, policy: .production)`; real diagnostics are not the default app path.
+- `AppEnvironment.previewWithRealDiagnostics` exists for internal/test wiring with `policy: .internalRealReadOnly`.
+- Diagnostics UI shows a passive source label and explanatory Turkish copy; there is no manual "run real check" button in Sprint 6.
+- Provider command errors normalize to dependency-level `unknown`; services do not throw to the UI.
+- `DefaultRunReadinessEvaluator` still returns `canLaunch: false` even when real diagnostics report Rosetta/Wine as ready.
+- DXVK and MoltenVK remain passive in both static and real modes.
+
+Sprint 6 still excludes game launch, launch buttons, shell scripts, `sh -c`, runtime download/install, prefix creation, Steam automation, bookmark resolve/access, security-scoped resource access, install prompts, and automatic fixes.
+
+Agent verification should prefer `./scripts/verify-sprint-6.sh` over manual `git diff` or default terminal `xcodebuild test`.

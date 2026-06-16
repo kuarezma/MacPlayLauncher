@@ -69,8 +69,17 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Rosetta detection uses the existing command boundary and does not install Rosetta or request admin privileges.
 - Wine detection checks only explicit allowed paths and runs only `wine --version`; it does not use `PATH` lookup or `which wine`.
 - DXVK and MoltenVK remain passive because prefix/runtime strategy is not implemented yet.
-- `RealDependencyDiagnosticService` is implemented for tests and future wiring, but production still uses `StaticDependencyDiagnosticService`.
+- `RealDependencyDiagnosticService` is implemented for tests and future wiring, but production still uses static diagnostics through the activation gate.
 - UI, game launch, prefix creation, runtime download/install, shell execution, and user `.exe` execution remain out of scope.
+
+## Sprint 6 Features
+
+- Real diagnostics activation gate with `DiagnosticMode`, `DiagnosticActivationPolicy`, and `DiagnosticsSource`.
+- `SelectableDependencyDiagnosticService` routes between static preparation and read-only real diagnostics.
+- Production default remains `staticOnly` with `DiagnosticActivationPolicy.production`; real diagnostics require explicit internal activation.
+- Diagnostics UI shows a passive source label (`Hazırlık rehberi` / `Gerçek sistem kontrolü`) without a manual real-check button.
+- `canLaunch` remains false for all readiness results.
+- Fast agent verification via `./scripts/verify-sprint-6.sh`; GUI build/test remains the primary human verification channel.
 
 ## Development
 
@@ -100,6 +109,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 6: Added real diagnostics activation gate, selectable diagnostic service, and passive source labeling; production remains static-only.
 - Sprint 5B: Added read-only Rosetta/Wine diagnostic providers and a non-default real diagnostics service; production diagnostics remain static.
 - Sprint 5A: Added a safe diagnostic command boundary with fake runner tests; production diagnostics remain static.
 - Sprint 4: Added passive Run Readiness Gate with blocker explanations and Turkish diagnostics UI, without launch/runtime execution.

@@ -5,11 +5,17 @@ alwaysApply: true
 
 # Sprint doğrulama — tıkanmayı önle
 
-Sprint 5B (ve benzeri sprint kapanış) doğrulaması yaparken **manuel `git diff`, `rg` taraması veya `xcodebuild test` çalıştırma**. Bunlar yanıtı keser veya dakikalarca bekletir.
+Sprint doğrulaması yaparken **manuel `git diff`, `rg` taraması veya `xcodebuild test` çalıştırma**. Bunlar yanıtı keser veya dakikalarca bekletir.
 
 ## Yapılacak
 
-Tek komut çalıştır:
+Sprint 6 ve sonrası için:
+
+```sh
+./scripts/verify-sprint-6.sh
+```
+
+Sprint 5B geriye dönük kontrol:
 
 ```sh
 ./scripts/verify-sprint-5b.sh
@@ -20,18 +26,22 @@ Tek komut çalıştır:
 Tam test gerekiyorsa (kullanıcı istemedikçe çalıştırma):
 
 ```sh
-./scripts/verify-sprint-5b.sh --full
+./scripts/verify-sprint-6.sh --full
 ```
+
+Ana insan doğrulaması: Xcode GUI → Product > Clean Build Folder, Command+B, Command+U.
 
 ## Yapılmayacak
 
-- `git diff` (tüm diff) — yerine script'in `git diff --name-only` kontrolü yeterli
+- `git diff` (tüm diff) — yerine script'in kontrolleri yeterli
 - `xcodebuild test` varsayılan doğrulama adımı olarak
 - Uzun shell komutlarını arka planda beklemek
-- Doğrulama listesini sıfırdan yazmak — script çıktısı + `ARCHITECTURE.md` Sprint 5B bölümü yeterli
+- Doğrulama listesini sıfırdan yazmak — script çıktısı + `ARCHITECTURE.md` yeterli
 
-## Sprint 5B özet kriterleri
+## Sprint 6 özet kriterleri
 
-- `RealDependencyDiagnosticService` var ama `AppEnvironment.live` hâlâ `StaticDependencyDiagnosticService` kullanır
+- `SelectableDependencyDiagnosticService` production'da `staticOnly` + `policy: .production`
+- `RealDependencyDiagnosticService` doğrudan production default değil
+- `canLaunch` her durumda false
 - `Process()` yalnızca `ProcessCommandRunner.swift` içinde
 - Oyun launch, prefix/install, `sh -c`, `which wine`, `softwareupdate` production kodda yok

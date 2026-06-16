@@ -991,6 +991,91 @@
         }
       }
     },
+    "diagnostics.source.dxvkPassiveNote" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DXVK ve MoltenVK sonraki aşamada ele alınacak."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DXVK ve MoltenVK sonraki aşamada ele alınacak."
+          }
+        }
+      }
+    },
+    "diagnostics.source.realDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu kontrol yalnızca Rosetta ve Wine durumunu okur. Kurulum veya oyun çalıştırma yapılmaz."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu kontrol yalnızca Rosetta ve Wine durumunu okur. Kurulum veya oyun çalıştırma yapılmaz."
+          }
+        }
+      }
+    },
+    "diagnostics.source.realSystemCheck" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerçek sistem kontrolü"
+          }
+        }
+      }
+    },
+    "diagnostics.source.staticDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ekran şu anda pasif hazırlık durumunu gösterir. Gerçek sistem kontrolü varsayılan değildir."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ekran şu anda pasif hazırlık durumunu gösterir. Gerçek sistem kontrolü varsayılan değildir."
+          }
+        }
+      }
+    },
+    "diagnostics.source.staticPreparation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık rehberi"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık rehberi"
+          }
+        }
+      }
+    },
     "diagnostics.readiness.title" : {
       "extractionState" : "stale",
       "localizations" : {
