@@ -20,7 +20,7 @@ jobs:
 
       - name: Install tools
         run: |
-          brew install xcodegen swiftlint
+          brew install xcodegen swiftlint ripgrep
 
       - name: Generate Xcode project
         run: xcodegen generate
