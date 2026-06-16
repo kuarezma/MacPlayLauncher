@@ -36,6 +36,34 @@ struct AddGameView: View {
                 }
             }
 
+            Section(String(localized: "addGame.steam.title")) {
+                HStack {
+                    TextField(String(localized: "steam_appid_placeholder"), text: $appState.steamInstallInput)
+                        .textFieldStyle(.roundedBorder)
+
+                    Button(String(localized: "steam_open_button")) {
+                        appState.openSteamInstall()
+                    }
+                    .buttonStyle(.bordered)
+                }
+
+                Text(String(localized: "addGame.steam.help"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                
+                if let steamInstallMessage = appState.steamInstallMessage {
+                    Label(steamInstallMessage, systemImage: "checkmark.circle")
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                }
+
+                if let steamInstallErrorMessage = appState.steamInstallErrorMessage {
+                    Label(steamInstallErrorMessage, systemImage: "exclamationmark.triangle")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+            }
+
             Section {
                 TextField(String(localized: "addGame.name"), text: $appState.addGameForm.gameName)
                     .textFieldStyle(.roundedBorder)
