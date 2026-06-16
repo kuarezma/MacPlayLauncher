@@ -73,6 +73,12 @@ Verify the app starts:
 ./script/build_and_run.sh --verify
 ```
 
+Regenerate app icons:
+
+```sh
+./scripts/generate-app-icons.py
+```
+
 ## Conventions
 
 - Commit `project.yml`, not the generated `.xcodeproj`.

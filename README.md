@@ -177,8 +177,15 @@ swiftlint lint
 
 Continuous integration runs XcodeGen, SwiftLint, sprint verification, and XCTest on every push and pull request to `main`.
 
+Regenerate app icons:
+
+```sh
+./scripts/generate-app-icons.py
+```
+
 ## Changelog
 
+- Chore: Added generated MacPlay Launcher app icons and reusable launcher symbol assets.
 - Chore: Added a project-local build/run script and Codex Run action.
 - Chore: Added GitHub Actions CI for XcodeGen, SwiftLint, sprint verification, and XCTest.
 - Fix: Restored Swift 6/Xcode test compatibility for environment wiring and launch planner tests.
