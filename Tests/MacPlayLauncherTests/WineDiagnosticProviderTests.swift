@@ -94,6 +94,36 @@ final class WineDiagnosticProviderTests: XCTestCase {
         XCTAssertEqual(dependency.status, .unknown)
     }
 
+    func testParseVersionMapsKnownOutputs() {
+        XCTAssertEqual(WineDiagnosticProvider.parseVersion(from: "wine-9.0\n"), "9.0")
+        XCTAssertEqual(WineDiagnosticProvider.parseVersion(from: "wine-8.21-staging"), "8.21-staging")
+        XCTAssertNil(WineDiagnosticProvider.parseVersion(from: ""))
+        XCTAssertNil(WineDiagnosticProvider.parseVersion(from: "not-wine"))
+    }
+
+    func testVersionParsesFromStderrWhenStdoutIsUnusable() async {
+        let wineURL = URL(fileURLWithPath: "/opt/homebrew/bin/wine")
+        let provider = makeProvider(
+            existingURLs: [wineURL],
+            executableURLs: [wineURL],
+            commandResults: [
+                wineRequest(wineURL): .success(
+                    CommandResult(
+                        exitCode: 0,
+                        stdout: "unexpected\n",
+                        stderr: "wine-8.21-staging\n",
+                        duration: 0.01
+                    )
+                )
+            ]
+        )
+
+        let dependency = await provider.diagnose()
+
+        XCTAssertEqual(dependency.status, .ready)
+        XCTAssertEqual(dependency.version, "8.21-staging")
+    }
+
     func testMalformedVersionOutputReturnsReadyWithoutVersion() async {
         let wineURL = URL(fileURLWithPath: "/opt/homebrew/bin/wine")
         let provider = makeProvider(

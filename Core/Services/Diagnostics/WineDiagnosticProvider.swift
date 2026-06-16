@@ -33,6 +33,7 @@ struct WineDiagnosticProvider: RuntimeDiagnosticProviding {
         do {
             let result = try await commandRunner.run(commandRequest(for: wineURL))
             let version = Self.parseVersion(from: result.stdout)
+                ?? Self.parseVersion(from: result.stderr)
             return dependency(
                 status: .ready,
                 version: version,
