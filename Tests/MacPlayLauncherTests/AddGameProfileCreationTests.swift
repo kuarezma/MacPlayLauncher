@@ -45,11 +45,12 @@ final class AddGameProfileCreationTests: XCTestCase {
         let outsideFolderURL = try temporaryDirectory()
         let executableURL = outsideFolderURL.appending(path: "game.exe")
         try Data().write(to: executableURL)
+        let profileStoreURL = try temporaryDirectory()
 
         let appState = AppState(
             environment: AppEnvironment(
                 profileManager: GameProfileManager(
-                    store: JSONStore<GameProfile>(directoryURL: try temporaryDirectory(), fileSystem: LocalFileSystem())
+                    store: JSONStore<GameProfile>(directoryURL: profileStoreURL, fileSystem: LocalFileSystem())
                 ),
                 bundledProfileLoader: BundledGameProfileLoader(bundle: .main),
                 fileSelectionService: FakeFileSelectionService(folderURL: gameFolderURL, executableURL: executableURL),

@@ -25,7 +25,7 @@ struct AppEnvironment: Sendable {
         runReadinessEvaluator: any RunReadinessEvaluating,
         prefixManager: any PrefixManaging,
         experimentalLaunchPolicy: ExperimentalLaunchPolicy = .disabled,
-        experimentalRunReadinessEvaluator: any RunReadinessEvaluating? = nil,
+        experimentalRunReadinessEvaluator: (any RunReadinessEvaluating)? = nil,
         gameLauncher: (any GameLaunching)? = nil
     ) {
         self.profileManager = profileManager

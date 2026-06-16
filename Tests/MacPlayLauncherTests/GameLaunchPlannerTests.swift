@@ -7,7 +7,7 @@ final class GameLaunchPlannerTests: XCTestCase {
         let gameFolder = URL(fileURLWithPath: "/tmp/game", isDirectory: true)
         let executable = gameFolder.appending(path: "cossacks3.exe")
         let prefixRoot = URL(fileURLWithPath: "/tmp/AppSupport/MacPlayLauncher", isDirectory: true)
-        let prefixURL = prefixRoot.appending(path: "Prefixes/test-game", isDirectory: true)
+        let prefixURL = prefixRoot.appending(path: "Prefixes/test-game", directoryHint: .isDirectory)
 
         let planner = DefaultGameLaunchPlanner(
             bookmarkManager: FakeLaunchBookmarkManager(

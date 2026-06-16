@@ -171,6 +171,7 @@ swiftlint
 
 ## Changelog
 
+- Fix: Restored Swift 6/Xcode test compatibility for environment wiring and launch planner tests.
 - Sprint 17: Added experimental minimal launch prototype with bookmark access and experimental readiness gating.
 - Sprint 16: Added ADR-003 launch plan; no launch implementation or bookmark access runtime.
 - Sprint 15: Finalized ADR-001 runtime acquisition strategy; no runtime download, install, or launch behavior.
