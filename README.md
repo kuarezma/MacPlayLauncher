@@ -95,6 +95,12 @@ MacPlay Launcher is a macOS launcher project for running selected Windows games 
 - Per-request diagnostic mode routing through `SelectableDependencyDiagnosticService`; initial load remains static preparation.
 - Production policy allows real diagnostics only with explicit user action; `canLaunch` remains false.
 
+## Sprint 9 Features
+
+- Real-check result details on the Diagnostics screen: last check timestamp plus dependency version and install path when available.
+- Detail lines appear only after a manual real check; static preparation UI stays unchanged.
+- No persistence, policy change, or launch affordance.
+
 ## Development
 
 Generate the Xcode project:
@@ -123,6 +129,7 @@ swiftlint
 
 ## Changelog
 
+- Sprint 9: Added real-check result details for timestamp, version, and install path on the Diagnostics screen.
 - Sprint 8: Added manual real diagnostics check button with per-request mode routing; static preparation remains the default load.
 - Sprint 7: Added diagnostics source info card and clearer passive preparation messaging; no real-check button.
 - Sprint 6: Added real diagnostics activation gate, selectable diagnostic service, and passive source labeling; production remains static-only.

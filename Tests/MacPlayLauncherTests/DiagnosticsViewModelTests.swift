@@ -173,6 +173,66 @@ final class DiagnosticsViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.showsManualRealCheckButton)
     }
 
+    func testLastRealCheckTextOnlyForRealSource() {
+        let viewModel = DiagnosticsViewModel()
+        let generatedAt = Date(timeIntervalSince1970: 1_700_000_000)
+
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [],
+                generatedAt: generatedAt,
+                source: .realSystemCheck
+            )
+        )
+
+        XCTAssertNotNil(viewModel.lastRealCheckText)
+        XCTAssertTrue(viewModel.lastRealCheckText?.contains("Son gerçek kontrol:") == true)
+
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [],
+                generatedAt: generatedAt,
+                source: .staticPreparation
+            )
+        )
+
+        XCTAssertNil(viewModel.lastRealCheckText)
+    }
+
+    func testDependencyDetailTextOnlyForRealSource() {
+        let viewModel = DiagnosticsViewModel()
+        let dependency = makeDependency(kind: .wine, status: .ready)
+        var detailedDependency = dependency
+        detailedDependency.version = "9.0"
+        detailedDependency.installPath = "/opt/homebrew/bin/wine"
+
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [detailedDependency],
+                source: .realSystemCheck
+            )
+        )
+
+        XCTAssertEqual(
+            viewModel.dependencyVersionText(for: detailedDependency),
+            String(format: String(localized: "diagnostics.dependency.version"), "9.0")
+        )
+        XCTAssertEqual(
+            viewModel.dependencyInstallPathText(for: detailedDependency),
+            String(format: String(localized: "diagnostics.dependency.installPath"), "/opt/homebrew/bin/wine")
+        )
+
+        viewModel.update(
+            summary: RuntimeDiagnosticSummary(
+                dependencies: [detailedDependency],
+                source: .staticPreparation
+            )
+        )
+
+        XCTAssertNil(viewModel.dependencyVersionText(for: detailedDependency))
+        XCTAssertNil(viewModel.dependencyInstallPathText(for: detailedDependency))
+    }
+
     private func makeDependency(kind: RuntimeDependencyKind, status: RuntimeDependencyStatus) -> RuntimeDependency {
         RuntimeDependency(
             displayName: kind.rawValue,

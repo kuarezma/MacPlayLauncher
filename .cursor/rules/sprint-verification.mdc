@@ -9,13 +9,17 @@ Sprint doğrulaması yaparken **manuel `git diff`, `rg` taraması veya `xcodebui
 
 ## Yapılacak
 
-Sprint 8 ve sonrası için:
+Sprint 9 ve sonrası için:
+
+```sh
+./scripts/verify-sprint-9.sh
+```
+
+Sprint 8 geriye dönük kontrol:
 
 ```sh
 ./scripts/verify-sprint-8.sh
 ```
-
-Sprint 7 geriye dönük kontrol:
 
 ```sh
 ./scripts/verify-sprint-7.sh

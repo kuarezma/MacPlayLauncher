@@ -128,6 +128,47 @@ final class DiagnosticsViewModel {
         String(localized: "diagnostics.source.dxvkMoltenVKLater")
     }
 
+    var lastRealCheckText: String? {
+        guard summary?.source == .realSystemCheck, let generatedAt = summary?.generatedAt else {
+            return nil
+        }
+
+        return formattedLastRealCheckText(generatedAt: generatedAt)
+    }
+
+    func dependencyVersionText(for dependency: RuntimeDependency) -> String? {
+        guard showsRealCheckDependencyDetails, let version = dependency.version else {
+            return nil
+        }
+
+        return String(format: String(localized: "diagnostics.dependency.version"), version)
+    }
+
+    func dependencyInstallPathText(for dependency: RuntimeDependency) -> String? {
+        guard showsRealCheckDependencyDetails, let installPath = dependency.installPath else {
+            return nil
+        }
+
+        return String(format: String(localized: "diagnostics.dependency.installPath"), installPath)
+    }
+
+    func formattedLastRealCheckText(generatedAt: Date) -> String {
+        let formattedDate = generatedAt.formatted(
+            .dateTime
+                .day()
+                .month(.wide)
+                .year()
+                .hour()
+                .minute()
+                .locale(Locale(identifier: "tr_TR"))
+        )
+        return String(format: String(localized: "diagnostics.realCheck.lastChecked"), formattedDate)
+    }
+
+    private var showsRealCheckDependencyDetails: Bool {
+        summary?.source == .realSystemCheck
+    }
+
     func setAllowsManualRealCheck(_ value: Bool) {
         allowsManualRealCheck = value
     }

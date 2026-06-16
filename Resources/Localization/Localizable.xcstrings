@@ -1093,6 +1093,57 @@
         }
       }
     },
+    "diagnostics.realCheck.lastChecked" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son gerçek kontrol: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son gerçek kontrol: %@"
+          }
+        }
+      }
+    },
+    "diagnostics.dependency.version" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sürüm: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sürüm: %@"
+          }
+        }
+      }
+    },
+    "diagnostics.dependency.installPath" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konum: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konum: %@"
+          }
+        }
+      }
+    },
     "diagnostics.realCheck.returnToPreparation" : {
       "extractionState" : "manual",
       "localizations" : {

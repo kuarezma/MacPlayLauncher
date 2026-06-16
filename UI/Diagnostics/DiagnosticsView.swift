@@ -60,6 +60,12 @@ struct DiagnosticsView: View {
                     .foregroundStyle(.secondary)
             }
 
+            if let lastRealCheckText = viewModel.lastRealCheckText {
+                Text(lastRealCheckText)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
             if viewModel.isRunningRealCheck {
                 HStack(spacing: 8) {
                     ProgressView()
@@ -210,6 +216,18 @@ struct DiagnosticsView: View {
 
             Text(dependency.userFacingDescription)
                 .foregroundStyle(.secondary)
+
+            if let versionText = viewModel.dependencyVersionText(for: dependency) {
+                Text(versionText)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            if let installPathText = viewModel.dependencyInstallPathText(for: dependency) {
+                Text(installPathText)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
 
             if let missingReason = dependency.missingReason {
                 Label(missingReason, systemImage: "exclamationmark.triangle")

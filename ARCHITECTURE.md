@@ -120,3 +120,14 @@ Sprint 8 adds an explicit user-triggered read-only real diagnostics path without
 - `canLaunch` remains false, DXVK/MoltenVK remain passive, and there is still no install/download/launch automation.
 
 Sprint 8 still excludes automatic real diagnostics on app open, game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 9 Real Diagnostics Result Details
+
+Sprint 9 surfaces read-only metadata from manual real checks without changing diagnostic execution or policy.
+
+- Diagnostics UI shows `Son gerçek kontrol` timestamp when the active summary source is `realSystemCheck`.
+- Dependency rows show Wine version and install path when real-check data is available.
+- Detail lines appear only for real-check results; static preparation rows stay unchanged.
+- No persistence, auto-refresh, launch affordance, or service/policy changes are introduced.
+
+Sprint 9 still excludes automatic diagnostics, game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.
