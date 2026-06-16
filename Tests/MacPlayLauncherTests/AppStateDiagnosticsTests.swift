@@ -75,6 +75,36 @@ final class AppStateDiagnosticsTests: XCTestCase {
         XCTAssertNil(appState.cachedDiagnosticSummary)
     }
 
+    func testLibraryReadinessUsesCachedRealSession() async {
+        let appState = makeAppState(policy: .production)
+        let readiness = RunReadinessResult(
+            status: .ready,
+            title: "ready-title",
+            message: "ready-message",
+            blockers: [],
+            canLaunch: false
+        )
+        appState.storeDiagnosticsSession(
+            mode: .realReadOnly,
+            summary: RuntimeDiagnosticSummary(dependencies: [], source: .realSystemCheck),
+            readinessResult: readiness
+        )
+
+        let result = await appState.libraryReadinessResult()
+
+        XCTAssertEqual(result, readiness)
+        XCTAssertFalse(result.canLaunch)
+    }
+
+    func testLibraryReadinessFallsBackToStaticWhenNoCache() async {
+        let appState = makeAppState(policy: .production)
+
+        let result = await appState.libraryReadinessResult()
+
+        XCTAssertFalse(result.canLaunch)
+        XCTAssertFalse(result.blockers.isEmpty)
+    }
+
     private func makeAppState(policy: DiagnosticActivationPolicy?) -> AppState {
         let diagnosticService = SelectableDependencyDiagnosticService(
             mode: .staticOnly,

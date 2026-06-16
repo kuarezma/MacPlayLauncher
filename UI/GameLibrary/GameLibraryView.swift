@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GameLibraryView: View {
     @Bindable var appState: AppState
+    @State private var libraryReadiness: RunReadinessResult?
 
     var body: some View {
         NavigationSplitView {
@@ -54,14 +55,30 @@ struct GameLibraryView: View {
             }
         } else {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), spacing: 16)], spacing: 16) {
-                    ForEach(appState.profiles) { profile in
-                        GameCardView(profile: profile)
+                VStack(alignment: .leading, spacing: 16) {
+                    if let libraryReadiness {
+                        LibraryReadinessStripView(result: libraryReadiness) {
+                            appState.showDiagnostics()
+                        }
+                    }
+
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), spacing: 16)], spacing: 16) {
+                        ForEach(appState.profiles) { profile in
+                            GameCardView(profile: profile)
+                        }
                     }
                 }
                 .padding(24)
             }
             .navigationTitle(String(localized: "library.title"))
+            .task(id: libraryReadinessRefreshToken) {
+                libraryReadiness = await appState.libraryReadinessResult()
+            }
         }
+    }
+
+    private var libraryReadinessRefreshToken: String {
+        let cacheStamp = appState.cachedDiagnosticSummary?.generatedAt.timeIntervalSince1970 ?? 0
+        return "\(appState.profiles.count)|\(appState.diagnosticsDisplayMode.rawValue)|\(cacheStamp)"
     }
 }

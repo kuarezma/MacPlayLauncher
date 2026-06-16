@@ -182,6 +182,15 @@ final class AppState {
         cachedReadinessResult = nil
     }
 
+    func libraryReadinessResult() async -> RunReadinessResult {
+        if let cached = restoreCachedDiagnosticsIfAvailable() {
+            return cached.readinessResult
+        }
+
+        let summary = await loadRuntimeDiagnosticSummary(mode: .staticOnly)
+        return evaluateRunReadiness(diagnosticSummary: summary)
+    }
+
     private func makeAddGameProfile() throws -> GameProfile {
         guard let folderURL = addGameForm.selectedFolderURL,
               let executableURL = addGameForm.selectedExecutableURL else {

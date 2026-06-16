@@ -142,3 +142,14 @@ Sprint 10 keeps the latest diagnostics screen state in memory for the current ap
 - No disk persistence, auto real-check, launch affordance, or policy changes are introduced.
 
 Sprint 10 still excludes automatic diagnostics, game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.
+
+## Sprint 11 Library Readiness Strip
+
+Sprint 11 surfaces passive readiness information on the Game Library screen without adding launch behavior.
+
+- `AppState.libraryReadinessResult()` returns the cached real-check readiness when available, otherwise evaluates static preparation readiness.
+- `LibraryReadinessStripView` shows title, badge, message, and a `Tanılamayı aç` navigation action.
+- The strip refreshes when profiles or diagnostics session state change.
+- No launch button, disk persistence, or automatic real diagnostics are introduced.
+
+Sprint 11 still excludes game launch, prefix creation, runtime download/install, shell usage, and any change to `canLaunch`.

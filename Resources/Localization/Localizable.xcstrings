@@ -56,6 +56,23 @@
         }
       }
     },
+    "accessibility.libraryReadinessStrip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık durumu: %@. %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık durumu: %@. %@"
+          }
+        }
+      }
+    },
     "accessibility.nav.addGame" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1803,6 +1820,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Runtime"
+          }
+        }
+      }
+    },
+    "library.readiness.openDiagnostics" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanılamayı aç"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanılamayı aç"
+          }
+        }
+      }
+    },
+    "library.readiness.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık durumu"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hazırlık durumu"
           }
         }
       }
