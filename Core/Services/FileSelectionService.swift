@@ -29,10 +29,7 @@ struct FileSelectionService: FileSelectionServicing {
         panel.canChooseFiles = true
         panel.allowsMultipleSelection = false
         panel.canCreateDirectories = false
-        panel.allowedContentTypes = [
-            UTType(filenameExtension: "exe"),
-            UTType("com.microsoft.windows-executable")
-        ].compactMap { $0 }
+        // UTI filtresi tamamen kaldırıldı: Kullanıcı setup.exe dahil her şeyi seçebilir
         return panel.runModal() == .OK ? panel.url : nil
     }
 }
