@@ -10,6 +10,7 @@ struct AppEnvironment: Sendable {
     let diagnosticActivationPolicy: DiagnosticActivationPolicy?
     let runReadinessEvaluator: any RunReadinessEvaluating
     let prefixManager: any PrefixManaging
+    let steamInstallService: any SteamInstallServicing
     let experimentalLaunchPolicy: ExperimentalLaunchPolicy
     let experimentalRunReadinessEvaluator: any RunReadinessEvaluating
     let gameLauncher: any GameLaunching
@@ -25,6 +26,7 @@ struct AppEnvironment: Sendable {
         diagnosticActivationPolicy: DiagnosticActivationPolicy? = nil,
         runReadinessEvaluator: any RunReadinessEvaluating,
         prefixManager: any PrefixManaging,
+        steamInstallService: any SteamInstallServicing,
         experimentalLaunchPolicy: ExperimentalLaunchPolicy = .disabled,
         experimentalRunReadinessEvaluator: (any RunReadinessEvaluating)? = nil,
         gameLauncher: (any GameLaunching)? = nil,
@@ -40,6 +42,7 @@ struct AppEnvironment: Sendable {
         self.diagnosticActivationPolicy = diagnosticActivationPolicy
         self.runReadinessEvaluator = runReadinessEvaluator
         self.prefixManager = prefixManager
+        self.steamInstallService = steamInstallService
         self.experimentalLaunchPolicy = experimentalLaunchPolicy
         self.experimentalRunReadinessEvaluator = experimentalRunReadinessEvaluator ?? runReadinessEvaluator
         self.gameLauncher = gameLauncher ?? DisabledGameLauncher()
@@ -78,6 +81,7 @@ struct AppEnvironment: Sendable {
             diagnosticActivationPolicy: .production,
             runReadinessEvaluator: DefaultRunReadinessEvaluator(),
             prefixManager: prefixManager,
+            steamInstallService: SteamInstallService(),
             experimentalLaunchPolicy: .experimental,
             experimentalRunReadinessEvaluator: ExperimentalRunReadinessEvaluator(
                 prefixManager: prefixManager,
@@ -104,6 +108,7 @@ struct AppEnvironment: Sendable {
             diagnosticActivationPolicy: .internalRealReadOnly,
             runReadinessEvaluator: live.runReadinessEvaluator,
             prefixManager: live.prefixManager,
+            steamInstallService: live.steamInstallService,
             experimentalLaunchPolicy: live.experimentalLaunchPolicy,
             experimentalRunReadinessEvaluator: live.experimentalRunReadinessEvaluator,
             gameLauncher: live.gameLauncher,

@@ -25,6 +25,9 @@ final class AppState {
     var profiles: [GameProfile] = []
     var loadErrorMessage: String?
     var addGameForm = AddGameFormState()
+    var steamInstallInput = ""
+    var steamInstallMessage: String?
+    var steamInstallErrorMessage: String?
     private(set) var diagnosticsDisplayMode: DiagnosticMode = .staticOnly
     private(set) var cachedDiagnosticSummary: RuntimeDiagnosticSummary?
     private(set) var cachedReadinessResult: RunReadinessResult?
@@ -121,6 +124,9 @@ final class AppState {
             selectedProfileID = profile.id
             selectedNavigationItem = .library
             addGameForm = AddGameFormState(successMessage: String(localized: "addGame.save.success"))
+            steamInstallInput = ""
+            steamInstallMessage = nil
+            steamInstallErrorMessage = nil
             resetDiagnosticsSessionToStaticPreparation()
         } catch {
             addGameForm.errorMessage = ErrorPresenter.message(for: error)
@@ -129,6 +135,9 @@ final class AppState {
 
     func cancelAddGame() {
         addGameForm = AddGameFormState()
+        steamInstallInput = ""
+        steamInstallMessage = nil
+        steamInstallErrorMessage = nil
         selectedNavigationItem = .library
     }
 
@@ -312,5 +321,53 @@ final class AppState {
 
     func showSettings() {
         selectedNavigationItem = .settings
+    }
+
+    func openSteamInstall() {
+        steamInstallMessage = nil
+        steamInstallErrorMessage = nil
+
+        let input = steamInstallInput.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        do {
+            if input.isEmpty {
+                try environment.steamInstallService.openLibrary()
+                steamInstallMessage = String(localized: "steam_open_success_library")
+            } else if let appID = extractAppID(from: input) {
+                try environment.steamInstallService.openInstallPage(for: appID)
+                steamInstallMessage = String(localized: "steam_open_success_install")
+            } else {
+                steamInstallErrorMessage = String(localized: "addGame.steam.error.invalidInput")
+            }
+        } catch SteamInstallError.appNotFound {
+            steamInstallErrorMessage = String(localized: "steam_not_installed")
+        } catch {
+            steamInstallErrorMessage = String(localized: "steam_open_failed")
+        }
+    }
+
+    private func extractAppID(from input: String) -> String? {
+        if input.allSatisfy(\.isNumber) && !input.isEmpty {
+            return input
+        }
+
+        if input.hasPrefix("steam://install/") {
+            let appID = input.replacingOccurrences(of: "steam://install/", with: "")
+            if appID.allSatisfy(\.isNumber) && !appID.isEmpty {
+                return appID
+            }
+        }
+
+        if let url = URL(string: input), url.host == "store.steampowered.com" {
+            let pathComponents = url.pathComponents
+            if let appIndex = pathComponents.firstIndex(of: "app"), appIndex + 1 < pathComponents.count {
+                let appID = pathComponents[appIndex + 1]
+                if appID.allSatisfy(\.isNumber) && !appID.isEmpty {
+                    return appID
+                }
+            }
+        }
+
+        return nil
     }
 }
