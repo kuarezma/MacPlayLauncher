@@ -79,7 +79,7 @@ final class RunReadinessEvaluatorTests: XCTestCase {
 
         XCTAssertEqual(result.status, .ready)
         XCTAssertTrue(result.blockers.isEmpty)
-        XCTAssertFalse(result.canLaunch)
+        XCTAssertTrue(result.canLaunch)
     }
 
     func testMultipleBlockersKeepDeterministicOrder() {
@@ -113,15 +113,28 @@ final class RunReadinessEvaluatorTests: XCTestCase {
         )
     }
 
-    func testCanLaunchIsAlwaysFalseForSprint4Statuses() {
-        let cases: [RunReadinessResult] = [
-            evaluate(profiles: [configuredProfile()], dependencies: readyDependencies()),
-            evaluate(profiles: [], dependencies: readyDependencies()),
-            evaluate(profiles: [configuredProfile()], dependencies: [dependency(kind: .rosetta, status: .unknown)]),
-            evaluate(profiles: [configuredProfile()], dependencies: [dependency(kind: .wine, status: .unsupported)])
-        ]
+    func test_canLaunch_isTrue_whenStatusIsReady() {
+        let result = evaluate(profiles: [configuredProfile()], dependencies: readyDependencies())
+        XCTAssertEqual(result.status, .ready)
+        XCTAssertTrue(result.canLaunch)
+    }
 
-        XCTAssertTrue(cases.allSatisfy { !$0.canLaunch })
+    func test_canLaunch_isFalse_whenStatusIsBlocked() {
+        let result = evaluate(profiles: [], dependencies: readyDependencies())
+        XCTAssertEqual(result.status, .blocked)
+        XCTAssertFalse(result.canLaunch)
+    }
+
+    func test_canLaunch_isFalse_whenStatusIsUnknown() {
+        let result = evaluate(profiles: [configuredProfile()], dependencies: [dependency(kind: .rosetta, status: .unknown)])
+        XCTAssertEqual(result.status, .unknown)
+        XCTAssertFalse(result.canLaunch)
+    }
+
+    func test_canLaunch_isFalse_whenStatusIsUnsupported() {
+        let result = evaluate(profiles: [configuredProfile()], dependencies: [dependency(kind: .wine, status: .unsupported)])
+        XCTAssertEqual(result.status, .unsupported)
+        XCTAssertFalse(result.canLaunch)
     }
 
     func testCanLaunchRemainsFalseForRealReadySummary() {
