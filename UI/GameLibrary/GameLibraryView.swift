@@ -62,9 +62,18 @@ struct GameLibraryView: View {
                         }
                     }
 
+                    if let launchError = appState.launchErrorMessage {
+                        Label(launchError, systemImage: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.red.opacity(0.8))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), spacing: 16)], spacing: 16) {
                         ForEach(appState.profiles) { profile in
-                            GameCardView(profile: profile)
+                            GameCardView(appState: appState, profile: profile)
                         }
                     }
                 }

@@ -29,7 +29,6 @@ struct FileSelectionService: FileSelectionServicing {
         panel.canChooseFiles = true
         panel.allowsMultipleSelection = false
         panel.canCreateDirectories = false
-        // UTI filtresi tamamen kaldırıldı: Kullanıcı setup.exe dahil her şeyi seçebilir
         return panel.runModal() == .OK ? panel.url : nil
     }
 }
