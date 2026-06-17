@@ -24,6 +24,8 @@ final class AppState {
     var selectedProfileID: String?
     var profiles: [GameProfile] = []
     var loadErrorMessage: String?
+    var launchingProfileID: String?
+    var launchErrorMessage: String?
     var addGameForm = AddGameFormState()
     var steamInstallInput = ""
     var steamInstallMessage: String?
@@ -102,6 +104,12 @@ final class AppState {
         }
 
         guard let executableURL = environment.fileSelectionService.selectExecutableFile() else {
+            return
+        }
+
+        guard executableURL.pathExtension.lowercased() == "exe" else {
+            addGameForm.selectedExecutableURL = nil
+            addGameForm.errorMessage = "Sadece .exe uzantılı Windows çalıştırılabilir dosyaları desteklenmektedir."
             return
         }
 
@@ -195,6 +203,39 @@ final class AppState {
         }
 
         return try environment.gameLauncher.launch(profile: profile)
+    }
+
+    func launchGame(profileID: String) {
+        launchingProfileID = profileID
+        launchErrorMessage = nil
+
+        guard let profile = profiles.first(where: { $0.id == profileID }) else {
+            launchErrorMessage = String(localized: "addGame.error.selectFolderFirst") // Generic fallback
+            launchingProfileID = nil
+            return
+        }
+
+        do {
+            let state = try environment.prefixManager.directoryState(for: profile)
+            if state.availability != .exists {
+                _ = try environment.prefixManager.createPrefixDirectory(for: profile)
+            }
+
+            _ = try environment.gameLauncher.launch(profile: profile)
+            
+            if let index = profiles.firstIndex(where: { $0.id == profileID }) {
+                var updatedProfile = profiles[index]
+                updatedProfile.launchCount += 1
+                updatedProfile.lastPlayedAt = Date()
+                try environment.profileManager.saveProfile(updatedProfile)
+                profiles[index] = updatedProfile
+            }
+            
+            launchingProfileID = nil
+        } catch {
+            launchErrorMessage = ErrorPresenter.message(for: error)
+            launchingProfileID = nil
+        }
     }
 
     func restoreCachedDiagnosticsIfAvailable() -> (summary: RuntimeDiagnosticSummary, readinessResult: RunReadinessResult)? {
@@ -343,6 +384,31 @@ final class AppState {
             steamInstallErrorMessage = String(localized: "steam_not_installed")
         } catch {
             steamInstallErrorMessage = String(localized: "steam_open_failed")
+        }
+    }
+
+    func launchGameWithSteamInitiation(profileID: String) async {
+        launchingProfileID = profileID
+        launchErrorMessage = nil
+        steamInstallMessage = nil
+        steamInstallErrorMessage = nil
+
+        do {
+            try environment.steamInstallService.openLibrary()
+            steamInstallMessage = String(localized: "steam_open_success_library")
+
+            try await environment.steamInstallService.waitForReadiness(timeout: 30)
+
+            launchGame(profileID: profileID)
+        } catch SteamInstallError.readinessTimeout {
+            launchErrorMessage = String(localized: "steam_ready_timeout")
+            launchingProfileID = nil
+        } catch SteamInstallError.appNotFound {
+            launchErrorMessage = String(localized: "steam_not_installed")
+            launchingProfileID = nil
+        } catch {
+            launchErrorMessage = ErrorPresenter.message(for: error)
+            launchingProfileID = nil
         }
     }
 

@@ -5,7 +5,9 @@ import XCTest
 final class FakeSteamInstallService: SteamInstallServicing, @unchecked Sendable {
     var didCallOpenInstallPage = false
     var didCallOpenLibrary = false
+    var didCallWaitForReadiness = false
     var shouldThrow = false
+    var shouldThrowTimeout = false
     var lastOpenedAppID: String?
 
     func openInstallPage(for appID: String) throws {
@@ -18,6 +20,16 @@ final class FakeSteamInstallService: SteamInstallServicing, @unchecked Sendable 
 
     func openLibrary() throws {
         didCallOpenLibrary = true
+        if shouldThrow {
+            throw SteamInstallError.appNotFound
+        }
+    }
+
+    func waitForReadiness(timeout: TimeInterval) async throws {
+        didCallWaitForReadiness = true
+        if shouldThrowTimeout {
+            throw SteamInstallError.readinessTimeout
+        }
         if shouldThrow {
             throw SteamInstallError.appNotFound
         }
