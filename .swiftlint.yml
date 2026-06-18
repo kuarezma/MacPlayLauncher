@@ -20,4 +20,6 @@ excluded:
   - MacPlayLauncher.xcodeproj
   - DerivedData
   - build
+  - .build
+  - build_output
 

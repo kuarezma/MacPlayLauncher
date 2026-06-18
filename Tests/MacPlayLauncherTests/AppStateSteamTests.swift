@@ -36,16 +36,80 @@ final class FakeSteamInstallService: SteamInstallServicing, @unchecked Sendable 
     }
 }
 
-@MainActor
 final class AppStateSteamTests: XCTestCase {
-    var appState: AppState!
-    var fakeSteamService: FakeSteamInstallService!
+    @MainActor
+    func test_openSteamInstall_withValidAppID_callsService() {
+        let context = makeContext()
+        context.appState.steamInstallInput = "730"
+        context.appState.openSteamInstall()
 
-    override func setUp() async throws {
-        try await super.setUp()
-        fakeSteamService = FakeSteamInstallService()
-        
-        let profileStoreURL = try temporaryDirectory()
+        XCTAssertTrue(context.fakeSteamService.didCallOpenInstallPage)
+        XCTAssertEqual(context.fakeSteamService.lastOpenedAppID, "730")
+        XCTAssertNotNil(context.appState.steamInstallMessage)
+        XCTAssertNil(context.appState.steamInstallErrorMessage)
+    }
+
+    @MainActor
+    func test_openSteamInstall_withStoreURL_extractsAppID() {
+        let context = makeContext()
+        context.appState.steamInstallInput = "https://store.steampowered.com/app/730/CSGO/"
+        context.appState.openSteamInstall()
+
+        XCTAssertTrue(context.fakeSteamService.didCallOpenInstallPage)
+        XCTAssertEqual(context.fakeSteamService.lastOpenedAppID, "730")
+    }
+
+    @MainActor
+    func test_openSteamInstall_withSteamURL_passesThrough() {
+        let context = makeContext()
+        context.appState.steamInstallInput = "steam://install/730"
+        context.appState.openSteamInstall()
+
+        XCTAssertTrue(context.fakeSteamService.didCallOpenInstallPage)
+        XCTAssertEqual(context.fakeSteamService.lastOpenedAppID, "730")
+    }
+
+    @MainActor
+    func test_openSteamInstall_withInvalidInput_setsErrorMessage() {
+        let context = makeContext()
+        context.appState.steamInstallInput = "invalid_input_string"
+        context.appState.openSteamInstall()
+
+        XCTAssertFalse(context.fakeSteamService.didCallOpenInstallPage)
+        XCTAssertNil(context.appState.steamInstallMessage)
+        XCTAssertEqual(
+            context.appState.steamInstallErrorMessage,
+            String(localized: "addGame.steam.error.invalidInput")
+        )
+    }
+
+    @MainActor
+    func test_openSteamInstall_whenServiceThrows_setsErrorMessage() {
+        let context = makeContext()
+        context.fakeSteamService.shouldThrow = true
+        context.appState.steamInstallInput = "730"
+        context.appState.openSteamInstall()
+
+        XCTAssertTrue(context.fakeSteamService.didCallOpenInstallPage)
+        XCTAssertNil(context.appState.steamInstallMessage)
+        XCTAssertEqual(context.appState.steamInstallErrorMessage, String(localized: "steam_not_installed"))
+    }
+
+    @MainActor
+    func test_openSteamInstall_withEmptyInput_opensLibrary() {
+        let context = makeContext()
+        context.appState.steamInstallInput = "   "
+        context.appState.openSteamInstall()
+
+        XCTAssertTrue(context.fakeSteamService.didCallOpenLibrary)
+        XCTAssertNotNil(context.appState.steamInstallMessage)
+        XCTAssertNil(context.appState.steamInstallErrorMessage)
+    }
+
+    @MainActor
+    private func makeContext() -> SteamTestContext {
+        let fakeSteamService = FakeSteamInstallService()
+        let profileStoreURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let env = AppEnvironment(
             profileManager: GameProfileManager(
                 store: JSONStore<GameProfile>(directoryURL: profileStoreURL, fileSystem: LocalFileSystem())
@@ -62,69 +126,16 @@ final class AppStateSteamTests: XCTestCase {
             ),
             steamInstallService: fakeSteamService
         )
-        appState = AppState(environment: env)
+        return SteamTestContext(
+            appState: AppState(environment: env),
+            fakeSteamService: fakeSteamService
+        )
     }
+}
 
-    func test_openSteamInstall_withValidAppID_callsService() {
-        appState.steamInstallInput = "730"
-        appState.openSteamInstall()
-
-        XCTAssertTrue(fakeSteamService.didCallOpenInstallPage)
-        XCTAssertEqual(fakeSteamService.lastOpenedAppID, "730")
-        XCTAssertNotNil(appState.steamInstallMessage)
-        XCTAssertNil(appState.steamInstallErrorMessage)
-    }
-
-    func test_openSteamInstall_withStoreURL_extractsAppID() {
-        appState.steamInstallInput = "https://store.steampowered.com/app/730/CSGO/"
-        appState.openSteamInstall()
-
-        XCTAssertTrue(fakeSteamService.didCallOpenInstallPage)
-        XCTAssertEqual(fakeSteamService.lastOpenedAppID, "730")
-    }
-
-    func test_openSteamInstall_withSteamURL_passesThrough() {
-        appState.steamInstallInput = "steam://install/730"
-        appState.openSteamInstall()
-
-        XCTAssertTrue(fakeSteamService.didCallOpenInstallPage)
-        XCTAssertEqual(fakeSteamService.lastOpenedAppID, "730")
-    }
-
-    func test_openSteamInstall_withInvalidInput_setsErrorMessage() {
-        appState.steamInstallInput = "invalid_input_string"
-        appState.openSteamInstall()
-
-        XCTAssertFalse(fakeSteamService.didCallOpenInstallPage)
-        XCTAssertNil(appState.steamInstallMessage)
-        XCTAssertEqual(appState.steamInstallErrorMessage, String(localized: "addGame.steam.error.invalidInput"))
-    }
-
-    func test_openSteamInstall_whenServiceThrows_setsErrorMessage() {
-        fakeSteamService.shouldThrow = true
-        appState.steamInstallInput = "730"
-        appState.openSteamInstall()
-
-        XCTAssertTrue(fakeSteamService.didCallOpenInstallPage)
-        XCTAssertNil(appState.steamInstallMessage)
-        XCTAssertEqual(appState.steamInstallErrorMessage, String(localized: "steam_not_installed"))
-    }
-
-    func test_openSteamInstall_withEmptyInput_opensLibrary() {
-        appState.steamInstallInput = "   "
-        appState.openSteamInstall()
-
-        XCTAssertTrue(fakeSteamService.didCallOpenLibrary)
-        XCTAssertNotNil(appState.steamInstallMessage)
-        XCTAssertNil(appState.steamInstallErrorMessage)
-    }
-    
-    // Helpers
-    private func temporaryDirectory() throws -> URL {
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        return directory
-    }
+private struct SteamTestContext {
+    let appState: AppState
+    let fakeSteamService: FakeSteamInstallService
 }
 
 @MainActor

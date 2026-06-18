@@ -24,44 +24,11 @@ private struct FakeFileSelectionServiceForExe: FileSelectionServicing {
     func selectExecutableFile() -> URL? { executableURL }
 }
 
-@MainActor
 final class AppStateLaunchTests: XCTestCase {
-    var appState: AppState!
-    var fakeLauncher: FakeGameLauncher!
-    var profileManager: GameProfileManager!
-    var prefixManager: PrefixManager!
-
-    override func setUp() async throws {
-        try await super.setUp()
-        fakeLauncher = FakeGameLauncher()
-        
-        let profileStoreURL = try temporaryDirectory()
-        let fileSystem = LocalFileSystem()
-        profileManager = GameProfileManager(
-            store: JSONStore<GameProfile>(directoryURL: profileStoreURL, fileSystem: fileSystem)
-        )
-        prefixManager = PrefixManager(
-            appSupportURL: profileStoreURL.deletingLastPathComponent(),
-            fileSystem: fileSystem
-        )
-
-        let env = AppEnvironment(
-            profileManager: profileManager,
-            bundledProfileLoader: BundledGameProfileLoader(bundle: .main),
-            fileSelectionService: FakeFileSelectionServiceForExe(folderURL: nil, executableURL: URL(fileURLWithPath: "/test/game.exe")),
-            bookmarkManager: BookmarkManager(),
-            gameFolderDetector: GameFolderDetector(fileSystem: fileSystem),
-            dependencyDiagnosticService: StaticDependencyDiagnosticService(),
-            runReadinessEvaluator: DefaultRunReadinessEvaluator(),
-            prefixManager: prefixManager,
-            steamInstallService: FakeSteamInstallService(),
-            gameLauncher: fakeLauncher
-        )
-        appState = AppState(environment: env)
-    }
-
+    @MainActor
     func test_launchGame_withValidProfile_launchesAndUpdatesStats() async throws {
         // Arrange
+        let context = try makeContext()
         let testID = "test-game-id"
         let profile = GameProfile(
             schemaVersion: GameProfile.currentSchemaVersion,
@@ -84,24 +51,26 @@ final class AppStateLaunchTests: XCTestCase {
             totalPlayTimeMinutes: 0,
             launchCount: 0
         )
-        try profileManager.saveProfile(profile)
-        appState.profiles = [profile]
+        try context.profileManager.saveProfile(profile)
+        context.appState.profiles = [profile]
 
         // Act
-        appState.launchGame(profileID: profile.id)
+        context.appState.launchGame(profileID: profile.id)
 
         // Assert
-        XCTAssertEqual(fakeLauncher.launchedProfileID, profile.id)
-        XCTAssertNil(appState.launchingProfileID)
-        XCTAssertNil(appState.launchErrorMessage)
-        
-        let updatedProfile = appState.profiles.first { $0.id == profile.id }
+        XCTAssertEqual(context.fakeLauncher.launchedProfileID, profile.id)
+        XCTAssertNil(context.appState.launchingProfileID)
+        XCTAssertNil(context.appState.launchErrorMessage)
+
+        let updatedProfile = context.appState.profiles.first { $0.id == profile.id }
         XCTAssertEqual(updatedProfile?.launchCount, 1)
         XCTAssertNotNil(updatedProfile?.lastPlayedAt)
     }
 
+    @MainActor
     func test_launchGame_whenFails_setsErrorMessage() async throws {
         // Arrange
+        let context = try makeContext()
         let failingID = "failing-game-id"
         let profile = GameProfile(
             schemaVersion: GameProfile.currentSchemaVersion,
@@ -124,45 +93,70 @@ final class AppStateLaunchTests: XCTestCase {
             totalPlayTimeMinutes: 0,
             launchCount: 0
         )
-        try profileManager.saveProfile(profile)
-        appState.profiles = [profile]
-        fakeLauncher.shouldThrow = true
+        try context.profileManager.saveProfile(profile)
+        context.appState.profiles = [profile]
+        context.fakeLauncher.shouldThrow = true
 
         // Act
-        appState.launchGame(profileID: profile.id)
+        context.appState.launchGame(profileID: profile.id)
 
         // Assert
-        XCTAssertNil(appState.launchingProfileID)
-        XCTAssertNotNil(appState.launchErrorMessage)
-        
-        let updatedProfile = appState.profiles.first { $0.id == profile.id }
+        XCTAssertNil(context.appState.launchingProfileID)
+        XCTAssertNotNil(context.appState.launchErrorMessage)
+
+        let updatedProfile = context.appState.profiles.first { $0.id == profile.id }
         XCTAssertEqual(updatedProfile?.launchCount, 0)
         XCTAssertNil(updatedProfile?.lastPlayedAt)
     }
 
+    @MainActor
     func test_selectExecutableForAddGame_rejectsNonExe() async throws {
         // Arrange
+        let context = try makeContext(executableURL: URL(fileURLWithPath: "/test/game.bin"))
+        context.appState.addGameForm.selectedFolderURL = URL(fileURLWithPath: "/test")
+
+        // Act
+        context.appState.selectExecutableForAddGame()
+
+        // Assert
+        XCTAssertNil(context.appState.addGameForm.selectedExecutableURL)
+        XCTAssertEqual(
+            context.appState.addGameForm.errorMessage,
+            "Sadece .exe uzantılı Windows çalıştırılabilir dosyaları desteklenmektedir."
+        )
+    }
+
+    @MainActor
+    private func makeContext(
+        executableURL: URL = URL(fileURLWithPath: "/test/game.exe")
+    ) throws -> LaunchTestContext {
+        let fakeLauncher = FakeGameLauncher()
+        let profileStoreURL = try temporaryDirectory()
+        let fileSystem = LocalFileSystem()
+        let profileManager = GameProfileManager(
+            store: JSONStore<GameProfile>(directoryURL: profileStoreURL, fileSystem: fileSystem)
+        )
+        let prefixManager = PrefixManager(
+            appSupportURL: profileStoreURL.deletingLastPathComponent(),
+            fileSystem: fileSystem
+        )
         let env = AppEnvironment(
             profileManager: profileManager,
             bundledProfileLoader: BundledGameProfileLoader(bundle: .main),
-            fileSelectionService: FakeFileSelectionServiceForExe(folderURL: nil, executableURL: URL(fileURLWithPath: "/test/game.bin")),
+            fileSelectionService: FakeFileSelectionServiceForExe(folderURL: nil, executableURL: executableURL),
             bookmarkManager: BookmarkManager(),
-            gameFolderDetector: GameFolderDetector(fileSystem: LocalFileSystem()),
+            gameFolderDetector: GameFolderDetector(fileSystem: fileSystem),
             dependencyDiagnosticService: StaticDependencyDiagnosticService(),
             runReadinessEvaluator: DefaultRunReadinessEvaluator(),
             prefixManager: prefixManager,
             steamInstallService: FakeSteamInstallService(),
             gameLauncher: fakeLauncher
         )
-        appState = AppState(environment: env)
-        appState.addGameForm.selectedFolderURL = URL(fileURLWithPath: "/test")
-
-        // Act
-        appState.selectExecutableForAddGame()
-
-        // Assert
-        XCTAssertNil(appState.addGameForm.selectedExecutableURL)
-        XCTAssertEqual(appState.addGameForm.errorMessage, "Sadece .exe uzantılı Windows çalıştırılabilir dosyaları desteklenmektedir.")
+        return LaunchTestContext(
+            appState: AppState(environment: env),
+            fakeLauncher: fakeLauncher,
+            profileManager: profileManager
+        )
     }
 
     private func temporaryDirectory() throws -> URL {
@@ -170,4 +164,10 @@ final class AppStateLaunchTests: XCTestCase {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         return directory
     }
+}
+
+private struct LaunchTestContext {
+    let appState: AppState
+    let fakeLauncher: FakeGameLauncher
+    let profileManager: GameProfileManager
 }
