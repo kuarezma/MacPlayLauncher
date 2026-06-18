@@ -193,6 +193,7 @@ Regenerate app icons:
 
 ## Changelog
 
+- Chore: Excluded build directories from swiftlint and resolved mainactor isolation issues in unit tests.
 - Sprint 18: Added actionable readiness guidance across Library, Diagnostics, and Settings while keeping production launch disabled; stabilized Xcode 26 local build/test settings.
 - Chore: Added generated MacPlay Launcher app icons and reusable launcher symbol assets.
 - Chore: Added a project-local build/run script and Codex Run action.
