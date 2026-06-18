@@ -447,6 +447,57 @@
         }
       }
     },
+    "addGame.steam.error.invalidInput": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid format."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçersiz format."
+          }
+        }
+      }
+    },
+    "addGame.steam.help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You will not be logged into Steam within the app. Complete the installation in Steam."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steam hesabınıza uygulama içinde giriş yapılmaz. Kurulumu Steam'de tamamlayın."
+          }
+        }
+      }
+    },
+    "addGame.steam.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Install with Steam"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steam ile kur"
+          }
+        }
+      }
+    },
     "addGame.title": {
       "extractionState": "stale",
       "localizations": {
@@ -494,6 +545,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bileşenler"
+          }
+        }
+      }
+    },
+    "diagnostics.dependency.installPath": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konum: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konum: %@"
+          }
+        }
+      }
+    },
+    "diagnostics.dependency.version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sürüm: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sürüm: %@"
           }
         }
       }
@@ -613,6 +698,108 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şimdilik işlem yapmayın; otomatik kurulum bu sprintte yok."
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel: Oyunu başlat"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel: Oyunu başlat"
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.disabledNote": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma şu an kapalı. Önce gerçek sistem kontrolü yapın, prefix oluşturun ve eksikleri giderin."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma şu an kapalı. Önce gerçek sistem kontrolü yapın, prefix oluşturun ve eksikleri giderin."
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.loading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma deneniyor…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma deneniyor…"
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu adım deneyseldir. Gerçek sistem kontrolü, prefix klasörü ve Wine hazır olduğunda görünür. Oyunun açılması garanti değildir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu adım deneyseldir. Gerçek sistem kontrolü, prefix klasörü ve Wine hazır olduğunda görünür. Oyunun açılması garanti değildir."
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.success": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine süreci başlatıldı (PID %d). Oyun açılmazsa Wine prefix bootstrap eksik olabilir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine süreci başlatıldı (PID %d). Oyun açılmazsa Wine prefix bootstrap eksik olabilir."
+          }
+        }
+      }
+    },
+    "diagnostics.experimentalLaunch.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel oyun başlatma"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel oyun başlatma"
           }
         }
       }
@@ -821,6 +1008,227 @@
         }
       }
     },
+    "diagnostics.nextStep.experimental.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerekli kontroller tamamlandı. Üretim başlatma kapalı kalır; yalnızca deneysel akış denenir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerekli kontroller tamamlandı. Üretim başlatma kapalı kalır; yalnızca deneysel akış denenir."
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.experimental.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmayı dene"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmayı dene"
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.heading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıradaki adım"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıradaki adım"
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.loading.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılama bilgileri yükleniyor."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılama bilgileri yükleniyor."
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.loading.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durum hazırlanıyor"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durum hazırlanıyor"
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.prefix.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun profili için güvenli prefix klasörü henüz yok."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun profili için güvenli prefix klasörü henüz yok."
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.prefix.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörünü oluştur"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörünü oluştur"
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.realCheck.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önce Wine ve sistem bileşenlerini gerçek kontrolden geçir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önce Wine ve sistem bileşenlerini gerçek kontrolden geçir."
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.realCheck.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü yap"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü yap"
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.review.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel çalıştırma için kalan uyarıları aşağıdaki bölümlerden inceleyin."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel çalıştırma için kalan uyarıları aşağıdaki bölümlerden inceleyin."
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.review.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalan engelleri kontrol et"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalan engelleri kontrol et"
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.wine.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazır görünmüyor. Kurulumu tamamladıktan sonra gerçek sistem kontrolünü tekrar çalıştır."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazır görünmüyor. Kurulumu tamamladıktan sonra gerçek sistem kontrolünü tekrar çalıştır."
+          }
+        }
+      }
+    },
+    "diagnostics.nextStep.wine.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazırlığını tamamla"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazırlığını tamamla"
+          }
+        }
+      }
+    },
     "diagnostics.note.launchLater": {
       "extractionState": "stale",
       "localizations": {
@@ -1008,155 +1416,87 @@
         }
       }
     },
-    "diagnostics.source.dxvkMoltenVKLater": {
+    "diagnostics.prefix.absolutePath": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
+            "value": "Tam yol: %@"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
+            "value": "Tam yol: %@"
           }
         }
       }
     },
-    "diagnostics.source.noInstall": {
+    "diagnostics.prefix.createButton": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kurulum, indirme veya oyun çalıştırma yapılmaz."
+            "value": "Prefix klasörünü oluştur"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kurulum, indirme veya oyun çalıştırma yapılmaz."
+            "value": "Prefix klasörünü oluştur"
           }
         }
       }
     },
-    "diagnostics.source.real.badge": {
+    "diagnostics.prefix.createSuccess": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Read-only kontrol"
+            "value": "Prefix klasörü oluşturuldu."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Read-only kontrol"
+            "value": "Prefix klasörü oluşturuldu."
           }
         }
       }
     },
-    "diagnostics.source.real.subtitle": {
+    "diagnostics.prefix.creating": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rosetta ve Wine için read-only sistem kontrolü sonucu gösteriliyor."
+            "value": "Prefix klasörü oluşturuluyor…"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rosetta ve Wine için read-only sistem kontrolü sonucu gösteriliyor."
+            "value": "Prefix klasörü oluşturuluyor…"
           }
         }
       }
     },
-    "diagnostics.realCheck.button": {
+    "diagnostics.prefix.noProfile": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gerçek sistemi kontrol et"
+            "value": "Prefix oluşturmak için önce bir oyun profili gerekir."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gerçek sistemi kontrol et"
-          }
-        }
-      }
-    },
-    "diagnostics.realCheck.loading": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü çalışıyor…"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü çalışıyor…"
-          }
-        }
-      }
-    },
-    "diagnostics.realCheck.lastChecked": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Son gerçek kontrol: %@"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Son gerçek kontrol: %@"
-          }
-        }
-      }
-    },
-    "diagnostics.prefix.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine prefix hazırlığı"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine prefix hazırlığı"
-          }
-        }
-      }
-    },
-    "diagnostics.prefix.subtitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Her oyun profili için Application Support altında ayrı bir prefix klasörü oluşturulur. Bu adım yalnızca dizin oluşturur; Wine bootstrap veya oyun çalıştırma yapmaz."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Her oyun profili için Application Support altında ayrı bir prefix klasörü oluşturulur. Bu adım yalnızca dizin oluşturur; Wine bootstrap veya oyun çalıştırma yapmaz."
+            "value": "Prefix oluşturmak için önce bir oyun profili gerekir."
           }
         }
       }
@@ -1195,19 +1535,19 @@
         }
       }
     },
-    "diagnostics.prefix.absolutePath": {
+    "diagnostics.prefix.status.exists": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tam yol: %@"
+            "value": "Durum: Prefix klasörü mevcut"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tam yol: %@"
+            "value": "Durum: Prefix klasörü mevcut"
           }
         }
       }
@@ -1229,87 +1569,36 @@
         }
       }
     },
-    "diagnostics.prefix.status.exists": {
+    "diagnostics.prefix.subtitle": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Durum: Prefix klasörü mevcut"
+            "value": "Her oyun profili için Application Support altında ayrı bir prefix klasörü oluşturulur. Bu adım yalnızca dizin oluşturur; Wine bootstrap veya oyun çalıştırma yapmaz."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Durum: Prefix klasörü mevcut"
+            "value": "Her oyun profili için Application Support altında ayrı bir prefix klasörü oluşturulur. Bu adım yalnızca dizin oluşturur; Wine bootstrap veya oyun çalıştırma yapmaz."
           }
         }
       }
     },
-    "diagnostics.prefix.createButton": {
+    "diagnostics.prefix.title": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prefix klasörünü oluştur"
+            "value": "Wine prefix hazırlığı"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prefix klasörünü oluştur"
-          }
-        }
-      }
-    },
-    "diagnostics.prefix.creating": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü oluşturuluyor…"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü oluşturuluyor…"
-          }
-        }
-      }
-    },
-    "diagnostics.prefix.createSuccess": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü oluşturuldu."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü oluşturuldu."
-          }
-        }
-      }
-    },
-    "diagnostics.prefix.noProfile": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix oluşturmak için önce bir oyun profili gerekir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix oluşturmak için önce bir oyun profili gerekir."
+            "value": "Wine prefix hazırlığı"
           }
         }
       }
@@ -1331,138 +1620,70 @@
         }
       }
     },
-    "diagnostics.experimentalLaunch.title": {
-      "extractionState": "manual",
+    "diagnostics.readiness.title": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deneysel oyun başlatma"
+            "value": "Hazırlık Durumu"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deneysel oyun başlatma"
+            "value": "Hazırlık Durumu"
           }
         }
       }
     },
-    "diagnostics.experimentalLaunch.subtitle": {
+    "diagnostics.realCheck.button": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu adım deneyseldir. Gerçek sistem kontrolü, prefix klasörü ve Wine hazır olduğunda görünür. Oyunun açılması garanti değildir."
+            "value": "Gerçek sistemi kontrol et"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu adım deneyseldir. Gerçek sistem kontrolü, prefix klasörü ve Wine hazır olduğunda görünür. Oyunun açılması garanti değildir."
+            "value": "Gerçek sistemi kontrol et"
           }
         }
       }
     },
-    "diagnostics.experimentalLaunch.button": {
+    "diagnostics.realCheck.lastChecked": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deneysel: Oyunu başlat"
+            "value": "Son gerçek kontrol: %@"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deneysel: Oyunu başlat"
+            "value": "Son gerçek kontrol: %@"
           }
         }
       }
     },
-    "diagnostics.experimentalLaunch.loading": {
+    "diagnostics.realCheck.loading": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deneysel başlatma deneniyor…"
+            "value": "Gerçek sistem kontrolü çalışıyor…"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deneysel başlatma deneniyor…"
-          }
-        }
-      }
-    },
-    "diagnostics.experimentalLaunch.disabledNote": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma şu an kapalı. Önce gerçek sistem kontrolü yapın, prefix oluşturun ve eksikleri giderin."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma şu an kapalı. Önce gerçek sistem kontrolü yapın, prefix oluşturun ve eksikleri giderin."
-          }
-        }
-      }
-    },
-    "diagnostics.experimentalLaunch.success": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine süreci başlatıldı (PID %d). Oyun açılmazsa Wine prefix bootstrap eksik olabilir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine süreci başlatıldı (PID %d). Oyun açılmazsa Wine prefix bootstrap eksik olabilir."
-          }
-        }
-      }
-    },
-    "diagnostics.dependency.version": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sürüm: %@"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sürüm: %@"
-          }
-        }
-      }
-    },
-    "diagnostics.dependency.installPath": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Konum: %@"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Konum: %@"
+            "value": "Gerçek sistem kontrolü çalışıyor…"
           }
         }
       }
@@ -1480,125 +1701,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hazırlık rehberine dön"
-          }
-        }
-      }
-    },
-    "diagnostics.source.real.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü"
-          }
-        }
-      }
-    },
-    "diagnostics.source.static.badge": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pasif rehber"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pasif rehber"
-          }
-        }
-      }
-    },
-    "diagnostics.source.static.futureRealCheck": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rosetta ve Wine için gerçek sistem kontrolü sonraki aşamada manuel olarak ele alınabilir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rosetta ve Wine için gerçek sistem kontrolü sonraki aşamada manuel olarak ele alınabilir."
-          }
-        }
-      }
-    },
-    "diagnostics.source.static.note": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü varsayılan değildir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü varsayılan değildir."
-          }
-        }
-      }
-    },
-    "diagnostics.source.static.subtitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pasif durum ve kurulum rehberi gösteriliyor."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pasif durum ve kurulum rehberi gösteriliyor."
-          }
-        }
-      }
-    },
-    "diagnostics.source.static.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hazırlık rehberi"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hazırlık rehberi"
-          }
-        }
-      }
-    },
-    "diagnostics.readiness.title": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hazırlık Durumu"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hazırlık Durumu"
           }
         }
       }
@@ -1701,6 +1803,176 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rosetta durumu bilinmiyor."
+          }
+        }
+      }
+    },
+    "diagnostics.source.dxvkMoltenVKLater": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
+          }
+        }
+      }
+    },
+    "diagnostics.source.noInstall": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurulum, indirme veya oyun çalıştırma yapılmaz."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurulum, indirme veya oyun çalıştırma yapılmaz."
+          }
+        }
+      }
+    },
+    "diagnostics.source.real.badge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read-only kontrol"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read-only kontrol"
+          }
+        }
+      }
+    },
+    "diagnostics.source.real.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosetta ve Wine için read-only sistem kontrolü sonucu gösteriliyor."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosetta ve Wine için read-only sistem kontrolü sonucu gösteriliyor."
+          }
+        }
+      }
+    },
+    "diagnostics.source.real.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü"
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.badge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasif rehber"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasif rehber"
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.futureRealCheck": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosetta ve Wine için gerçek sistem kontrolü sonraki aşamada manuel olarak ele alınabilir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosetta ve Wine için gerçek sistem kontrolü sonraki aşamada manuel olarak ele alınabilir."
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.note": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü varsayılan değildir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü varsayılan değildir."
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasif durum ve kurulum rehberi gösteriliyor."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasif durum ve kurulum rehberi gösteriliyor."
+          }
+        }
+      }
+    },
+    "diagnostics.source.static.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazırlık rehberi"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazırlık rehberi"
           }
         }
       }
@@ -1994,6 +2266,23 @@
         }
       }
     },
+    "error.crossOverNotFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver bulunamadı. CrossOver uygulamasının yüklü olduğundan emin olun."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver bulunamadı. CrossOver uygulamasının yüklü olduğundan emin olun."
+          }
+        }
+      }
+    },
     "error.executableOutsideGameFolder": {
       "extractionState": "stale",
       "localizations": {
@@ -2062,57 +2351,6 @@
         }
       }
     },
-    "error.prefixDirectoryMissing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine prefix klasörü henüz oluşturulmadı."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine prefix klasörü henüz oluşturulmadı."
-          }
-        }
-      }
-    },
-    "error.wineNotFound": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desteklenen konumlarda Wine bulunamadı."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desteklenen konumlarda Wine bulunamadı."
-          }
-        }
-      }
-    },
-    "error.securityScopedAccessDenied": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun dosyalarına erişim izni alınamadı."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun dosyalarına erişim izni alınamadı."
-          }
-        }
-      }
-    },
     "error.launchPreparationFailed": {
       "extractionState": "manual",
       "localizations": {
@@ -2147,6 +2385,23 @@
         }
       }
     },
+    "error.prefixDirectoryMissing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine prefix klasörü henüz oluşturulmadı."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine prefix klasörü henüz oluşturulmadı."
+          }
+        }
+      }
+    },
     "error.profileNotFound": {
       "extractionState": "stale",
       "localizations": {
@@ -2160,6 +2415,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Oyun profili bulunamadı."
+          }
+        }
+      }
+    },
+    "error.securityScopedAccessDenied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun dosyalarına erişim izni alınamadı."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun dosyalarına erişim izni alınamadı."
           }
         }
       }
@@ -2181,6 +2453,57 @@
         }
       }
     },
+    "error.wineNotFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desteklenen konumlarda Wine bulunamadı."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desteklenen konumlarda Wine bulunamadı."
+          }
+        }
+      }
+    },
+    "game.delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sil"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sil"
+          }
+        }
+      }
+    },
+    "game.launching": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlatılıyor..."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlatılıyor..."
+          }
+        }
+      }
+    },
     "game.performanceMode": {
       "extractionState": "stale",
       "localizations": {
@@ -2194,6 +2517,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Performans modu"
+          }
+        }
+      }
+    },
+    "game.playButton": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OYNA"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OYNA"
           }
         }
       }
@@ -2215,6 +2555,57 @@
         }
       }
     },
+    "game.profileType": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil tipi"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil tipi"
+          }
+        }
+      }
+    },
+    "game.profileType.sample": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Örnek profil"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Örnek profil"
+          }
+        }
+      }
+    },
+    "game.profileType.user": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı profili"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı profili"
+          }
+        }
+      }
+    },
     "game.runtime": {
       "extractionState": "stale",
       "localizations": {
@@ -2228,6 +2619,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Runtime"
+          }
+        }
+      }
+    },
+    "game.sampleProfile.note": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu örnek profil çalıştırılamaz; kendi oyun klasörünüzü ekleyin."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu örnek profil çalıştırılamaz; kendi oyun klasörünüzü ekleyin."
+          }
+        }
+      }
+    },
+    "game.windowsVersion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows sürümü"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows sürümü"
+          }
+        }
+      }
+    },
+    "launch.error.profileNotFound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil bulunamadı."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil bulunamadı."
           }
         }
       }
@@ -2262,6 +2704,431 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hazırlık durumu"
+          }
+        }
+      }
+    },
+    "library.readinessAction.addGame": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun ekle"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun ekle"
+          }
+        }
+      }
+    },
+    "library.readinessAction.createPrefix": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix oluştur"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix oluştur"
+          }
+        }
+      }
+    },
+    "library.readinessAction.experimentalLaunch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlat"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlat"
+          }
+        }
+      }
+    },
+    "library.readinessAction.openDiagnostics": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılamayı aç"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılamayı aç"
+          }
+        }
+      }
+    },
+    "library.readinessAction.realCheck": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistemi kontrol et"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistemi kontrol et"
+          }
+        }
+      }
+    },
+    "library.readinessPlan.notReadyStatus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalıştırmaya hazır değil"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalıştırmaya hazır değil"
+          }
+        }
+      }
+    },
+    "library.readinessPlan.readyMessage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerekli adımlar tamamlandı; deneysel başlatmayı Tanılama ekranından kontrol edebilirsiniz."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerekli adımlar tamamlandı; deneysel başlatmayı Tanılama ekranından kontrol edebilirsiniz."
+          }
+        }
+      }
+    },
+    "library.readinessPlan.readyStatus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmaya hazır"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmaya hazır"
+          }
+        }
+      }
+    },
+    "library.readinessPlan.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksikleri gider"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eksikleri gider"
+          }
+        }
+      }
+    },
+    "library.readinessStep.experimental.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koşullar tamamlandı; deneysel başlatma denenebilir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koşullar tamamlandı; deneysel başlatma denenebilir."
+          }
+        }
+      }
+    },
+    "library.readinessStep.experimental.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma için kalan engelleri Tanılama ekranından kontrol edin."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma için kalan engelleri Tanılama ekranından kontrol edin."
+          }
+        }
+      }
+    },
+    "library.readinessStep.experimental.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel çalıştırma hazır mı?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel çalıştırma hazır mı?"
+          }
+        }
+      }
+    },
+    "library.readinessStep.gameFolder.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı tarafından eklenmiş oyun profili var."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı tarafından eklenmiş oyun profili var."
+          }
+        }
+      }
+    },
+    "library.readinessStep.gameFolder.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Örnek profil tek başına çalışmaz; önce kendi oyun klasörünüzü ekleyin."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Örnek profil tek başına çalışmaz; önce kendi oyun klasörünüzü ekleyin."
+          }
+        }
+      }
+    },
+    "library.readinessStep.gameFolder.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun klasörü seçildi mi?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun klasörü seçildi mi?"
+          }
+        }
+      }
+    },
+    "library.readinessStep.prefix.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörü hazır."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörü hazır."
+          }
+        }
+      }
+    },
+    "library.readinessStep.prefix.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun için prefix klasörü oluşturulmalı."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun için prefix klasörü oluşturulmalı."
+          }
+        }
+      }
+    },
+    "library.readinessStep.prefix.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörü var mı?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörü var mı?"
+          }
+        }
+      }
+    },
+    "library.readinessStep.realCheck.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son gerçek sistem kontrolü bu oturumda kullanılıyor."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son gerçek sistem kontrolü bu oturumda kullanılıyor."
+          }
+        }
+      }
+    },
+    "library.readinessStep.realCheck.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine ve sistem durumu için manuel gerçek kontrol çalıştırın."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine ve sistem durumu için manuel gerçek kontrol çalıştırın."
+          }
+        }
+      }
+    },
+    "library.readinessStep.realCheck.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü yapıldı mı?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü yapıldı mı?"
+          }
+        }
+      }
+    },
+    "library.readinessStep.wine.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine gerçek kontrolde hazır görünüyor."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine gerçek kontrolde hazır görünüyor."
+          }
+        }
+      }
+    },
+    "library.readinessStep.wine.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazır değil; kurulum tamamlanmadan prefix veya başlatma önerilmez."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazır değil; kurulum tamamlanmadan prefix veya başlatma önerilmez."
+          }
+        }
+      }
+    },
+    "library.readinessStep.wine.needsCheck": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine durumunu öğrenmek için gerçek sistem kontrolü gerekir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine durumunu öğrenmek için gerçek sistem kontrolü gerekir."
+          }
+        }
+      }
+    },
+    "library.readinessStep.wine.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazır mı?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine hazır mı?"
           }
         }
       }
@@ -2419,6 +3286,57 @@
         }
       }
     },
+    "performance.balanced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dengeli"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dengeli"
+          }
+        }
+      }
+    },
+    "performance.coolBatterySafe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serin / pil dostu"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serin / pil dostu"
+          }
+        }
+      }
+    },
+    "performance.performance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performans"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performans"
+          }
+        }
+      }
+    },
     "readiness.blocked.title": {
       "extractionState": "stale",
       "localizations": {
@@ -2432,6 +3350,227 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çalıştırmaya hazır değil"
+          }
+        }
+      }
+    },
+    "readiness.experimental.blocked.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmadan önce eksik adımları tamamlayın."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmadan önce eksik adımları tamamlayın."
+          }
+        }
+      }
+    },
+    "readiness.experimental.blocked.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma kapalı"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma kapalı"
+          }
+        }
+      }
+    },
+    "readiness.experimental.prefixMissing.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörünü oluştur düğmesini kullanın."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörünü oluştur düğmesini kullanın."
+          }
+        }
+      }
+    },
+    "readiness.experimental.prefixMissing.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmadan önce prefix klasörünü oluşturun."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmadan önce prefix klasörünü oluşturun."
+          }
+        }
+      }
+    },
+    "readiness.experimental.prefixMissing.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörü eksik"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefix klasörü eksik"
+          }
+        }
+      }
+    },
+    "readiness.experimental.ready.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma için gerekli kontroller tamam. Oyunun açılması garanti değildir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma için gerekli kontroller tamam. Oyunun açılması garanti değildir."
+          }
+        }
+      }
+    },
+    "readiness.experimental.ready.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmaya hazır"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatmaya hazır"
+          }
+        }
+      }
+    },
+    "readiness.experimental.requiresRealDiagnostics.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılama ekranından gerçek sistemi kontrol edin."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılama ekranından gerçek sistemi kontrol edin."
+          }
+        }
+      }
+    },
+    "readiness.experimental.requiresRealDiagnostics.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma yalnızca gerçek sistem kontrolünden sonra kullanılabilir."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel başlatma yalnızca gerçek sistem kontrolünden sonra kullanılabilir."
+          }
+        }
+      }
+    },
+    "readiness.experimental.requiresRealDiagnostics.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü gerekli"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek sistem kontrolü gerekli"
+          }
+        }
+      }
+    },
+    "readiness.experimental.wineMissing.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine'ı Homebrew ile kurun ve gerçek kontrolü yenileyin."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine'ı Homebrew ile kurun ve gerçek kontrolü yenileyin."
+          }
+        }
+      }
+    },
+    "readiness.experimental.wineMissing.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desteklenen Homebrew Wine yolu bulunamadı."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desteklenen Homebrew Wine yolu bulunamadı."
+          }
+        }
+      }
+    },
+    "readiness.experimental.wineMissing.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine bulunamadı"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine bulunamadı"
           }
         }
       }
@@ -2585,227 +3724,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gerekli hazırlık kontrolleri tamam görünüyor. Şu anda oyun çalıştırma özelliği ekli değildir."
-          }
-        }
-      }
-    },
-    "readiness.experimental.ready.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmaya hazır"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmaya hazır"
-          }
-        }
-      }
-    },
-    "readiness.experimental.ready.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma için gerekli kontroller tamam. Oyunun açılması garanti değildir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma için gerekli kontroller tamam. Oyunun açılması garanti değildir."
-          }
-        }
-      }
-    },
-    "readiness.experimental.blocked.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma kapalı"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma kapalı"
-          }
-        }
-      }
-    },
-    "readiness.experimental.blocked.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmadan önce eksik adımları tamamlayın."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmadan önce eksik adımları tamamlayın."
-          }
-        }
-      }
-    },
-    "readiness.experimental.requiresRealDiagnostics.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü gerekli"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü gerekli"
-          }
-        }
-      }
-    },
-    "readiness.experimental.requiresRealDiagnostics.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma yalnızca gerçek sistem kontrolünden sonra kullanılabilir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma yalnızca gerçek sistem kontrolünden sonra kullanılabilir."
-          }
-        }
-      }
-    },
-    "readiness.experimental.requiresRealDiagnostics.action": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tanılama ekranından gerçek sistemi kontrol edin."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tanılama ekranından gerçek sistemi kontrol edin."
-          }
-        }
-      }
-    },
-    "readiness.experimental.prefixMissing.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü eksik"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü eksik"
-          }
-        }
-      }
-    },
-    "readiness.experimental.prefixMissing.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmadan önce prefix klasörünü oluşturun."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmadan önce prefix klasörünü oluşturun."
-          }
-        }
-      }
-    },
-    "readiness.experimental.prefixMissing.action": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörünü oluştur düğmesini kullanın."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörünü oluştur düğmesini kullanın."
-          }
-        }
-      }
-    },
-    "readiness.experimental.wineMissing.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine bulunamadı"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine bulunamadı"
-          }
-        }
-      }
-    },
-    "readiness.experimental.wineMissing.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desteklenen Homebrew Wine yolu bulunamadı."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desteklenen Homebrew Wine yolu bulunamadı."
-          }
-        }
-      }
-    },
-    "readiness.experimental.wineMissing.action": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine'ı Homebrew ile kurun ve gerçek kontrolü yenileyin."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine'ı Homebrew ile kurun ve gerçek kontrolü yenileyin."
           }
         }
       }
@@ -3031,19 +3949,87 @@
         }
       }
     },
-    "settings.general": {
-      "extractionState": "stale",
+    "runtime.crossOver": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "General"
+            "value": "CrossOver"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Genel"
+            "value": "CrossOver"
+          }
+        }
+      }
+    },
+    "runtime.systemWineFallback": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Wine yedeği"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Wine yedeği"
+          }
+        }
+      }
+    },
+    "runtime.wineD3DMetalExperimental": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine + D3DMetal (deneysel)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine + D3DMetal (deneysel)"
+          }
+        }
+      }
+    },
+    "runtime.wineDXMTExperimental": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine + DXMT (deneysel)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine + DXMT (deneysel)"
+          }
+        }
+      }
+    },
+    "runtime.wineDXVKMoltenVK": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine + DXVK + MoltenVK"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine + DXVK + MoltenVK"
           }
         }
       }
@@ -3061,6 +4047,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "MacPlay Launcher kişisel kullanım içindir; otomatik kurulum veya oyun çalıştırma yapmaz."
+          }
+        }
+      }
+    },
+    "settings.appDataFolder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama veri klasörü"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama veri klasörü"
           }
         }
       }
@@ -3133,6 +4136,74 @@
         }
       }
     },
+    "settings.experimentalLaunch.disabled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapalı"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapalı"
+          }
+        }
+      }
+    },
+    "settings.experimentalLaunch.enabled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık (kontrollü)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık (kontrollü)"
+          }
+        }
+      }
+    },
+    "settings.experimentalLaunch.status": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel çalıştırma"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneysel çalıştırma"
+          }
+        }
+      }
+    },
+    "settings.general": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel"
+          }
+        }
+      }
+    },
     "settings.placeholder": {
       "extractionState": "stale",
       "localizations": {
@@ -3201,975 +4272,6 @@
         }
       }
     },
-    "runtime.wineDXVKMoltenVK": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine + DXVK + MoltenVK"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine + DXVK + MoltenVK"
-          }
-        }
-      }
-    },
-    "runtime.wineD3DMetalExperimental": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine + D3DMetal (deneysel)"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine + D3DMetal (deneysel)"
-          }
-        }
-      }
-    },
-    "runtime.wineDXMTExperimental": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine + DXMT (deneysel)"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine + DXMT (deneysel)"
-          }
-        }
-      }
-    },
-    "runtime.systemWineFallback": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sistem Wine yedeği"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sistem Wine yedeği"
-          }
-        }
-      }
-    },
-    "performance.performance": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Performans"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Performans"
-          }
-        }
-      }
-    },
-    "performance.balanced": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dengeli"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dengeli"
-          }
-        }
-      }
-    },
-    "performance.coolBatterySafe": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Serin / pil dostu"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Serin / pil dostu"
-          }
-        }
-      }
-    },
-    "windows.win10": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows 10"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows 10"
-          }
-        }
-      }
-    },
-    "windows.win11": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows 11"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows 11"
-          }
-        }
-      }
-    },
-    "game.profileType": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profil tipi"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profil tipi"
-          }
-        }
-      }
-    },
-    "game.profileType.sample": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Örnek profil"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Örnek profil"
-          }
-        }
-      }
-    },
-    "game.profileType.user": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kullanıcı profili"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kullanıcı profili"
-          }
-        }
-      }
-    },
-    "game.sampleProfile.note": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu örnek profil çalıştırılamaz; kendi oyun klasörünüzü ekleyin."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu örnek profil çalıştırılamaz; kendi oyun klasörünüzü ekleyin."
-          }
-        }
-      }
-    },
-    "game.windowsVersion": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows sürümü"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows sürümü"
-          }
-        }
-      }
-    },
-    "library.readinessPlan.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eksikleri gider"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eksikleri gider"
-          }
-        }
-      }
-    },
-    "library.readinessPlan.readyMessage": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerekli adımlar tamamlandı; deneysel başlatmayı Tanılama ekranından kontrol edebilirsiniz."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerekli adımlar tamamlandı; deneysel başlatmayı Tanılama ekranından kontrol edebilirsiniz."
-          }
-        }
-      }
-    },
-    "library.readinessPlan.readyStatus": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmaya hazır"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmaya hazır"
-          }
-        }
-      }
-    },
-    "library.readinessPlan.notReadyStatus": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Çalıştırmaya hazır değil"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Çalıştırmaya hazır değil"
-          }
-        }
-      }
-    },
-    "library.readinessAction.addGame": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun ekle"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun ekle"
-          }
-        }
-      }
-    },
-    "library.readinessAction.realCheck": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistemi kontrol et"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistemi kontrol et"
-          }
-        }
-      }
-    },
-    "library.readinessAction.openDiagnostics": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tanılamayı aç"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tanılamayı aç"
-          }
-        }
-      }
-    },
-    "library.readinessAction.createPrefix": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix oluştur"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix oluştur"
-          }
-        }
-      }
-    },
-    "library.readinessAction.experimentalLaunch": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlat"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlat"
-          }
-        }
-      }
-    },
-    "library.readinessStep.gameFolder.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun klasörü seçildi mi?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun klasörü seçildi mi?"
-          }
-        }
-      }
-    },
-    "library.readinessStep.gameFolder.done": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kullanıcı tarafından eklenmiş oyun profili var."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kullanıcı tarafından eklenmiş oyun profili var."
-          }
-        }
-      }
-    },
-    "library.readinessStep.gameFolder.missing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Örnek profil tek başına çalışmaz; önce kendi oyun klasörünüzü ekleyin."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Örnek profil tek başına çalışmaz; önce kendi oyun klasörünüzü ekleyin."
-          }
-        }
-      }
-    },
-    "library.readinessStep.realCheck.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü yapıldı mı?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü yapıldı mı?"
-          }
-        }
-      }
-    },
-    "library.readinessStep.realCheck.done": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Son gerçek sistem kontrolü bu oturumda kullanılıyor."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Son gerçek sistem kontrolü bu oturumda kullanılıyor."
-          }
-        }
-      }
-    },
-    "library.readinessStep.realCheck.missing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine ve sistem durumu için manuel gerçek kontrol çalıştırın."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine ve sistem durumu için manuel gerçek kontrol çalıştırın."
-          }
-        }
-      }
-    },
-    "library.readinessStep.wine.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazır mı?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazır mı?"
-          }
-        }
-      }
-    },
-    "library.readinessStep.wine.done": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine gerçek kontrolde hazır görünüyor."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine gerçek kontrolde hazır görünüyor."
-          }
-        }
-      }
-    },
-    "library.readinessStep.wine.needsCheck": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine durumunu öğrenmek için gerçek sistem kontrolü gerekir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine durumunu öğrenmek için gerçek sistem kontrolü gerekir."
-          }
-        }
-      }
-    },
-    "library.readinessStep.wine.missing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazır değil; kurulum tamamlanmadan prefix veya başlatma önerilmez."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazır değil; kurulum tamamlanmadan prefix veya başlatma önerilmez."
-          }
-        }
-      }
-    },
-    "library.readinessStep.prefix.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü var mı?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü var mı?"
-          }
-        }
-      }
-    },
-    "library.readinessStep.prefix.done": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü hazır."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörü hazır."
-          }
-        }
-      }
-    },
-    "library.readinessStep.prefix.missing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun için prefix klasörü oluşturulmalı."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun için prefix klasörü oluşturulmalı."
-          }
-        }
-      }
-    },
-    "library.readinessStep.experimental.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel çalıştırma hazır mı?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel çalıştırma hazır mı?"
-          }
-        }
-      }
-    },
-    "library.readinessStep.experimental.done": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Koşullar tamamlandı; deneysel başlatma denenebilir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Koşullar tamamlandı; deneysel başlatma denenebilir."
-          }
-        }
-      }
-    },
-    "library.readinessStep.experimental.missing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma için kalan engelleri Tanılama ekranından kontrol edin."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatma için kalan engelleri Tanılama ekranından kontrol edin."
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.heading": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sıradaki adım"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sıradaki adım"
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.loading.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Durum hazırlanıyor"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Durum hazırlanıyor"
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.loading.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tanılama bilgileri yükleniyor."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tanılama bilgileri yükleniyor."
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.realCheck.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü yap"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerçek sistem kontrolü yap"
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.realCheck.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Önce Wine ve sistem bileşenlerini gerçek kontrolden geçir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Önce Wine ve sistem bileşenlerini gerçek kontrolden geçir."
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.wine.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazırlığını tamamla"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazırlığını tamamla"
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.wine.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazır görünmüyor. Kurulumu tamamladıktan sonra gerçek sistem kontrolünü tekrar çalıştır."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine hazır görünmüyor. Kurulumu tamamladıktan sonra gerçek sistem kontrolünü tekrar çalıştır."
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.prefix.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörünü oluştur"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefix klasörünü oluştur"
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.prefix.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun profili için güvenli prefix klasörü henüz yok."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oyun profili için güvenli prefix klasörü henüz yok."
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.experimental.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmayı dene"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel başlatmayı dene"
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.experimental.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerekli kontroller tamamlandı. Üretim başlatma kapalı kalır; yalnızca deneysel akış denenir."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gerekli kontroller tamamlandı. Üretim başlatma kapalı kalır; yalnızca deneysel akış denenir."
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.review.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kalan engelleri kontrol et"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kalan engelleri kontrol et"
-          }
-        }
-      }
-    },
-    "diagnostics.nextStep.review.message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel çalıştırma için kalan uyarıları aşağıdaki bölümlerden inceleyin."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel çalıştırma için kalan uyarıları aşağıdaki bölümlerden inceleyin."
-          }
-        }
-      }
-    },
-    "settings.experimentalLaunch.status": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel çalıştırma"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deneysel çalıştırma"
-          }
-        }
-      }
-    },
-    "settings.experimentalLaunch.enabled": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Açık (kontrollü)"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Açık (kontrollü)"
-          }
-        }
-      }
-    },
-    "settings.experimentalLaunch.disabled": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kapalı"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kapalı"
-          }
-        }
-      }
-    },
-    "settings.appDataFolder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uygulama veri klasörü"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uygulama veri klasörü"
-          }
-        }
-      }
-    },
-    "addGame.steam.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Install with Steam"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Steam ile kur"
-          }
-        }
-      }
-    },
     "steam_appid_placeholder": {
       "extractionState": "manual",
       "localizations": {
@@ -4183,6 +4285,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Steam AppID veya mağaza bağlantısı"
+          }
+        }
+      }
+    },
+    "steam_not_installed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steam is not installed on this Mac"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac'te Steam kurulu değil"
           }
         }
       }
@@ -4204,40 +4323,6 @@
         }
       }
     },
-    "addGame.steam.help": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You will not be logged into Steam within the app. Complete the installation in Steam."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Steam hesabınıza uygulama içinde giriş yapılmaz. Kurulumu Steam'de tamamlayın."
-          }
-        }
-      }
-    },
-    "addGame.steam.error.invalidInput": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Invalid format."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geçersiz format."
-          }
-        }
-      }
-    },
     "steam_open_failed": {
       "extractionState": "manual",
       "localizations": {
@@ -4251,23 +4336,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Steam açılamadı"
-          }
-        }
-      }
-    },
-    "steam_not_installed": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Steam is not installed on this Mac"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu Mac'te Steam kurulu değil"
           }
         }
       }
@@ -4306,74 +4374,6 @@
         }
       }
     },
-    "game.launching": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Başlatılıyor..."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Başlatılıyor..."
-          }
-        }
-      }
-    },
-    "game.playButton": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OYNA"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OYNA"
-          }
-        }
-      }
-    },
-    "game.delete": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sil"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sil"
-          }
-        }
-      }
-    },
-    "launch.error.profileNotFound": {
-      "extractionState": "manual",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profil bulunamadı."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profil bulunamadı."
-          }
-        }
-      }
-    },
     "steam_ready_timeout": {
       "extractionState": "manual",
       "localizations": {
@@ -4387,6 +4387,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Steam 30 saniye içinde yüklenemedi"
+          }
+        }
+      }
+    },
+    "windows.win10": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows 10"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows 10"
+          }
+        }
+      }
+    },
+    "windows.win11": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows 11"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows 11"
           }
         }
       }

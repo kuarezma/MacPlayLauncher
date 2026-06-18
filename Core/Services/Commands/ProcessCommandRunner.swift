@@ -126,10 +126,12 @@ struct ProcessCommandRunner: CommandRunning {
     }
 
     private static var defaultAllowedExecutableURLs: Set<URL> {
-        defaultAllowedWineURLs.union([
-            URL(fileURLWithPath: "/usr/bin/true"),
-            URL(fileURLWithPath: "/usr/bin/arch")
-        ])
+        defaultAllowedWineURLs
+            .union(defaultAllowedCrossOverURLs)
+            .union([
+                URL(fileURLWithPath: "/usr/bin/true"),
+                URL(fileURLWithPath: "/usr/bin/arch")
+            ])
     }
 
     fileprivate static var defaultAllowedWineURLs: Set<URL> {
@@ -138,18 +140,23 @@ struct ProcessCommandRunner: CommandRunning {
             URL(fileURLWithPath: "/usr/local/bin/wine")
         ]
     }
+
+    fileprivate static var defaultAllowedCrossOverURLs: Set<URL> {
+        Set(CrossOverExecutableResolver.defaultAllowedURLs)
+    }
 }
 
 struct ProcessGameLaunchExecutor: GameLaunchExecuting {
-    private let allowedWineURLs: Set<URL>
+    private let allowedLauncherURLs: Set<URL>
 
-    init(allowedWineURLs: Set<URL> = ProcessCommandRunner.defaultAllowedWineURLs) {
-        self.allowedWineURLs = Set(allowedWineURLs.map { ProcessCommandRunner.normalizedURL($0) })
+    init(allowedLauncherURLs: Set<URL> = ProcessCommandRunner.defaultAllowedWineURLs
+            .union(ProcessCommandRunner.defaultAllowedCrossOverURLs)) {
+        self.allowedLauncherURLs = Set(allowedLauncherURLs.map { ProcessCommandRunner.normalizedURL($0) })
     }
 
     func start(plan: GameLaunchPlan) throws -> GameLaunchResult {
         let wineURL = ProcessCommandRunner.normalizedURL(plan.wineURL)
-        guard allowedWineURLs.contains(wineURL), !ProcessCommandRunner.isShellExecutable(wineURL) else {
+        guard allowedLauncherURLs.contains(wineURL), !ProcessCommandRunner.isShellExecutable(wineURL) else {
             throw MacPlayError.launchFailed(String(localized: "error.launchWineNotAllowed"))
         }
 

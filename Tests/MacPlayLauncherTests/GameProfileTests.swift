@@ -10,7 +10,8 @@ final class GameProfileTests: XCTestCase {
         XCTAssertEqual(profile.schemaVersion, 1)
         XCTAssertEqual(profile.wineArch, .win64)
         XCTAssertEqual(profile.windowsVersion, .win10)
-        XCTAssertEqual(profile.runtime, .wineDXVKMoltenVK)
+        XCTAssertEqual(profile.runtime, .crossOver)
+        XCTAssertEqual(profile.crossOverBottleName, "Cossacks3")
         XCTAssertEqual(profile.performanceMode, .balanced)
     }
 
@@ -23,7 +24,8 @@ final class GameProfileTests: XCTestCase {
         XCTAssertEqual(decoded.schemaVersion, 1)
         XCTAssertEqual(decoded.wineArch, .win64)
         XCTAssertEqual(decoded.windowsVersion, .win10)
-        XCTAssertEqual(decoded.runtime, .wineDXVKMoltenVK)
+        XCTAssertEqual(decoded.runtime, .crossOver)
+        XCTAssertEqual(decoded.crossOverBottleName, "Cossacks3")
         XCTAssertEqual(decoded.performanceMode, .balanced)
     }
 }

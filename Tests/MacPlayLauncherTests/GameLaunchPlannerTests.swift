@@ -48,6 +48,78 @@ final class GameLaunchPlannerTests: XCTestCase {
         }
     }
 
+    func testMakeLaunchPlanCrossOverBuildsCorrectArguments() throws {
+        let gameFolder = URL(fileURLWithPath: "/tmp/cossacks3", isDirectory: true)
+        let cxstartPath = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxstart"
+
+        let planner = DefaultGameLaunchPlanner(
+            bookmarkManager: FakeLaunchBookmarkManager(
+                executableURL: gameFolder,
+                workingDirectoryURL: gameFolder
+            ),
+            prefixManager: FakeLaunchPrefixManager(prefixURL: nil),
+            crossOverResolver: CrossOverExecutableResolver(
+                fileChecker: FakeLaunchFileChecker(existingExecutables: [cxstartPath]),
+                allowedURLs: [URL(fileURLWithPath: cxstartPath)]
+            )
+        )
+
+        let plan = try planner.makeLaunchPlan(for: makeCrossOverProfile())
+
+        XCTAssertEqual(plan.wineURL.path, cxstartPath)
+        XCTAssertTrue(plan.arguments.contains("--bottle"))
+        XCTAssertTrue(plan.arguments.contains("Cossacks3"))
+        XCTAssertTrue(plan.arguments.contains("--workdir"))
+        XCTAssertTrue(plan.arguments.contains("--env"))
+        XCTAssertTrue(plan.arguments.contains("WINEDLLOVERRIDES=d3d9,d3d11,dxgi=b"))
+        XCTAssertTrue(plan.arguments.last == "C:\\Cossacks3\\steamclient_loader_x86.exe")
+        XCTAssertEqual(plan.workingDirectoryURL, gameFolder)
+    }
+
+    func testMakeLaunchPlanCrossOverRequiresBottleName() {
+        let gameFolder = URL(fileURLWithPath: "/tmp/cossacks3", isDirectory: true)
+        let cxstartPath = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxstart"
+
+        let planner = DefaultGameLaunchPlanner(
+            bookmarkManager: FakeLaunchBookmarkManager(
+                executableURL: gameFolder,
+                workingDirectoryURL: gameFolder
+            ),
+            prefixManager: FakeLaunchPrefixManager(prefixURL: nil),
+            crossOverResolver: CrossOverExecutableResolver(
+                fileChecker: FakeLaunchFileChecker(existingExecutables: [cxstartPath]),
+                allowedURLs: [URL(fileURLWithPath: cxstartPath)]
+            )
+        )
+
+        var profile = makeCrossOverProfile()
+        profile.crossOverBottleName = nil
+
+        XCTAssertThrowsError(try planner.makeLaunchPlan(for: profile)) { error in
+            XCTAssertEqual(error as? MacPlayError, .launchPreparationFailed)
+        }
+    }
+
+    func testMakeLaunchPlanCrossOverThrowsWhenCXStartMissing() {
+        let gameFolder = URL(fileURLWithPath: "/tmp/cossacks3", isDirectory: true)
+
+        let planner = DefaultGameLaunchPlanner(
+            bookmarkManager: FakeLaunchBookmarkManager(
+                executableURL: gameFolder,
+                workingDirectoryURL: gameFolder
+            ),
+            prefixManager: FakeLaunchPrefixManager(prefixURL: nil),
+            crossOverResolver: CrossOverExecutableResolver(
+                fileChecker: FakeLaunchFileChecker(existingExecutables: []),
+                allowedURLs: [URL(fileURLWithPath: "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxstart")]
+            )
+        )
+
+        XCTAssertThrowsError(try planner.makeLaunchPlan(for: makeCrossOverProfile())) { error in
+            XCTAssertEqual(error as? MacPlayError, .crossOverNotFound)
+        }
+    }
+
     private func makeProfile() -> GameProfile {
         GameProfile(
             schemaVersion: GameProfile.currentSchemaVersion,
@@ -65,6 +137,31 @@ final class GameLaunchPlannerTests: XCTestCase {
             dependencies: [],
             environment: ["DXVK_STATE_CACHE": "1"],
             launchArguments: [],
+            knownIssues: [],
+            lastPlayedAt: nil,
+            totalPlayTimeMinutes: 0,
+            launchCount: 0
+        )
+    }
+
+    private func makeCrossOverProfile() -> GameProfile {
+        GameProfile(
+            schemaVersion: GameProfile.currentSchemaVersion,
+            id: "cossacks3",
+            displayName: "Cossacks 3",
+            executablePath: nil,
+            workingDirectory: "/tmp/cossacks3",
+            prefixPath: "Prefixes/cossacks3",
+            executableBookmarkData: nil,
+            workingDirectoryBookmarkData: Data([2]),
+            runtime: .crossOver,
+            crossOverBottleName: "Cossacks3",
+            performanceMode: .balanced,
+            wineArch: .win64,
+            windowsVersion: .win10,
+            dependencies: [],
+            environment: ["WINEDLLOVERRIDES": "d3d9,d3d11,dxgi=b"],
+            launchArguments: ["C:\\Cossacks3\\steamclient_loader_x86.exe"],
             knownIssues: [],
             lastPlayedAt: nil,
             totalPlayTimeMinutes: 0,

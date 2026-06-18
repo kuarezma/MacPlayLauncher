@@ -55,7 +55,12 @@ struct DefaultRunReadinessEvaluator: RunReadinessEvaluating {
     }
 
     private func isConfiguredProfile(_ profile: GameProfile) -> Bool {
-        hasValue(profile.executablePath)
+        if profile.runtime == .crossOver {
+            return hasValue(profile.workingDirectory)
+                && profile.workingDirectoryBookmarkData?.isEmpty == false
+                && hasValue(profile.crossOverBottleName)
+        }
+        return hasValue(profile.executablePath)
             && hasValue(profile.workingDirectory)
             && profile.executableBookmarkData?.isEmpty == false
             && profile.workingDirectoryBookmarkData?.isEmpty == false

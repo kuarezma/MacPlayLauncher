@@ -8,9 +8,12 @@ final class AppState {
         var selectedFolderURL: URL?
         var selectedExecutableURL: URL?
         var gameName = ""
+        var detectedRuntime: RuntimeKind?
         var detectionStatusMessage: String?
         var errorMessage: String?
         var successMessage: String?
+
+        var isCrossOver: Bool { detectedRuntime == .crossOver }
     }
 
     enum NavigationItem: Hashable {
@@ -64,9 +67,12 @@ final class AppState {
     }
 
     var canSaveAddGameProfile: Bool {
-        addGameForm.selectedFolderURL != nil
-            && addGameForm.selectedExecutableURL != nil
-            && !addGameForm.gameName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        guard addGameForm.selectedFolderURL != nil,
+              !addGameForm.gameName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return false
+        }
+        if addGameForm.isCrossOver { return true }
+        return addGameForm.selectedExecutableURL != nil
     }
 
     func selectGameFolderForAddGame() {
@@ -85,8 +91,14 @@ final class AppState {
 
         do {
             if let detectedGame = try environment.gameFolderDetector.detectCossacks3(in: folderURL) {
+                let template = loadBundledCossacks3Profile()
                 addGameForm.gameName = detectedGame.displayName
-                addGameForm.selectedExecutableURL = detectedGame.executableURL
+                addGameForm.detectedRuntime = template.runtime
+                if template.runtime == .crossOver {
+                    addGameForm.selectedExecutableURL = nil
+                } else {
+                    addGameForm.selectedExecutableURL = detectedGame.executableURL
+                }
                 addGameForm.detectionStatusMessage = String(localized: "addGame.detection.cossacks3")
             } else {
                 addGameForm.detectionStatusMessage = String(localized: "addGame.detection.notFound")
@@ -309,12 +321,9 @@ final class AppState {
     }
 
     private func makeAddGameProfile() throws -> GameProfile {
-        guard let folderURL = addGameForm.selectedFolderURL,
-              let executableURL = addGameForm.selectedExecutableURL else {
+        guard let folderURL = addGameForm.selectedFolderURL else {
             throw MacPlayError.invalidPath
         }
-
-        try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)
 
         let displayName = addGameForm.gameName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !displayName.isEmpty else {
@@ -323,6 +332,38 @@ final class AppState {
 
         let profileID = makeProfileID(displayName: displayName)
         let template = loadBundledCossacks3Profile()
+
+        if template.runtime == .crossOver {
+            return GameProfile(
+                schemaVersion: template.schemaVersion,
+                id: profileID,
+                displayName: displayName,
+                executablePath: nil,
+                workingDirectory: folderURL.standardizedFileURL.path,
+                prefixPath: "Prefixes/\(profileID)",
+                executableBookmarkData: nil,
+                workingDirectoryBookmarkData: try environment.bookmarkManager.createBookmark(for: folderURL),
+                runtime: template.runtime,
+                crossOverBottleName: template.crossOverBottleName,
+                performanceMode: template.performanceMode,
+                wineArch: template.wineArch,
+                windowsVersion: template.windowsVersion,
+                dependencies: template.dependencies,
+                environment: template.environment,
+                launchArguments: template.launchArguments,
+                knownIssues: template.knownIssues,
+                lastPlayedAt: nil,
+                totalPlayTimeMinutes: 0,
+                launchCount: 0
+            )
+        }
+
+        guard let executableURL = addGameForm.selectedExecutableURL else {
+            throw MacPlayError.invalidPath
+        }
+
+        try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)
+
         return GameProfile(
             schemaVersion: template.schemaVersion,
             id: profileID,

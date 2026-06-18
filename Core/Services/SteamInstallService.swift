@@ -42,10 +42,11 @@ struct SteamInstallService: SteamInstallServicing {
 
     private func open(_ url: URL) throws {
         let opened = NSWorkspace.shared.open(
-            url,
+            [url],
             withAppBundleIdentifier: bundleID,
             options: .async,
-            additionalEventParamDescriptor: nil
+            additionalEventParamDescriptor: nil,
+            launchIdentifiers: nil
         )
         if !opened {
             throw SteamInstallError.appNotFound

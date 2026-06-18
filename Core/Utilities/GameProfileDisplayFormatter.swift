@@ -11,6 +11,8 @@ enum GameProfileDisplayFormatter {
             return String(localized: "runtime.wineDXMTExperimental")
         case .systemWineFallback:
             return String(localized: "runtime.systemWineFallback")
+        case .crossOver:
+            return String(localized: "runtime.crossOver")
         }
     }
 
@@ -45,7 +47,12 @@ enum GameProfileDisplayFormatter {
     }
 
     static func isUserConfigured(_ profile: GameProfile) -> Bool {
-        profile.executablePath != nil
+        if profile.runtime == .crossOver {
+            return profile.workingDirectory != nil
+                && profile.workingDirectoryBookmarkData != nil
+                && profile.crossOverBottleName != nil
+        }
+        return profile.executablePath != nil
             && profile.workingDirectory != nil
             && profile.executableBookmarkData != nil
             && profile.workingDirectoryBookmarkData != nil

@@ -8,18 +8,28 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
     private let bookmarkManager: any BookmarkManaging
     private let prefixManager: any PrefixManaging
     private let wineResolver: WineExecutableResolver
+    private let crossOverResolver: CrossOverExecutableResolver
 
     init(
         bookmarkManager: any BookmarkManaging,
         prefixManager: any PrefixManaging,
-        wineResolver: WineExecutableResolver = WineExecutableResolver()
+        wineResolver: WineExecutableResolver = WineExecutableResolver(),
+        crossOverResolver: CrossOverExecutableResolver = CrossOverExecutableResolver()
     ) {
         self.bookmarkManager = bookmarkManager
         self.prefixManager = prefixManager
         self.wineResolver = wineResolver
+        self.crossOverResolver = crossOverResolver
     }
 
     func makeLaunchPlan(for profile: GameProfile) throws -> GameLaunchPlan {
+        if profile.runtime == .crossOver {
+            return try makeCrossOverLaunchPlan(for: profile)
+        }
+        return try makeWineLaunchPlan(for: profile)
+    }
+
+    private func makeWineLaunchPlan(for profile: GameProfile) throws -> GameLaunchPlan {
         guard let executableBookmarkData = profile.executableBookmarkData,
               let workingDirectoryBookmarkData = profile.workingDirectoryBookmarkData else {
             throw MacPlayError.launchPreparationFailed
@@ -52,6 +62,42 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
             arguments: arguments,
             environment: environment,
             executableURL: executableURL,
+            workingDirectoryURL: workingDirectoryURL
+        )
+    }
+
+    private func makeCrossOverLaunchPlan(for profile: GameProfile) throws -> GameLaunchPlan {
+        guard let bottleName = profile.crossOverBottleName, !bottleName.isEmpty else {
+            throw MacPlayError.launchPreparationFailed
+        }
+
+        guard let cxstartURL = crossOverResolver.resolve() else {
+            throw MacPlayError.crossOverNotFound
+        }
+
+        guard let workingDirectoryBookmarkData = profile.workingDirectoryBookmarkData else {
+            throw MacPlayError.launchPreparationFailed
+        }
+
+        let workingDirectoryURL = try bookmarkManager.resolveBookmark(workingDirectoryBookmarkData)
+
+        try validateLaunchArguments(profile.launchArguments)
+
+        var arguments = ["--bottle", bottleName, "--workdir", workingDirectoryURL.path]
+        for (key, value) in profile.environment.sorted(by: { $0.key < $1.key }) {
+            arguments += ["--env", "\(key)=\(value)"]
+        }
+        arguments += profile.launchArguments
+
+        var environment = ProcessInfo.processInfo.environment
+        environment["CX_ROOT"] = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver"
+
+        return GameLaunchPlan(
+            profileID: profile.id,
+            wineURL: cxstartURL,
+            arguments: arguments,
+            environment: environment,
+            executableURL: workingDirectoryURL,
             workingDirectoryURL: workingDirectoryURL
         )
     }

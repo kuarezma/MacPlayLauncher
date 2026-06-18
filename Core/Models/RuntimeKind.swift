@@ -3,5 +3,6 @@ enum RuntimeKind: String, Codable, CaseIterable, Sendable {
     case wineD3DMetalExperimental
     case wineDXMTExperimental
     case systemWineFallback
+    case crossOver
 }
 

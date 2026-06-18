@@ -9,6 +9,7 @@ enum MacPlayError: LocalizedError, Equatable, Sendable {
     case invalidPrefixPath
     case prefixDirectoryMissing
     case wineNotFound
+    case crossOverNotFound
     case securityScopedAccessDenied
     case launchPreparationFailed
     case launchFailed(String)
@@ -32,6 +33,8 @@ enum MacPlayError: LocalizedError, Equatable, Sendable {
             return String(localized: "error.prefixDirectoryMissing")
         case .wineNotFound:
             return String(localized: "error.wineNotFound")
+        case .crossOverNotFound:
+            return String(localized: "error.crossOverNotFound")
         case .securityScopedAccessDenied:
             return String(localized: "error.securityScopedAccessDenied")
         case .launchPreparationFailed:

@@ -1,66 +1,27 @@
 {
   "dependencies" : [
-    {
-      "dependsOn" : [
 
-      ],
-      "displayName" : "Core Fonts",
-      "id" : "corefonts",
-      "installOrder" : 1,
-      "installed" : false,
-      "required" : false
-    },
-    {
-      "dependsOn" : [
-
-      ],
-      "displayName" : "Microsoft Visual C++ 2015 Runtime",
-      "id" : "vcrun2015",
-      "installOrder" : 2,
-      "installed" : false,
-      "required" : true
-    },
-    {
-      "dependsOn" : [
-
-      ],
-      "displayName" : "DirectX 9 Helper Libraries",
-      "id" : "d3dx9",
-      "installOrder" : 3,
-      "installed" : false,
-      "required" : true
-    },
-    {
-      "dependsOn" : [
-        "vcrun2015"
-      ],
-      "displayName" : "XAudio/XACT Runtime",
-      "id" : "xact",
-      "installOrder" : 4,
-      "installed" : false,
-      "required" : false
-    }
   ],
   "displayName" : "Cossacks 3",
   "environment" : {
-    "DXVK_STATE_CACHE" : "1",
-    "WINEARCH" : "win64"
+    "WINEDLLOVERRIDES" : "d3d9,d3d11,dxgi=b"
   },
   "executableBookmarkData" : null,
   "executablePath" : null,
   "id" : "cossacks3",
   "knownIssues" : [
-    "First launch may stutter while shader and pipeline cache are generated.",
-    "Steam login is not part of V1."
+    "Oyun açılırken görünmez bir onay kutusu çıkabilir — pencereye tıklayıp Return tuşuna basın.",
+    "Ekran çözünürlüğü 1280×800 olarak ayarlanmalıdır (CrossOver bottle'da sanal masaüstü)."
   ],
   "lastPlayedAt" : null,
   "launchArguments" : [
-
+    "C:\\Cossacks3\\steamclient_loader_x86.exe"
   ],
   "launchCount" : 0,
   "performanceMode" : "balanced",
   "prefixPath" : "Prefixes/cossacks3",
-  "runtime" : "wineDXVKMoltenVK",
+  "runtime" : "crossOver",
+  "crossOverBottleName" : "Cossacks3",
   "schemaVersion" : 1,
   "totalPlayTimeMinutes" : 0,
   "windowsVersion" : "win10",
@@ -68,4 +29,3 @@
   "workingDirectory" : null,
   "workingDirectoryBookmarkData" : null
 }
-

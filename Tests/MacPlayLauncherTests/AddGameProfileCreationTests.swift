@@ -34,9 +34,11 @@ final class AddGameProfileCreationTests: XCTestCase {
         let savedProfile = try XCTUnwrap(try profileManager.loadProfiles().first)
         XCTAssertEqual(savedProfile.displayName, "Cossacks 3")
         XCTAssertEqual(savedProfile.workingDirectory, gameFolderURL.standardizedFileURL.path)
-        XCTAssertEqual(savedProfile.executablePath, executableURL.standardizedFileURL.path)
         XCTAssertEqual(savedProfile.workingDirectoryBookmarkData, FakeBookmarkManager.bookmarkData)
-        XCTAssertEqual(savedProfile.executableBookmarkData, FakeBookmarkManager.bookmarkData)
+        XCTAssertEqual(savedProfile.runtime, .crossOver)
+        XCTAssertEqual(savedProfile.crossOverBottleName, "Cossacks3")
+        XCTAssertNil(savedProfile.executablePath)
+        XCTAssertNil(savedProfile.executableBookmarkData)
         XCTAssertEqual(appState.selectedNavigationItem, .library)
         XCTAssertEqual(appState.selectedProfileID, savedProfile.id)
     }

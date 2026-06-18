@@ -52,24 +52,26 @@ struct ExperimentalRunReadinessEvaluator: RunReadinessEvaluating {
             blockers.append(prefixBlocker)
         }
 
-        if dependency(diagnosticSummary, kind: .wine)?.status != .ready {
-            blockers.append(
-                experimentalBlocker(
-                    id: "experimental.wine.notReady",
-                    title: String(localized: "readiness.experimental.wineMissing.title"),
-                    message: String(localized: "readiness.experimental.wineMissing.message"),
-                    suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
+        if profile.runtime != .crossOver {
+            if dependency(diagnosticSummary, kind: .wine)?.status != .ready {
+                blockers.append(
+                    experimentalBlocker(
+                        id: "experimental.wine.notReady",
+                        title: String(localized: "readiness.experimental.wineMissing.title"),
+                        message: String(localized: "readiness.experimental.wineMissing.message"),
+                        suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
+                    )
                 )
-            )
-        } else if wineResolver.resolve() == nil {
-            blockers.append(
-                experimentalBlocker(
-                    id: "experimental.wine.missing",
-                    title: String(localized: "readiness.experimental.wineMissing.title"),
-                    message: String(localized: "readiness.experimental.wineMissing.message"),
-                    suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
+            } else if wineResolver.resolve() == nil {
+                blockers.append(
+                    experimentalBlocker(
+                        id: "experimental.wine.missing",
+                        title: String(localized: "readiness.experimental.wineMissing.title"),
+                        message: String(localized: "readiness.experimental.wineMissing.message"),
+                        suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
+                    )
                 )
-            )
+            }
         }
 
         if let rosetta = dependency(diagnosticSummary, kind: .rosetta),

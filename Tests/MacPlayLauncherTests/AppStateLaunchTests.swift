@@ -25,33 +25,6 @@ private struct FakeFileSelectionServiceForExe: FileSelectionServicing {
 }
 
 @MainActor
-final class FakeSteamInstallService: SteamInstallServicing {
-    var shouldThrowAppNotFound = false
-    var shouldThrowTimeout = false
-
-    func openInstallPage(for appID: String) throws {
-        if shouldThrowAppNotFound {
-            throw SteamInstallError.appNotFound
-        }
-    }
-
-    func openLibrary() throws {
-        if shouldThrowAppNotFound {
-            throw SteamInstallError.appNotFound
-        }
-    }
-
-    func waitForReadiness(timeout: TimeInterval) async throws {
-        if shouldThrowTimeout {
-            throw SteamInstallError.readinessTimeout
-        }
-        if shouldThrowAppNotFound {
-            throw SteamInstallError.appNotFound
-        }
-    }
-}
-
-@MainActor
 final class AppStateLaunchTests: XCTestCase {
     var appState: AppState!
     var fakeLauncher: FakeGameLauncher!

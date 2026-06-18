@@ -20,18 +20,20 @@ struct AddGameView: View {
                     }
                 }
 
-                Button {
-                    appState.selectExecutableForAddGame()
-                } label: {
-                    Label(String(localized: "addGame.exe.select"), systemImage: "doc")
-                }
-                .disabled(appState.addGameForm.selectedFolderURL == nil)
+                if !appState.addGameForm.isCrossOver {
+                    Button {
+                        appState.selectExecutableForAddGame()
+                    } label: {
+                        Label(String(localized: "addGame.exe.select"), systemImage: "doc")
+                    }
+                    .disabled(appState.addGameForm.selectedFolderURL == nil)
 
-                if let selectedExecutableURL = appState.addGameForm.selectedExecutableURL {
-                    LabeledContent(String(localized: "addGame.exe.selected")) {
-                        Text(selectedExecutableURL.lastPathComponent)
-                            .foregroundStyle(.secondary)
-                            .textSelection(.enabled)
+                    if let selectedExecutableURL = appState.addGameForm.selectedExecutableURL {
+                        LabeledContent(String(localized: "addGame.exe.selected")) {
+                            Text(selectedExecutableURL.lastPathComponent)
+                                .foregroundStyle(.secondary)
+                                .textSelection(.enabled)
+                        }
                     }
                 }
             }

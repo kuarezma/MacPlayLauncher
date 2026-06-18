@@ -12,6 +12,7 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
     var executableBookmarkData: Data?
     var workingDirectoryBookmarkData: Data?
     var runtime: RuntimeKind
+    var crossOverBottleName: String? = nil
     var performanceMode: PerformanceMode
     var wineArch: WineArchitecture
     var windowsVersion: WindowsVersion
@@ -32,7 +33,8 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
         prefixPath: "Prefixes/cossacks3",
         executableBookmarkData: nil,
         workingDirectoryBookmarkData: nil,
-        runtime: .wineDXVKMoltenVK,
+        runtime: .crossOver,
+        crossOverBottleName: "Cossacks3",
         performanceMode: .balanced,
         wineArch: .win64,
         windowsVersion: .win10,
