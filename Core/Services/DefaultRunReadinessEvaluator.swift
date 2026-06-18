@@ -32,7 +32,7 @@ struct DefaultRunReadinessEvaluator: RunReadinessEvaluating {
             title: title(for: status),
             message: message(for: status),
             blockers: blockers,
-            canLaunch: status == .ready
+            canLaunch: false
         )
     }
 

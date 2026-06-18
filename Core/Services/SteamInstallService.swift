@@ -60,18 +60,8 @@ struct SteamInstallService: SteamInstallServicing {
     }
 
     private func isSteamLibraryResponsive() -> Bool {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
-        process.arguments = ["-f", "steamwebui"]
-        let pipe = Pipe()
-        process.standardOutput = pipe
-
-        do {
-            try process.run()
-            process.waitUntilExit()
-            return process.terminationStatus == 0
-        } catch {
-            return false
+        NSWorkspace.shared.runningApplications.contains {
+            $0.bundleIdentifier == bundleID && $0.activationPolicy == .regular
         }
     }
 }

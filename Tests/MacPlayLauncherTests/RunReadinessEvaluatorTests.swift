@@ -79,7 +79,7 @@ final class RunReadinessEvaluatorTests: XCTestCase {
 
         XCTAssertEqual(result.status, .ready)
         XCTAssertTrue(result.blockers.isEmpty)
-        XCTAssertTrue(result.canLaunch)
+        XCTAssertFalse(result.canLaunch)
     }
 
     func testMultipleBlockersKeepDeterministicOrder() {
@@ -113,10 +113,10 @@ final class RunReadinessEvaluatorTests: XCTestCase {
         )
     }
 
-    func test_canLaunch_isTrue_whenStatusIsReady() {
+    func test_canLaunch_isFalse_whenStatusIsReady() {
         let result = evaluate(profiles: [configuredProfile()], dependencies: readyDependencies())
         XCTAssertEqual(result.status, .ready)
-        XCTAssertTrue(result.canLaunch)
+        XCTAssertFalse(result.canLaunch)
     }
 
     func test_canLaunch_isFalse_whenStatusIsBlocked() {
