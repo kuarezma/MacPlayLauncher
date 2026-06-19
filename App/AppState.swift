@@ -462,14 +462,7 @@ final class AppState {
         while true {
             try? await Task.sleep(nanoseconds: 3_000_000_000)
             let isRunning = await Task.detached {
-                let process = Process()
-                process.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
-                process.arguments = ["-x", "cossacks.exe"]
-                process.standardOutput = FileHandle.nullDevice
-                process.standardError = FileHandle.nullDevice
-                try? process.run()
-                process.waitUntilExit()
-                return process.terminationStatus == 0
+                GameProcessMonitor.isProcessRunning(name: "cossacks.exe")
             }.value
             if !isRunning {
                 service.restoreResolution()
