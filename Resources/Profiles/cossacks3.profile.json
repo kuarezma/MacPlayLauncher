@@ -13,6 +13,7 @@
     "Oyun açılırken görünmez bir onay kutusu çıkabilir — pencereye tıklayıp Return tuşuna basın.",
     "Ekran çözünürlüğü 1280×800 olarak ayarlanmalıdır (CrossOver bottle'da sanal masaüstü)."
   ],
+  "requiresWineSteam" : true,
   "lastPlayedAt" : null,
   "launchArguments" : [
     "C:\\Cossacks3\\steamclient_loader_x86.exe"

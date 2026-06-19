@@ -25,7 +25,8 @@ struct DefaultGameLauncher: GameLaunching {
 
     func launch(profile: GameProfile) throws -> GameLaunchResult {
         let plan = try planner.makeLaunchPlan(for: profile)
-        return try accessManager.withAccess(to: [plan.executableURL, plan.workingDirectoryURL]) {
+        let accessURLs = [plan.executableURL, plan.workingDirectoryURL].compactMap { $0 }
+        return try accessManager.withAccess(to: accessURLs) {
             try executor.start(plan: plan)
         }
     }

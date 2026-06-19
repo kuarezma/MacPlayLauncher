@@ -352,6 +352,7 @@ final class AppState {
                 environment: template.environment,
                 launchArguments: template.launchArguments,
                 knownIssues: template.knownIssues,
+                requiresWineSteam: template.requiresWineSteam,
                 lastPlayedAt: nil,
                 totalPlayTimeMinutes: 0,
                 launchCount: 0
@@ -381,6 +382,7 @@ final class AppState {
             environment: template.environment,
             launchArguments: template.launchArguments,
             knownIssues: template.knownIssues,
+            requiresWineSteam: template.requiresWineSteam,
             lastPlayedAt: nil,
             totalPlayTimeMinutes: 0,
             launchCount: 0
@@ -425,6 +427,54 @@ final class AppState {
             steamInstallErrorMessage = String(localized: "steam_not_installed")
         } catch {
             steamInstallErrorMessage = String(localized: "steam_open_failed")
+        }
+    }
+
+    func launchGameWithWineSteam(profileID: String) async {
+        launchingProfileID = profileID
+        launchErrorMessage = nil
+
+        guard let profile = profiles.first(where: { $0.id == profileID }),
+              let bottleName = profile.crossOverBottleName else {
+            launchingProfileID = nil
+            return
+        }
+
+        do {
+            try environment.wineSteamService.launch(bottleName: bottleName)
+            try await environment.wineSteamService.waitForReadiness(timeout: 30)
+            let displayService = environment.displayResolutionService
+            await Task.detached { displayService.setGameResolution() }.value
+            launchGame(profileID: profileID)
+            Task.detached {
+                await AppState.monitorGameExitAndRestoreDisplay(service: displayService)
+            }
+        } catch WineSteamError.readinessTimeout {
+            launchErrorMessage = String(localized: "steam_ready_timeout")
+            launchingProfileID = nil
+        } catch {
+            launchErrorMessage = ErrorPresenter.message(for: error)
+            launchingProfileID = nil
+        }
+    }
+
+    private static func monitorGameExitAndRestoreDisplay(service: any DisplayResolutionServicing) async {
+        while true {
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            let isRunning = await Task.detached {
+                let process = Process()
+                process.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
+                process.arguments = ["-x", "cossacks.exe"]
+                process.standardOutput = FileHandle.nullDevice
+                process.standardError = FileHandle.nullDevice
+                try? process.run()
+                process.waitUntilExit()
+                return process.terminationStatus == 0
+            }.value
+            if !isRunning {
+                service.restoreResolution()
+                return
+            }
         }
     }
 

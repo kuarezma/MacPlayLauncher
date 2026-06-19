@@ -47,7 +47,11 @@ struct GameCardView: View {
 
             Button {
                 Task {
-                    await appState.launchGameWithSteamInitiation(profileID: profile.id)
+                    if profile.requiresWineSteam == true {
+                        await appState.launchGameWithWineSteam(profileID: profile.id)
+                    } else {
+                        await appState.launchGameWithSteamInitiation(profileID: profile.id)
+                    }
                 }
             } label: {
                 if appState.launchingProfileID == profile.id {

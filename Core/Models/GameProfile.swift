@@ -20,6 +20,7 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
     var environment: [String: String]
     var launchArguments: [String]
     var knownIssues: [String]
+    var requiresWineSteam: Bool?
     var lastPlayedAt: Date?
     var totalPlayTimeMinutes: Int
     var launchCount: Int
@@ -81,6 +82,7 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
             "First launch may stutter while shader and pipeline cache are generated.",
             "Steam login is not part of V1."
         ],
+        requiresWineSteam: nil,
         lastPlayedAt: nil,
         totalPlayTimeMinutes: 0,
         launchCount: 0

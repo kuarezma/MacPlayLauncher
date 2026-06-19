@@ -1,219 +1,155 @@
 # MacPlay Launcher
 
-MacPlay Launcher is a macOS launcher project for running selected Windows games on Apple Silicon Macs in future runtime phases. The first target game is Cossacks 3.
+A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon Macs using CrossOver + Wine, without needing a Windows license. Supports **real Steam multiplayer** via an embedded Wine Steam session.
 
-## What It Is Not
+> Built for M-series Macs. Tested on M3 MacBook with CrossOver 26.
 
-- It is not a Windows VM.
-- It is not Parallels Desktop.
-- It does not install or automate the Steam client/login flow in V1.
-- It is not planned for Mac App Store distribution.
-- It does not claim universal Windows game compatibility.
+---
+
+## Features
+
+- One-click launch: starts Wine Steam, waits for readiness, then launches the game
+- Real Steam multiplayer (friends list, matchmaking, achievements)
+- Automatic display resolution switching (1280×800 for game, restored on exit)
+- CrossOver bottle integration (no manual Wine configuration)
+- SwiftUI native app, macOS 14+
+
+---
 
 ## Requirements
 
-- macOS 14.0 or newer.
-- Apple Silicon Mac.
-- Rosetta 2 will be required in future runtime phases, but Sprint 1 does not implement Rosetta checks.
+| Requirement | Details |
+|---|---|
+| macOS | 14.0 (Sonoma) or newer |
+| Mac | Apple Silicon (M1/M2/M3/M4) |
+| CrossOver | [CrossOver 26+](https://www.codeweavers.com/crossover) — paid app |
+| Cossacks 3 | Must own on Steam |
+| displayplacer | `brew install displayplacer` |
 
-## Sprint 1 Features
+---
 
-- XcodeGen macOS SwiftUI project skeleton.
-- SwiftUI `NavigationSplitView` shell.
-- Observation framework with `@Observable`.
-- JSON profile persistence.
-- Sample Cossacks 3 profile.
-- English base localization with Turkish placeholder localization.
-- Keyboard shortcuts for Add Game, Settings, and Diagnostics.
-- XCTest unit tests for models and persistence.
+## Setup Guide
 
-## Sprint 2 Features
+### 1. Install CrossOver and create a bottle
 
-- Turkish Add Game form for selecting a local game folder and `.exe` file.
-- `NSOpenPanel` based folder and executable selection behind a testable file selection service.
-- Security-scoped bookmark creation and stale bookmark resolution handling.
-- Cossacks 3 executable detection inside the selected game folder.
-- Manual profile creation using existing profile persistence.
-- Safe path containment validation so executables outside the selected folder are rejected.
+1. Install [CrossOver](https://www.codeweavers.com/crossover)
+2. Create a new bottle named exactly **`Cossacks3`** (Win10, 64-bit)
 
-## Sprint 3 Features
+### 2. Install Wine Steam inside the bottle
 
-- Turkish runtime readiness diagnostics screen.
-- Passive dependency models for Rosetta, Wine, DXVK, MoltenVK, and game profile readiness.
-- Static diagnostic service that does not run system commands or inspect real runtime installs.
-- Game profile readiness based on minimum user-configured profile data, without file access or launch checks.
-- Manual setup guide text explaining that installation and launch are handled in later sprints.
-- Unit tests for diagnostic aggregation, static diagnostic output, and view model mapping.
+1. In CrossOver, install **Steam** inside the `Cossacks3` bottle
+2. Launch Steam from CrossOver, log into your Steam account
+3. In Wine Steam → Library, install **Cossacks 3** (let it download completely)
 
-## Sprint 4 Features
+### 3. Configure ColdClientLoader
 
-- Run Readiness Gate domain model for explaining whether a future launch would be allowed.
-- Pure readiness evaluator based only on `GameProfile` and `RuntimeDiagnosticSummary`.
-- Turkish Diagnostics UI section that lists readiness blockers and passive suggested actions.
-- No launch button, launch affordance, process execution, shell script, runtime download/install, prefix creation, or real file/bookmark access.
-- `ready` status is only a domain result for future launch gating; the app still does not run games and `canLaunch` remains false in Sprint 4.
-- Unit tests for readiness status priority, blocker order, configured profile requirements, and UI mapping.
-
-## Sprint 5A Features
-
-- Diagnostic command boundary for future real runtime checks.
-- `CommandRunning` abstraction with request/result/error models.
-- `ProcessCommandRunner` keeps process execution behind a whitelist, timeout, and output limit.
-- Shell execution, `sh -c`, game launch, runtime install/download, and prefix creation remain out of scope.
-- `FakeCommandRunner` supports deterministic command tests without depending on the local system.
-- Production diagnostics remain static/passive; real Rosetta and Wine detection are deferred to a later sprint.
-
-## Sprint 5B Features
-
-- Read-only Rosetta and Wine diagnostic providers for future production diagnostics.
-- Rosetta detection uses the existing command boundary and does not install Rosetta or request admin privileges.
-- Wine detection checks only explicit allowed paths and runs only `wine --version`; it does not use `PATH` lookup or `which wine`.
-- DXVK and MoltenVK remain passive because prefix/runtime strategy is not implemented yet.
-- `RealDependencyDiagnosticService` is implemented for tests and future wiring, but production still uses static diagnostics through the activation gate.
-- UI, game launch, prefix creation, runtime download/install, shell execution, and user `.exe` execution remain out of scope.
-
-## Sprint 6 Features
-
-- Real diagnostics activation gate with `DiagnosticMode`, `DiagnosticActivationPolicy`, and `DiagnosticsSource`.
-- `SelectableDependencyDiagnosticService` routes between static preparation and read-only real diagnostics.
-- Production default remains `staticOnly` with `DiagnosticActivationPolicy.production`; real diagnostics require explicit internal activation.
-- Diagnostics UI shows a passive source label (`Hazırlık rehberi` / `Gerçek sistem kontrolü`) without a manual real-check button.
-- `canLaunch` remains false for all readiness results.
-- Fast agent verification via `./scripts/verify-sprint-6.sh`; GUI build/test remains the primary human verification channel.
-
-## Sprint 7 Features
-
-- Diagnostics source info card with title, badge, subtitle, policy notes, and shared footnotes.
-- Clear Turkish messaging that the screen shows passive preparation guidance, not automatic real system checks.
-- Real source mapping remains testable for future use; production still uses `staticOnly`.
-- No manual real-check button, no real diagnostics execution, and no production policy change.
-
-## Sprint 8 Features
-
-- Manual `Gerçek sistemi kontrol et` button on the Diagnostics screen for read-only Rosetta/Wine checks.
-- Loading state and `Hazırlık rehberine dön` action after a real result.
-- Per-request diagnostic mode routing through `SelectableDependencyDiagnosticService`; initial load remains static preparation.
-- Production policy allows real diagnostics only with explicit user action; `canLaunch` remains false.
-
-## Sprint 9 Features
-
-- Real-check result details on the Diagnostics screen: last check timestamp plus dependency version and install path when available.
-- Detail lines appear only after a manual real check; static preparation UI stays unchanged.
-- No persistence, policy change, or launch affordance.
-
-## Sprint 10 Features
-
-- In-memory diagnostics session state preserves manual real-check results while navigating within the app.
-- Returning to Diagnostics restores the cached real-check summary until the user resets to preparation or saves a new profile.
-- No disk persistence, automatic real-check, or launch affordance.
-
-## Sprint 11 Features
-
-- Passive readiness strip on the Game Library screen with status badge and short explanation.
-- Uses cached real-check readiness when available; otherwise falls back to static preparation evaluation.
-- `Tanılamayı aç` navigates to Diagnostics only; no launch affordance.
-
-## Sprint 12 Features
-
-- Settings screen diagnostics section with policy notes and current in-memory session source label.
-- Reuses existing navigation to Diagnostics; no policy toggles or automatic real checks.
-
-## Sprint 13 Features
-
-- ADR-002 documents the Wine prefix strategy: per-game prefixes under Application Support, `WINEPREFIX` mapping, and deferred creation in Sprint 14.
-- No prefix directories are created and no Wine prefix bootstrap commands run in Sprint 13.
-
-## Sprint 14 Features
-
-- `PrefixManager` creates per-game prefix directories under Application Support on explicit user action from Diagnostics.
-- Path validation keeps writes inside `Prefixes/`; no Wine bootstrap, `WINEPREFIX`, or launch behavior is added.
-
-## Sprint 15 Features
-
-- ADR-001 finalizes V1 runtime strategy: user-managed Homebrew Wine via allowlist discovery; no launcher runtime download or install.
-- DXVK and MoltenVK remain passive; supply-chain notes are documented for later launch work.
-
-## Sprint 16 Features
-
-- ADR-003 documents the launch plan: Wine command shape, env mapping, bookmark access lifecycle, and experimental gating for Sprint 17.
-- No launch button, launch services, or bookmark access runtime calls are added in Sprint 16.
-
-## Sprint 17 Features
-
-- Experimental launch flow wires ADR-003: Wine command start, `WINEPREFIX`/`WINEARCH`, bookmark access lifecycle, and bounded failure messaging.
-- Production readiness still reports `canLaunch: false`; experimental launch requires real diagnostics, prefix folder, and explicit user action.
-
-## Sprint 18 Features
-
-- Game Library now shows an actionable `Eksikleri gider` panel with ordered setup steps for game folder, real system check, Wine, prefix, and experimental launch readiness.
-- Game cards use Turkish user-facing runtime, performance, Windows version, and profile type labels instead of raw enum values.
-- Diagnostics starts with a `Sıradaki adım` card that routes real check, prefix creation, and experimental launch actions from one place.
-- Settings shows diagnostics source, experimental launch status, and the application data folder.
-- Production launch remains disabled; only the controlled experimental flow can become available after real diagnostics, Wine, and prefix requirements pass.
-
-## Development
-
-Generate the Xcode project:
-
-```sh
-xcodegen generate
+In the Cossacks 3 game folder inside the bottle:
+```
+~/Library/Application Support/CrossOver/Bottles/Cossacks3/drive_c/Program Files (x86)/Steam/steamapps/common/Cossacks 3/
 ```
 
-Build:
-
-```sh
-xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' build
+Edit `ColdClientLoader.ini` — set the `SteamClient` paths to the real Steam DLLs:
+```ini
+[SteamClient]
+Exe=cossacks.exe
+AppId=333420
+SteamClientDll=C:\Program Files (x86)\Steam\steamclient.dll
+SteamClient64Dll=C:\Program Files (x86)\Steam\steamclient64.dll
 ```
 
-Build, test, and launch:
+Make sure `steam_settings/offline.txt` does **not** exist (rename it to `offline.txt.disabled` if present).
 
-```sh
-./script/build_and_run.sh
+### 4. Create the C:\Cossacks3 symlink inside the bottle
+
+```bash
+BOTTLE="$HOME/Library/Application Support/CrossOver/Bottles/Cossacks3/drive_c"
+GAMEDIR="$BOTTLE/Program Files (x86)/Steam/steamapps/common/Cossacks 3"
+ln -s "$GAMEDIR" "$BOTTLE/Cossacks3"
 ```
 
-Test:
+### 5. Install displayplacer
 
-```sh
-xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test
+```bash
+brew install displayplacer
 ```
 
-Run SwiftLint if installed:
+### 6. Build and run MacPlayLauncher
 
-```sh
-swiftlint lint
+```bash
+git clone https://github.com/kuarezma/MacPlayLauncher.git
+cd MacPlayLauncher
+swift build --build-path /tmp/mpl_build -c debug
 ```
 
-Continuous integration runs XcodeGen, SwiftLint, sprint verification, and XCTest on every push and pull request to `main`.
-
-Regenerate app icons:
-
-```sh
-./scripts/generate-app-icons.py
+Then create the app bundle and open it (see `scripts/build.sh`):
+```bash
+./scripts/build.sh
 ```
 
-## Changelog
+---
 
-- Chore: Excluded build directories from swiftlint and resolved mainactor isolation issues in unit tests.
-- Sprint 18: Added actionable readiness guidance across Library, Diagnostics, and Settings while keeping production launch disabled; stabilized Xcode 26 local build/test settings.
-- Chore: Added generated MacPlay Launcher app icons and reusable launcher symbol assets.
-- Chore: Added a project-local build/run script and Codex Run action.
-- Chore: Added GitHub Actions CI for XcodeGen, SwiftLint, sprint verification, and XCTest.
-- Fix: Restored Swift 6/Xcode test compatibility for environment wiring and launch planner tests.
-- Sprint 17: Added experimental minimal launch prototype with bookmark access and experimental readiness gating.
-- Sprint 16: Added ADR-003 launch plan; no launch implementation or bookmark access runtime.
-- Sprint 15: Finalized ADR-001 runtime acquisition strategy; no runtime download, install, or launch behavior.
-- Sprint 14: Added explicit prefix directory creation boundary with Diagnostics UI; no Wine bootstrap or launch.
-- Sprint 13: Added ADR-002 prefix strategy planning; no prefix creation or launch behavior.
-- Sprint 12: Added Settings diagnostics overview with policy notes and current session source label.
-- Sprint 11: Added passive readiness strip to the Game Library with navigation to Diagnostics.
-- Sprint 10: Added in-memory diagnostics session state so manual real-check results survive navigation within the app session.
-- Sprint 9: Added real-check result details for timestamp, version, and install path on the Diagnostics screen.
-- Sprint 8: Added manual real diagnostics check button with per-request mode routing; static preparation remains the default load.
-- Sprint 7: Added diagnostics source info card and clearer passive preparation messaging; no real-check button.
-- Sprint 6: Added real diagnostics activation gate, selectable diagnostic service, and passive source labeling; production remains static-only.
-- Sprint 5B: Added read-only Rosetta/Wine diagnostic providers and a non-default real diagnostics service; production diagnostics remain static.
-- Sprint 5A: Added a safe diagnostic command boundary with fake runner tests; production diagnostics remain static.
-- Sprint 4: Added passive Run Readiness Gate with blocker explanations and Turkish diagnostics UI, without launch/runtime execution.
-- Sprint 3: Added passive runtime diagnostics preparation with Turkish readiness UI, static dependency status service, setup guidance, and tests.
-- Sprint 2: Added localized Add Game profile creation flow with folder/executable selection, bookmarks, Cossacks 3 detection, containment validation, and focused tests.
-- Sprint 1: Initial XcodeGen project skeleton, models, persistence, localized SwiftUI shell, tests, and documentation.
+## How It Works
+
+```
+OYNA button pressed
+  → WineSteamService launches steam.exe inside Cossacks3 bottle
+  → Waits for steamwebhelper.exe to appear (Steam is ready)
+  → DisplayResolutionService sets display to 1280×800
+  → GameLaunchPlanner builds: cxstart --bottle Cossacks3 C:\Cossacks3\steamclient_loader_x86.exe
+  → ColdClientLoader connects to running Wine Steam → launches cossacks.exe
+  → When cossacks.exe exits → DisplayResolutionService restores original resolution
+```
+
+---
+
+## Build System Notes
+
+**Use `swift build` — NOT `swift build` from inside Xcode's run button:**
+
+```bash
+cd MacPlayLauncher
+swift build --build-path /tmp/mpl_build -c debug
+```
+
+> The project's `build_output/` folder (used by the release script) must never be inside the project directory during a build. `Package.swift` excludes it, but if it appears, move it out first.
+
+**Do NOT use `xcodebuild` directly** — it hangs on Xcode 26 due to device discovery initialization. Use `scripts/build.sh` which handles all of this automatically.
+
+---
+
+## Project Structure
+
+```
+MacPlayLauncher/
+├── App/               SwiftUI app entry, AppState, AppEnvironment
+├── Core/
+│   ├── Models/        GameProfile, GameLaunchPlan, etc.
+│   ├── Services/      WineSteamService, DisplayResolutionService, GameLauncher...
+│   └── Utilities/     GameProfileDisplayFormatter, PathContainmentValidator...
+├── UI/
+│   └── GameLibrary/   GameCardView, LibraryView...
+├── Resources/
+│   ├── Profiles/      cossacks3.profile.json (bundled template)
+│   └── Localization/  Localizable.xcstrings (TR + EN)
+└── scripts/
+    └── build.sh       Watchdog-protected build script
+```
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Game exits with code 53 | `steam_settings/offline.txt` must be renamed to `.disabled` |
+| "Couldn't find SteamClient64Dll" | Check `ColdClientLoader.ini` paths |
+| Wine Steam doesn't open | Check CrossOver bottle name is exactly `Cossacks3` |
+| Game opens but no multiplayer | Steam must be running before ColdClientLoader starts |
+| Build hangs for hours | Delete `build_output/` from project folder, run `swift build --build-path /tmp/mpl_build` |
+| Black screen / crash | Make sure `steam_settings/` folder has no `offline.txt` |
+
+---
+
+## License
+
+MIT

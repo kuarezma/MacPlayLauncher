@@ -11,6 +11,8 @@ struct AppEnvironment: Sendable {
     let runReadinessEvaluator: any RunReadinessEvaluating
     let prefixManager: any PrefixManaging
     let steamInstallService: any SteamInstallServicing
+    let wineSteamService: any WineSteamServicing
+    let displayResolutionService: any DisplayResolutionServicing
     let experimentalLaunchPolicy: ExperimentalLaunchPolicy
     let experimentalRunReadinessEvaluator: any RunReadinessEvaluating
     let gameLauncher: any GameLaunching
@@ -27,6 +29,8 @@ struct AppEnvironment: Sendable {
         runReadinessEvaluator: any RunReadinessEvaluating,
         prefixManager: any PrefixManaging,
         steamInstallService: any SteamInstallServicing,
+        wineSteamService: (any WineSteamServicing)? = nil,
+        displayResolutionService: (any DisplayResolutionServicing)? = nil,
         experimentalLaunchPolicy: ExperimentalLaunchPolicy = .disabled,
         experimentalRunReadinessEvaluator: (any RunReadinessEvaluating)? = nil,
         gameLauncher: (any GameLaunching)? = nil,
@@ -43,6 +47,8 @@ struct AppEnvironment: Sendable {
         self.runReadinessEvaluator = runReadinessEvaluator
         self.prefixManager = prefixManager
         self.steamInstallService = steamInstallService
+        self.wineSteamService = wineSteamService ?? WineSteamService()
+        self.displayResolutionService = displayResolutionService ?? DisplayResolutionService()
         self.experimentalLaunchPolicy = experimentalLaunchPolicy
         self.experimentalRunReadinessEvaluator = experimentalRunReadinessEvaluator ?? runReadinessEvaluator
         self.gameLauncher = gameLauncher ?? DisabledGameLauncher()

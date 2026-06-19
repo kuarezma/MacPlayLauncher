@@ -75,15 +75,13 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
             throw MacPlayError.crossOverNotFound
         }
 
-        guard let workingDirectoryBookmarkData = profile.workingDirectoryBookmarkData else {
-            throw MacPlayError.launchPreparationFailed
-        }
-
-        let workingDirectoryURL = try bookmarkManager.resolveBookmark(workingDirectoryBookmarkData)
-
         try validateLaunchArguments(profile.launchArguments)
 
-        var arguments = ["--bottle", bottleName, "--workdir", workingDirectoryURL.path]
+        var arguments = ["--bottle", bottleName]
+        if let workingDirectoryBookmarkData = profile.workingDirectoryBookmarkData,
+           let workingDirectoryURL = try? bookmarkManager.resolveBookmark(workingDirectoryBookmarkData) {
+            arguments += ["--workdir", workingDirectoryURL.path]
+        }
         for (key, value) in profile.environment.sorted(by: { $0.key < $1.key }) {
             arguments += ["--env", "\(key)=\(value)"]
         }
@@ -97,8 +95,8 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
             wineURL: cxstartURL,
             arguments: arguments,
             environment: environment,
-            executableURL: workingDirectoryURL,
-            workingDirectoryURL: workingDirectoryURL
+            executableURL: cxstartURL,
+            workingDirectoryURL: nil
         )
     }
 

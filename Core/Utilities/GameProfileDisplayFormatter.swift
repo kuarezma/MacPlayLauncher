@@ -48,6 +48,9 @@ enum GameProfileDisplayFormatter {
 
     static func isUserConfigured(_ profile: GameProfile) -> Bool {
         if profile.runtime == .crossOver {
+            if profile.requiresWineSteam == true {
+                return profile.crossOverBottleName != nil
+            }
             return profile.workingDirectory != nil
                 && profile.workingDirectoryBookmarkData != nil
                 && profile.crossOverBottleName != nil

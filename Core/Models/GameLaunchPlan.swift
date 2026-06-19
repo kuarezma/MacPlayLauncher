@@ -6,7 +6,7 @@ struct GameLaunchPlan: Equatable, Sendable {
     let arguments: [String]
     let environment: [String: String]
     let executableURL: URL
-    let workingDirectoryURL: URL
+    let workingDirectoryURL: URL?
 }
 
 struct GameLaunchResult: Equatable, Sendable {
