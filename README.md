@@ -12,6 +12,7 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 - Real Steam multiplayer (friends list, matchmaking, achievements)
 - Automatic display resolution switching (1280×800 for game, restored on exit)
 - CrossOver bottle integration (no manual Wine configuration)
+- OpenGL proxy launch override for the Cossacks 3 macOS shader/minimap fixes
 - SwiftUI native app, macOS 14+
 
 ---
@@ -73,7 +74,15 @@ ln -s "$GAMEDIR" "$BOTTLE/Cossacks3"
 brew install displayplacer
 ```
 
-### 6. Build and run MacPlayLauncher
+### 6. Apply the current macOS port files
+
+The working Cossacks 3 port expects the patched shader set and `opengl32.dll` proxy in the game folder. If you keep the separate `~/Cossacks3_Mac_Port` helper repo, run its minimap fix script after updating game files:
+
+```bash
+~/Cossacks3_Mac_Port/apply_minimap_fix.sh
+```
+
+### 7. Build and run MacPlayLauncher
 
 ```bash
 git clone https://github.com/kuarezma/MacPlayLauncher.git
@@ -95,7 +104,7 @@ OYNA button pressed
   → WineSteamService launches steam.exe inside Cossacks3 bottle
   → Waits for steamwebhelper.exe to appear (Steam is ready)
   → DisplayResolutionService sets display to 1280×800
-  → GameLaunchPlanner builds: cxstart --bottle Cossacks3 C:\Cossacks3\steamclient_loader_x86.exe
+  → GameLaunchPlanner builds: cxstart --bottle Cossacks3 --env WINEDLLOVERRIDES=opengl32=n,b;d3d9,d3d11,dxgi=b C:\Cossacks3\steamclient_loader_x86.exe
   → ColdClientLoader connects to running Wine Steam → launches cossacks.exe
   → When cossacks.exe exits → DisplayResolutionService restores original resolution
 ```
@@ -147,6 +156,13 @@ MacPlayLauncher/
 | Game opens but no multiplayer | Steam must be running before ColdClientLoader starts |
 | Build hangs for hours | Delete `build_output/` from project folder, run `swift build --build-path /tmp/mpl_build` |
 | Black screen / crash | Make sure `steam_settings/` folder has no `offline.txt` |
+| Minimap is transparent | Re-run `~/Cossacks3_Mac_Port/apply_minimap_fix.sh` and confirm the bundled profile uses `opengl32=n,b;d3d9,d3d11,dxgi=b` |
+
+---
+
+## Changelog
+
+- 2026-06-21: Aligned the CrossOver launch profile with the OpenGL proxy override and documented the minimap bootstrap fix.
 
 ---
 

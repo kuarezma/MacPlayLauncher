@@ -4,7 +4,7 @@
   ],
   "displayName" : "Cossacks 3",
   "environment" : {
-    "WINEDLLOVERRIDES" : "d3d9,d3d11,dxgi=b"
+    "WINEDLLOVERRIDES" : "opengl32=n,b;d3d9,d3d11,dxgi=b"
   },
   "executableBookmarkData" : null,
   "executablePath" : null,

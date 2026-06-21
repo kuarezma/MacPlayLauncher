@@ -71,7 +71,7 @@ final class GameLaunchPlannerTests: XCTestCase {
         XCTAssertTrue(plan.arguments.contains("Cossacks3"))
         XCTAssertTrue(plan.arguments.contains("--workdir"))
         XCTAssertTrue(plan.arguments.contains("--env"))
-        XCTAssertTrue(plan.arguments.contains("WINEDLLOVERRIDES=d3d9,d3d11,dxgi=b"))
+        XCTAssertTrue(plan.arguments.contains("WINEDLLOVERRIDES=opengl32=n,b;d3d9,d3d11,dxgi=b"))
         XCTAssertTrue(plan.arguments.last == "C:\\Cossacks3\\steamclient_loader_x86.exe")
         // CrossOver planlarında workingDirectoryURL nil'dir — cxstart working dir'i kendisi yönetir
         XCTAssertNil(plan.workingDirectoryURL)
@@ -161,7 +161,7 @@ final class GameLaunchPlannerTests: XCTestCase {
             wineArch: .win64,
             windowsVersion: .win10,
             dependencies: [],
-            environment: ["WINEDLLOVERRIDES": "d3d9,d3d11,dxgi=b"],
+            environment: ["WINEDLLOVERRIDES": "opengl32=n,b;d3d9,d3d11,dxgi=b"],
             launchArguments: ["C:\\Cossacks3\\steamclient_loader_x86.exe"],
             knownIssues: [],
             lastPlayedAt: nil,
