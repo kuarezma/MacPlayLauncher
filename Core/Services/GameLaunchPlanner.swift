@@ -78,8 +78,7 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
         try validateLaunchArguments(profile.launchArguments)
 
         var arguments = ["--bottle", bottleName]
-        if let workingDirectoryBookmarkData = profile.workingDirectoryBookmarkData,
-           let workingDirectoryURL = try? bookmarkManager.resolveBookmark(workingDirectoryBookmarkData) {
+        if let workingDirectoryURL = crossOverWorkingDirectoryURL(for: profile) {
             arguments += ["--workdir", workingDirectoryURL.path]
         }
         for (key, value) in profile.environment.sorted(by: { $0.key < $1.key }) {
@@ -98,6 +97,27 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
             executableURL: cxstartURL,
             workingDirectoryURL: nil
         )
+    }
+
+    private func crossOverWorkingDirectoryURL(for profile: GameProfile) -> URL? {
+        if let workingDirectoryBookmarkData = profile.workingDirectoryBookmarkData,
+           let workingDirectoryURL = try? bookmarkManager.resolveBookmark(workingDirectoryBookmarkData) {
+            return workingDirectoryURL
+        }
+
+        guard let workingDirectory = profile.workingDirectory?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !workingDirectory.isEmpty else {
+            return nil
+        }
+
+        let expandedPath = (workingDirectory as NSString).expandingTildeInPath
+        var isDirectory: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: expandedPath, isDirectory: &isDirectory),
+              isDirectory.boolValue else {
+            return nil
+        }
+
+        return URL(fileURLWithPath: expandedPath, isDirectory: true)
     }
 
     private func validateLaunchArguments(_ arguments: [String]) throws {

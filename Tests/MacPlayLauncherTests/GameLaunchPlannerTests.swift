@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class GameLaunchPlannerTests: XCTestCase {
     func testMakeLaunchPlanBuildsWineCommandAndEnvironment() throws {
@@ -77,6 +77,37 @@ final class GameLaunchPlannerTests: XCTestCase {
         XCTAssertNil(plan.workingDirectoryURL)
     }
 
+    func testMakeLaunchPlanCrossOverUsesWorkingDirectoryPathWhenBookmarkIsMissing() throws {
+        let gameFolder = URL(
+            fileURLWithPath: NSTemporaryDirectory(),
+            isDirectory: true
+        ).appending(path: UUID().uuidString, directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: gameFolder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: gameFolder) }
+
+        let cxstartPath = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxstart"
+        let planner = DefaultGameLaunchPlanner(
+            bookmarkManager: FakeLaunchBookmarkManager(
+                executableURL: gameFolder,
+                workingDirectoryURL: gameFolder
+            ),
+            prefixManager: FakeLaunchPrefixManager(prefixURL: nil),
+            crossOverResolver: CrossOverExecutableResolver(
+                fileChecker: FakeLaunchFileChecker(existingExecutables: [cxstartPath]),
+                allowedURLs: [URL(fileURLWithPath: cxstartPath)]
+            )
+        )
+
+        var profile = makeCrossOverProfile()
+        profile.workingDirectory = gameFolder.path
+        profile.workingDirectoryBookmarkData = nil
+
+        let plan = try planner.makeLaunchPlan(for: profile)
+
+        XCTAssertTrue(plan.arguments.contains("--workdir"))
+        XCTAssertTrue(plan.arguments.contains(gameFolder.path))
+    }
+
     func testMakeLaunchPlanCrossOverRequiresBottleName() {
         let gameFolder = URL(fileURLWithPath: "/tmp/cossacks3", isDirectory: true)
         let cxstartPath = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxstart"
@@ -103,6 +134,7 @@ final class GameLaunchPlannerTests: XCTestCase {
 
     func testMakeLaunchPlanCrossOverThrowsWhenCXStartMissing() {
         let gameFolder = URL(fileURLWithPath: "/tmp/cossacks3", isDirectory: true)
+        let cxstartPath = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxstart"
 
         let planner = DefaultGameLaunchPlanner(
             bookmarkManager: FakeLaunchBookmarkManager(
@@ -112,7 +144,7 @@ final class GameLaunchPlannerTests: XCTestCase {
             prefixManager: FakeLaunchPrefixManager(prefixURL: nil),
             crossOverResolver: CrossOverExecutableResolver(
                 fileChecker: FakeLaunchFileChecker(existingExecutables: []),
-                allowedURLs: [URL(fileURLWithPath: "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxstart")]
+                allowedURLs: [URL(fileURLWithPath: cxstartPath)]
             )
         )
 

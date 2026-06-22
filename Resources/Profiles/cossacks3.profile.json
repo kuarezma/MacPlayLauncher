@@ -27,6 +27,6 @@
   "totalPlayTimeMinutes" : 0,
   "windowsVersion" : "win10",
   "wineArch" : "win64",
-  "workingDirectory" : null,
+  "workingDirectory" : "~/Cossacks3_Mac_Port/oyun_dosyalari",
   "workingDirectoryBookmarkData" : null
 }

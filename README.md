@@ -160,6 +160,7 @@ MacPlayLauncher/
 | "Couldn't find SteamClient64Dll" | Check `ColdClientLoader.ini` paths |
 | Wine Steam doesn't open | Check CrossOver bottle name is exactly `Cossacks3` |
 | Game opens but no multiplayer | Steam must be running before ColdClientLoader starts |
+| Game opens in the wrong window/workdir state | The Cossacks profile should use `~/Cossacks3_Mac_Port/oyun_dosyalari` as its CrossOver working directory |
 | Build hangs for hours | Delete `build_output/` from project folder, run `swift build --build-path /tmp/mpl_build` |
 | Black screen / crash | Make sure `steam_settings/` folder has no `offline.txt` |
 | Minimap is transparent | Re-run `~/Cossacks3_Mac_Port/apply_minimap_fix.sh` and confirm the bundled profile uses `opengl32=n,b;d3d9,d3d11,dxgi=b` |
@@ -168,6 +169,7 @@ MacPlayLauncher/
 
 ## Changelog
 
+- 2026-06-22: CrossOver launch plans now fall back to the profile working directory path, matching the tested Cossacks port launch folder.
 - 2026-06-22: Reworked `scripts/build.sh` to avoid the hanging Xcode build path and create `/tmp/MacPlayLauncher.app` through SwiftPM.
 - 2026-06-22: Added the Cossacks-style launcher preview, minimap/resource UI, optimization readiness checklist, and SwiftPM test target.
 - 2026-06-21: Aligned the CrossOver launch profile with the OpenGL proxy override and documented the minimap bootstrap fix.
