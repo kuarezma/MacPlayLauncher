@@ -8,7 +8,7 @@ final class GameProfileTests: XCTestCase {
         #else
         // Bundle.module is SPM-only. In xcodebuild, load directly from the source tree
         // using #file so this works on any machine without bundle resource path ambiguity.
-        let jsonURL = URL(fileURLWithPath: #file)
+        let jsonURL = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
