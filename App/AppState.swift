@@ -494,26 +494,9 @@ final class AppState {
             }.value
             if !isRunning {
                 service.restoreResolution()
-                AppState.killWineProcesses()
+                GameProcessMonitor.killWineProcesses()
                 return
             }
-        }
-    }
-
-    private static func killWineProcesses() {
-        let targets = [
-            "steam.exe", "steamwebhelper.exe", "steamservice.exe",
-            "steamclient_loader", "winedevice.exe", "winewrapper.exe",
-            "services.exe", "plugplay.exe", "svchost.exe"
-        ]
-        for name in targets {
-            let p = Process()
-            p.executableURL = URL(fileURLWithPath: "/usr/bin/pkill")
-            p.arguments = ["-f", name]
-            p.standardOutput = FileHandle.nullDevice
-            p.standardError = FileHandle.nullDevice
-            try? p.run()
-            p.waitUntilExit()
         }
     }
 

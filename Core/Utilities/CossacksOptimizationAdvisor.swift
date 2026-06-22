@@ -28,7 +28,7 @@ enum CossacksOptimizationAdvisor {
 
     // Checks whether the profile carries the WINEDLLOVERRIDES entry used by CrossOver.
     // The opengl32 proxy is a leftover from earlier experiments and no longer drives
-    // the minimap fix (which is BMP-based); this entry is retained as a CrossOver
+    // the minimap fix (BMP-based); this entry is retained as a CrossOver
     // integration marker rather than a functional minimap control.
     static func hasDLLOverrideConfigured(_ profile: GameProfile) -> Bool {
         guard let override = profile.environment["WINEDLLOVERRIDES"] else {
