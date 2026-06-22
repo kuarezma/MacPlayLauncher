@@ -101,9 +101,8 @@ enum RuntimeDependencyFactory {
 
     static func isConfiguredProfile(_ profile: GameProfile) -> Bool {
         if profile.runtime == .crossOver {
-            return hasValue(profile.workingDirectory)
-                && profile.workingDirectoryBookmarkData?.isEmpty == false
-                && hasValue(profile.crossOverBottleName)
+            // CrossOver manages the bottle path — only bottle name is required
+            return hasValue(profile.crossOverBottleName)
         }
         return hasValue(profile.executablePath)
             && hasValue(profile.workingDirectory)

@@ -3592,6 +3592,57 @@
         }
       }
     },
+    "readiness.experimental.crossoverMissing.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver'ı yükleyin: codeweavers.com/crossover"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver'ı yükleyin: codeweavers.com/crossover"
+          }
+        }
+      }
+    },
+    "readiness.experimental.crossoverMissing.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver kurulu değil veya beklenen konumda bulunamadı."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver kurulu değil veya beklenen konumda bulunamadı."
+          }
+        }
+      }
+    },
+    "readiness.experimental.crossoverMissing.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver bulunamadı"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CrossOver bulunamadı"
+          }
+        }
+      }
+    },
     "readiness.fixMissingBeforeLaunch": {
       "extractionState": "stale",
       "localizations": {

@@ -23,13 +23,14 @@ final class StaticDependencyDiagnosticServiceTests: XCTestCase {
         XCTAssertEqual(gameProfile?.missingReason, String(localized: "diagnostics.gameProfile.missingReason"))
     }
 
-    func testBundledSampleProfileIsNotReady() async {
+    func testBundledSampleProfileIsConfiguredForCrossOver() async {
+        // sampleCossacks3 has crossOverBottleName — sufficient for CrossOver
         let service = StaticDependencyDiagnosticService()
         let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
         let gameProfile = summary.dependencies.first { $0.kind == .gameProfile }
 
-        XCTAssertEqual(gameProfile?.status, .missing)
-        XCTAssertEqual(gameProfile?.userFacingDescription, String(localized: "diagnostics.gameProfile.missing"))
+        XCTAssertEqual(gameProfile?.status, .ready)
+        XCTAssertEqual(gameProfile?.userFacingDescription, String(localized: "diagnostics.gameProfile.ready"))
     }
 
     func testIncompleteProfileIsNotReady() async {

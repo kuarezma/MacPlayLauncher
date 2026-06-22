@@ -15,8 +15,39 @@ final class RunReadinessEvaluatorTests: XCTestCase {
         XCTAssertFalse(result.canLaunch)
     }
 
-    func testBundledSampleProfileIsBlocked() {
+    func testBundledSampleProfileIsConfiguredForCrossOver() {
+        // sampleCossacks3 has a crossOverBottleName — that's sufficient for CrossOver launch
         let result = evaluate(profiles: [.sampleCossacks3], dependencies: readyDependencies())
+
+        XCTAssertEqual(result.status, .ready)
+        XCTAssertTrue(result.blockers.isEmpty)
+        XCTAssertFalse(result.canLaunch)
+    }
+
+    func testCrossOverProfileWithoutBottleNameIsBlocked() {
+        let unconfigured = GameProfile(
+            schemaVersion: GameProfile.currentSchemaVersion,
+            id: "test-cx",
+            displayName: "Test CX",
+            executablePath: nil,
+            workingDirectory: nil,
+            prefixPath: "Prefixes/test-cx",
+            executableBookmarkData: nil,
+            workingDirectoryBookmarkData: nil,
+            runtime: .crossOver,
+            crossOverBottleName: nil,
+            performanceMode: .balanced,
+            wineArch: .win64,
+            windowsVersion: .win10,
+            dependencies: [],
+            environment: [:],
+            launchArguments: [],
+            knownIssues: [],
+            lastPlayedAt: nil,
+            totalPlayTimeMinutes: 0,
+            launchCount: 0
+        )
+        let result = evaluate(profiles: [unconfigured], dependencies: readyDependencies())
 
         XCTAssertEqual(result.status, .blocked)
         XCTAssertEqual(result.blockers.first?.id, "game-profile.missing")
@@ -86,6 +117,8 @@ final class RunReadinessEvaluatorTests: XCTestCase {
     }
 
     func testMultipleBlockersKeepDeterministicOrder() {
+        // sampleCossacks3 is now configured (CrossOver with bottle name)
+        // so only runtime dependency blockers appear, in deterministic order
         let result = evaluate(profiles: [.sampleCossacks3], dependencies: [
             dependency(kind: .rosetta, status: .unknown),
             dependency(kind: .wine, status: .missing),
@@ -94,7 +127,6 @@ final class RunReadinessEvaluatorTests: XCTestCase {
 
         XCTAssertEqual(result.status, .unsupported)
         XCTAssertEqual(result.blockers.map(\.id), [
-            "game-profile.missing",
             "moltenVK.unsupported",
             "wine.missing",
             "rosetta.unknown"

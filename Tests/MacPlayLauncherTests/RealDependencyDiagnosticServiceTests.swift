@@ -42,12 +42,13 @@ final class RealDependencyDiagnosticServiceTests: XCTestCase {
         XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .gameProfile })?.status, .ready)
     }
 
-    func testBundledSampleProfileDoesNotMakeGameProfileReady() async {
+    func testBundledSampleProfileMakesGameProfileReady() async {
+        // sampleCossacks3 has crossOverBottleName — sufficient for CrossOver
         let service = makeService()
 
         let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
 
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .gameProfile })?.status, .missing)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .gameProfile })?.status, .ready)
     }
 
     func testIncompleteProfileDoesNotMakeGameProfileReady() async {

@@ -339,12 +339,11 @@ struct WineSteamService: WineSteamServicing {
     func waitForReadiness(timeout: TimeInterval) async throws {
         let deadline = Date().addingTimeInterval(timeout)
         while Date() < deadline {
-            let running = await MainActor.run {
-                NSWorkspace.shared.runningApplications.contains { app in
-                    let name = (app.localizedName ?? "").lowercased()
-                    return name.contains("steamwebhelper") || name == "steam.exe"
-                }
-            }
+            let running = await Task.detached {
+                // Wine processes appear in the OS process table but not in NSWorkspace.
+                // Use pgrep with full command-line match to detect steam.exe running under CrossOver.
+                GameProcessMonitor.isProcessRunning(name: "steam.exe")
+            }.value
             if running {
                 try await Task.sleep(nanoseconds: 2_000_000_000)
                 return

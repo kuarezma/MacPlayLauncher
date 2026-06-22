@@ -30,6 +30,17 @@ struct ExperimentalRunReadinessEvaluator: RunReadinessEvaluating {
             return base
         }
 
+        // CrossOver profiles can be validated directly — no realSystemCheck needed
+        if let crossOverProfile = profiles.first(where: {
+            RuntimeDependencyFactory.isConfiguredProfile($0) && $0.runtime == .crossOver
+        }) {
+            return evaluateCrossOver(profile: crossOverProfile, base: base)
+        }
+
+        guard let profile = profiles.first(where: RuntimeDependencyFactory.isConfiguredProfile) else {
+            return base
+        }
+
         guard diagnosticSummary.source == .realSystemCheck else {
             return blockedResult(
                 base: base,
@@ -40,10 +51,6 @@ struct ExperimentalRunReadinessEvaluator: RunReadinessEvaluating {
                     suggestedAction: String(localized: "readiness.experimental.requiresRealDiagnostics.action")
                 )
             )
-        }
-
-        guard let profile = profiles.first(where: RuntimeDependencyFactory.isConfiguredProfile) else {
-            return base
         }
 
         var blockers = base.blockers.filter { $0.source != .runtimeDependency || isExperimentalRelevant($0.id) }
@@ -102,6 +109,29 @@ struct ExperimentalRunReadinessEvaluator: RunReadinessEvaluating {
             title: String(localized: "readiness.experimental.ready.title"),
             message: String(localized: "readiness.experimental.ready.message"),
             blockers: blockers,
+            canLaunch: true
+        )
+    }
+
+    private func evaluateCrossOver(profile: GameProfile, base: RunReadinessResult) -> RunReadinessResult {
+        let crossOverResolver = CrossOverExecutableResolver()
+        guard crossOverResolver.resolve() != nil else {
+            return blockedResult(
+                base: base,
+                blocker: experimentalBlocker(
+                    id: "experimental.crossover.missing",
+                    title: String(localized: "readiness.experimental.crossoverMissing.title"),
+                    message: String(localized: "readiness.experimental.crossoverMissing.message"),
+                    suggestedAction: String(localized: "readiness.experimental.crossoverMissing.action")
+                )
+            )
+        }
+
+        return RunReadinessResult(
+            status: .ready,
+            title: String(localized: "readiness.experimental.ready.title"),
+            message: String(localized: "readiness.experimental.ready.message"),
+            blockers: [],
             canLaunch: true
         )
     }
