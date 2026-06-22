@@ -23,14 +23,12 @@ final class ShaderPatchServiceTests: XCTestCase {
     }
 
     func testIsAlreadyPatchedReturnsFalseForUnpatchedShader() throws {
-        let url = tempDir.appending(path: "unit.sm.b42.id22.vert", directoryHint: .notDirectory)
+        let url = tempDir.appending(path: "hf.pvl.smx3.frag", directoryHint: .notDirectory)
         let original = """
-        #define NBONES 42
-        uniform mat4 boneMatrices[NBONES];
+        uniform sampler2D texUnit0;
         void main() {
-           int index=int(gl_MultiTexCoord2.x);
-           vec4 aposn=boneMatrices[index]*gl_Vertex;
-           gl_Position=gl_ModelViewProjectionMatrix*aposn;
+           vec4 tex0 = texture2D(texUnit0, gl_TexCoord[0].xy);
+           gl_FragColor = tex0;
         }
         """
         try original.write(to: url, atomically: true, encoding: .utf8)
@@ -38,26 +36,25 @@ final class ShaderPatchServiceTests: XCTestCase {
         XCTAssertFalse(service.isAlreadyPatched())
     }
 
-    func testIsAlreadyPatchedReturnsTrueWhenForLoopPresent() throws {
-        let url = tempDir.appending(path: "unit.sm.b42.id22.vert", directoryHint: .notDirectory)
+    func testIsAlreadyPatchedReturnsTrueWhenFragmentProbeIsMinimal() throws {
         let patched = """
-        #define NBONES 42
-        uniform mat4 boneMatrices[NBONES];
+        uniform sampler2D texUnit0;
         void main() {
-           int index=int(gl_MultiTexCoord2.x);
-           mat4 bone=mat4(0.0);
-           for(int i=0;i<NBONES;i++){ if(i==index){ bone=boneMatrices[i]; } }
-           gl_Position=gl_ModelViewProjectionMatrix*(bone*gl_Vertex);
+           vec4 tex0 = texture2D(texUnit0, gl_TexCoord[0].xy);
+           gl_FragColor = vec4(tex0.rgb, 1.0);
         }
         """
-        try patched.write(to: url, atomically: true, encoding: .utf8)
+        for name in ["hf.pvl.smx3.frag", "env.smx3.id3.frag", "unit.smx3.id8.frag"] {
+            let url = tempDir.appending(path: name, directoryHint: .notDirectory)
+            try patched.write(to: url, atomically: true, encoding: .utf8)
+        }
 
         XCTAssertTrue(service.isAlreadyPatched())
     }
 
-    // MARK: - Bone Fix
+    // MARK: - Unit Vertex Shaders
 
-    func testApplyBoneFixWritesForLoopToVertShader() throws {
+    func testApplyLeavesBoneVertexShaderUntouched() throws {
         let url = tempDir.appending(path: "unit.sm.b16.id10.vert", directoryHint: .notDirectory)
         let original = """
         #define NBONES 16
@@ -75,33 +72,7 @@ final class ShaderPatchServiceTests: XCTestCase {
         try service.apply()
 
         let result = try String(contentsOf: url, encoding: .utf8)
-        XCTAssertTrue(result.contains("for(int i=0;i<NBONES;i++)"))
-        XCTAssertTrue(result.contains("#define NBONES 16"))
-        XCTAssertFalse(result.contains("boneMatrices[index]"))
-        XCTAssertTrue(result.contains("gl_TexCoord[3]=gl_TextureMatrix[3]*cameraMVM*realpos"))
-        XCTAssertTrue(result.contains("gl_TexCoord[6].xyz=n"))
-        XCTAssertTrue(result.contains("gl_TexCoord[0].w=length(realpos)"))
-    }
-
-    func testApplyBoneFixPreservesNBONESCount() throws {
-        for boneCount in [1, 3, 5, 22, 42] {
-            let name = "unit.sm.b\(boneCount).test.vert"
-            let url = tempDir.appending(path: name, directoryHint: .notDirectory)
-            let original = "#define NBONES \(boneCount)\nuniform mat4 boneMatrices[NBONES];\nvoid main(){}"
-            try original.write(to: url, atomically: true, encoding: .utf8)
-        }
-
-        try service.apply()
-
-        for boneCount in [1, 3, 5, 22, 42] {
-            let name = "unit.sm.b\(boneCount).test.vert"
-            let url = tempDir.appending(path: name, directoryHint: .notDirectory)
-            let result = try String(contentsOf: url, encoding: .utf8)
-            XCTAssertTrue(
-                result.contains("#define NBONES \(boneCount)"),
-                "NBONES mismatch for boneCount=\(boneCount)"
-            )
-        }
+        XCTAssertEqual(result, original)
     }
 
     // MARK: - Minimal Frag Fix

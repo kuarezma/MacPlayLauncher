@@ -169,6 +169,7 @@ MacPlayLauncher/
 
 ## Changelog
 
+- 2026-06-23: Limited the Cossacks shader patcher to safe fragment/fx fixes and stopped rewriting unit bone vertex shaders so cavalry rendering keeps the working path.
 - 2026-06-22: Preserved lighting, fog, and texture outputs in the Cossacks bone shader patch so cavalry meshes avoid dynamic bone indexing without losing render data.
 - 2026-06-22: CrossOver launch plans now fall back to the profile working directory path, matching the tested Cossacks port launch folder.
 - 2026-06-22: Reworked `scripts/build.sh` to avoid the hanging Xcode build path and create `/tmp/MacPlayLauncher.app` through SwiftPM.

@@ -8,9 +8,12 @@ struct ShaderPatchService: Sendable {
     }
 
     func isAlreadyPatched() -> Bool {
-        let probe = gameShaderPath.appending(path: "unit.sm.b42.id22.vert", directoryHint: .notDirectory)
-        guard let content = try? String(contentsOf: probe, encoding: .utf8) else { return false }
-        return content.contains("for(int i=0")
+        let probes = ["hf.pvl.smx3.frag", "env.smx3.id3.frag", "unit.smx3.id8.frag"]
+        return probes.allSatisfy { name in
+            let url = gameShaderPath.appending(path: name, directoryHint: .notDirectory)
+            guard let content = try? String(contentsOf: url, encoding: .utf8) else { return false }
+            return content.contains("gl_FragColor = vec4(tex0.rgb, 1.0);")
+        }
     }
 
     func createBackupIfNeeded() throws {
@@ -19,93 +22,9 @@ struct ShaderPatchService: Sendable {
     }
 
     func apply() throws {
-        try applyBoneFix()
         try applyUnitFragFix()
         try applyFXFix()
         try applyMinimalFragFix()
-    }
-
-    // MARK: - Bone Fix
-
-    private func applyBoneFix() throws {
-        let fm = FileManager.default
-        let contents = try fm.contentsOfDirectory(at: gameShaderPath, includingPropertiesForKeys: nil)
-        let boneShaders = contents.filter { url in
-            let name = url.lastPathComponent
-            return name.hasPrefix("unit.sm.b") && name.hasSuffix(".vert")
-        }
-        for url in boneShaders {
-            let original = try String(contentsOf: url, encoding: .utf8)
-            guard let nbones = extractNBones(from: original) else { continue }
-            try boneFixedShader(nbones: nbones).write(to: url, atomically: true, encoding: .utf8)
-        }
-    }
-
-    private func extractNBones(from source: String) -> Int? {
-        for line in source.components(separatedBy: "\n") {
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-            if trimmed.hasPrefix("#define NBONES") {
-                let parts = trimmed.components(separatedBy: .whitespaces)
-                if parts.count >= 3, let boneCount = Int(parts[2]) { return boneCount }
-            }
-        }
-        return nil
-    }
-
-    // swiftlint:disable:next function_body_length
-    private func boneFixedShader(nbones: Int) -> String {
-        """
-        #define NBONES \(nbones)
-
-        uniform mat4 cameraMVM;
-        uniform mat4 boneMatrices[NBONES];
-        const vec3 eye=vec3(0.0);
-
-        void main()
-        {
-           float weight=gl_MultiTexCoord1.x;
-           int index=int(gl_MultiTexCoord2.x);
-           bool matched=false;
-           vec4 aposn=vec4(0.0);
-           vec4 anorm=vec4(0.0);
-           for(int i=0;i<NBONES;i++)
-           {
-              if(i==index)
-              {
-                 aposn=weight*(boneMatrices[i]*gl_Vertex);
-                 anorm=weight*(boneMatrices[i]*vec4(gl_Normal.xyz, 0.0));
-                 matched=true;
-              }
-           }
-           if(!matched)
-           {
-              aposn=gl_Vertex;
-              anorm=vec4(gl_Normal.xyz, 0.0);
-           }
-
-           vec4 realpos=gl_ModelViewMatrix*aposn;
-
-           vec3 e=normalize(eye-realpos.xyz);
-           vec3 l=normalize(gl_LightSource[0].position.xyz-realpos.xyz);
-           vec3 h=normalize(l+e);
-           vec3 n=normalize(gl_NormalMatrix*anorm.xyz);
-
-           gl_TexCoord[0]=gl_MultiTexCoord0;
-           gl_TexCoord[3]=gl_TextureMatrix[3]*cameraMVM*realpos;
-           gl_TexCoord[4].xyz=l;
-           gl_TexCoord[5].xyz=h;
-           gl_TexCoord[6].xyz=n;
-           gl_TexCoord[7].xyz=e;
-
-        #vendor_ifdef ATI
-           gl_TexCoord[0].w=abs(realpos.z);
-        #vendor_else
-           gl_TexCoord[0].w=length(realpos);
-        #vendor_endif
-
-           gl_Position=gl_ModelViewProjectionMatrix*aposn;
-        }
-        """
     }
 
     // MARK: - Unit Fragment Fix

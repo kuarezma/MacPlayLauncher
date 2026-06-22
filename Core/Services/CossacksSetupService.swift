@@ -142,7 +142,8 @@ struct CossacksSetupService: CossacksSetupServicing {
     private func detectShaderPatch(bottlePath: URL) -> SetupStep {
         let explanation = "Cossacks 3 eski OpenGL/GLSL 1.20 grafik sistemi kullanıyor."
             + " Apple Silicon (M1–M4) işlemciler bu sistemi tam desteklemiyor."
-            + " Bu yama; atlı birlik animasyonlarını, savaş efektlerini ve nesne görüntüsünü düzeltiyor."
+            + " Bu yama; güvenli fragment/fx shader düzeltmeleriyle efektleri ve nesne görüntüsünü dengeliyor."
+            + " Birlik kemik vertex shader'larına dokunmaz; atlı ve asker modellerinin çalışan çizim yolunu korur."
             + " Tek tıkla otomatik uygulanır."
         guard let shaderPath = findShaderPath(in: bottlePath) else {
             return SetupStep(
