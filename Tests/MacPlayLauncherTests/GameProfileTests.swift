@@ -4,11 +4,20 @@ import XCTest
 final class GameProfileTests: XCTestCase {
     func testBundledCossacks3ProfileDecodes() throws {
         #if SWIFT_PACKAGE
-        let bundle = Bundle.module
+        let profile = try BundledGameProfileLoader(bundle: .module).loadCossacks3Profile()
         #else
-        let bundle = Bundle(for: GameProfileTests.self)
+        // Bundle.module is SPM-only. In xcodebuild, load directly from the source tree
+        // using #file so this works on any machine without bundle resource path ambiguity.
+        let jsonURL = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Resources/Profiles/cossacks3.profile.json")
+        let data = try Data(contentsOf: jsonURL)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let profile = try decoder.decode(GameProfile.self, from: data)
         #endif
-        let profile = try BundledGameProfileLoader(bundle: bundle).loadCossacks3Profile()
 
         XCTAssertEqual(profile.id, "cossacks3")
         XCTAssertEqual(profile.schemaVersion, 1)
