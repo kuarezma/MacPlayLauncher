@@ -3,8 +3,8 @@ import SwiftUI
 struct SetupStepCardView: View {
     let step: SetupStep
     var isActive: Bool = false
-    var onAction: (() -> Void)? = nil
-    var onCopy: (() -> Void)? = nil
+    var onAction: (() -> Void)?
+    var onCopy: (() -> Void)?
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {

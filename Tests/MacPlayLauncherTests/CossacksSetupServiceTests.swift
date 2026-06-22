@@ -20,11 +20,10 @@ final class CossacksSetupServiceTests: XCTestCase {
 
     // MARK: - crossover step
 
-    func testCrossOverStepStatusWhenAppExists() async {
-        let fm = FileManager.default
-        let crossOverExists = fm.fileExists(atPath: "/Applications/CrossOver.app")
+    func testCrossOverStepStatusWhenAppExists() async throws {
+        let crossOverExists = FileManager.default.fileExists(atPath: "/Applications/CrossOver.app")
         let steps = await service.detectSteps()
-        let step = try! XCTUnwrap(steps.first { $0.id == "crossover" })
+        let step = try XCTUnwrap(steps.first { $0.id == "crossover" })
 
         if crossOverExists {
             XCTAssertTrue(step.status.isOK, "CrossOver exists, step should be OK")
@@ -36,12 +35,11 @@ final class CossacksSetupServiceTests: XCTestCase {
     }
 
     func testCrossOverStepHasExternalURLWhenNotInstalled() async throws {
-        let fm = FileManager.default
-        guard !fm.fileExists(atPath: "/Applications/CrossOver.app") else {
+        guard !FileManager.default.fileExists(atPath: "/Applications/CrossOver.app") else {
             throw XCTSkip("CrossOver is installed on this machine")
         }
         let steps = await service.detectSteps()
-        let step = try! XCTUnwrap(steps.first { $0.id == "crossover" })
+        let step = try XCTUnwrap(steps.first { $0.id == "crossover" })
 
         XCTAssertNotNil(step.externalURL)
         XCTAssertNotNil(step.actionLabel)
@@ -49,13 +47,12 @@ final class CossacksSetupServiceTests: XCTestCase {
 
     // MARK: - bottle step
 
-    func testBottleStepBlockedStatusChain() async {
+    func testBottleStepBlockedStatusChain() async throws {
         let steps = await service.detectSteps()
-        let bottleStep = try! XCTUnwrap(steps.first { $0.id == "bottle" })
+        let bottleStep = try XCTUnwrap(steps.first { $0.id == "bottle" })
 
-        // If bottle doesn't exist, gameInstall should be blocked
         if case .needsAction = bottleStep.status {
-            let gameStep = try! XCTUnwrap(steps.first { $0.id == "gameInstall" })
+            let gameStep = try XCTUnwrap(steps.first { $0.id == "gameInstall" })
             if case .blocked = gameStep.status { } else {
                 XCTFail("gameInstall should be blocked when bottle is missing")
             }
@@ -64,9 +61,9 @@ final class CossacksSetupServiceTests: XCTestCase {
 
     // MARK: - shaderPatch step
 
-    func testShaderPatchStepHasCanAutoFixTrue() async {
+    func testShaderPatchStepHasCanAutoFixTrue() async throws {
         let steps = await service.detectSteps()
-        let step = try! XCTUnwrap(steps.first { $0.id == "shaderPatch" })
+        let step = try XCTUnwrap(steps.first { $0.id == "shaderPatch" })
 
         if case .needsAction = step.status {
             XCTAssertTrue(step.canAutoFix)
@@ -79,9 +76,9 @@ final class CossacksSetupServiceTests: XCTestCase {
 
     // MARK: - displayplacer step
 
-    func testDisplayPlacerStepHasCopyCommandWhenMissing() async {
+    func testDisplayPlacerStepHasCopyCommandWhenMissing() async throws {
         let steps = await service.detectSteps()
-        let step = try! XCTUnwrap(steps.first { $0.id == "displayplacer" })
+        let step = try XCTUnwrap(steps.first { $0.id == "displayplacer" })
 
         if case .needsAction = step.status {
             XCTAssertNotNil(step.copyCommand)
@@ -96,7 +93,7 @@ final class CossacksSetupServiceTests: XCTestCase {
             throw XCTSkip("displayplacer not installed on this machine")
         }
         let steps = await service.detectSteps()
-        let step = try! XCTUnwrap(steps.first { $0.id == "displayplacer" })
+        let step = try XCTUnwrap(steps.first { $0.id == "displayplacer" })
 
         XCTAssertTrue(step.status.isOK)
     }

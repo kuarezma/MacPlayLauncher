@@ -71,10 +71,13 @@ struct CossacksSetupService: CossacksSetupServicing {
 
     private func detectCrossOver() -> SetupStep {
         let exists = FileManager.default.fileExists(atPath: Self.crossOverAppPath)
+        let explanation = "CrossOver, Windows oyunlarını Mac'te çalıştıran bir uygulama."
+            + " Cossacks 3'ün macOS'ta çalışabilmesi için CrossOver kurulu olması gerekiyor."
+            + " CrossOver, yüklü oyunlara izole bir Windows ortamı (bottle) sağlıyor."
         return SetupStep(
             id: "crossover",
             title: "CrossOver",
-            explanation: "CrossOver, Windows oyunlarını Mac'te çalıştıran bir uygulama. Cossacks 3'ün macOS'ta çalışabilmesi için CrossOver kurulu olması gerekiyor. CrossOver, yüklü oyunlara izole bir Windows ortamı (bottle) sağlıyor.",
+            explanation: explanation,
             status: exists
                 ? .ok(detail: "CrossOver kurulu")
                 : .needsAction(message: "CrossOver kurulu değil — indirme sayfasını açın"),
@@ -87,10 +90,13 @@ struct CossacksSetupService: CossacksSetupServicing {
 
     private func detectBottle(bottlePath: URL) -> SetupStep {
         let exists = FileManager.default.fileExists(atPath: bottlePath.path)
+        let explanation = "CrossOver, her uygulama için 'bottle' adlı izole bir Windows ortamı oluşturur."
+            + " Cossacks 3 için 'Cossacks3' adlı, Windows 10 64-bit hedefli bir bottle gerekiyor."
+            + " CrossOver uygulamasından kolayca oluşturulabilir."
         return SetupStep(
             id: "bottle",
             title: "Oyun ortamı (Bottle)",
-            explanation: "CrossOver, her uygulama için 'bottle' adlı izole bir Windows ortamı oluşturur. Cossacks 3 için 'Cossacks3' adlı, Windows 10 64-bit hedefli bir bottle gerekiyor. CrossOver uygulamasından kolayca oluşturulabilir.",
+            explanation: explanation,
             status: exists
                 ? .ok(detail: "'Cossacks3' bottle mevcut")
                 : .needsAction(message: "CrossOver'da 'Cossacks3' adlı yeni bir bottle oluşturun (Windows 10, 64-bit)"),
@@ -102,11 +108,14 @@ struct CossacksSetupService: CossacksSetupServicing {
     }
 
     private func detectGameInstall(bottlePath: URL) -> SetupStep {
+        let explanation = "Cossacks 3, Steam üzerinden indirilir."
+            + " Steam'i CrossOver bottle'ına kurmanız ve ardından Cossacks 3'ü Steam'den indirmeniz gerekiyor."
+            + " Bu adım tamamlandıktan sonra launcher oyunu otomatik bulacak."
         guard FileManager.default.fileExists(atPath: bottlePath.path) else {
             return SetupStep(
                 id: "gameInstall",
                 title: "Cossacks 3 kurulumu",
-                explanation: "Cossacks 3, Steam üzerinden indirilir. Steam'i CrossOver bottle'ına kurmanız ve ardından Cossacks 3'ü Steam'den indirmeniz gerekiyor. Bu adım tamamlandıktan sonra launcher oyunu otomatik bulacak.",
+                explanation: explanation,
                 status: .blocked(reason: "Önce bottle oluşturulmalı"),
                 canAutoFix: false,
                 actionLabel: nil,
@@ -119,7 +128,7 @@ struct CossacksSetupService: CossacksSetupServicing {
         return SetupStep(
             id: "gameInstall",
             title: "Cossacks 3 kurulumu",
-            explanation: "Cossacks 3, Steam üzerinden indirilir. Steam'i CrossOver bottle'ına kurmanız ve ardından Cossacks 3'ü Steam'den indirmeniz gerekiyor. Bu adım tamamlandıktan sonra launcher oyunu otomatik bulacak.",
+            explanation: explanation,
             status: exeFound
                 ? .ok(detail: "Cossacks 3 kurulu bulundu")
                 : .needsAction(message: "Oyun kurulu değil — Steam ile bottle'a yükleyin"),
@@ -131,11 +140,15 @@ struct CossacksSetupService: CossacksSetupServicing {
     }
 
     private func detectShaderPatch(bottlePath: URL) -> SetupStep {
+        let explanation = "Cossacks 3 eski OpenGL/GLSL 1.20 grafik sistemi kullanıyor."
+            + " Apple Silicon (M1–M4) işlemciler bu sistemi tam desteklemiyor."
+            + " Bu yama; atlı birlik animasyonlarını, savaş efektlerini ve nesne görüntüsünü düzeltiyor."
+            + " Tek tıkla otomatik uygulanır."
         guard let shaderPath = findShaderPath(in: bottlePath) else {
             return SetupStep(
                 id: "shaderPatch",
                 title: "Apple Silicon grafik yamaları",
-                explanation: "Cossacks 3 eski OpenGL/GLSL 1.20 grafik sistemi kullanıyor. Apple Silicon (M1–M4) işlemciler bu sistemi tam desteklemiyor. Bu yama; atlı birlik animasyonlarını, savaş efektlerini ve nesne görüntüsünü düzeltiyor. Tek tıkla otomatik uygulanır.",
+                explanation: explanation,
                 status: .blocked(reason: "Önce oyun kurulmalı"),
                 canAutoFix: false,
                 actionLabel: nil,
@@ -149,7 +162,7 @@ struct CossacksSetupService: CossacksSetupServicing {
         return SetupStep(
             id: "shaderPatch",
             title: "Apple Silicon grafik yamaları",
-            explanation: "Cossacks 3 eski OpenGL/GLSL 1.20 grafik sistemi kullanıyor. Apple Silicon (M1–M4) işlemciler bu sistemi tam desteklemiyor. Bu yama; atlı birlik animasyonlarını, savaş efektlerini ve nesne görüntüsünü düzeltiyor. Tek tıkla otomatik uygulanır.",
+            explanation: explanation,
             status: patched
                 ? .ok(detail: "Grafik yamaları uygulanmış")
                 : .needsAction(message: "Grafik yamaları henüz uygulanmamış — düzeltmek için butona tıkla"),
@@ -167,10 +180,13 @@ struct CossacksSetupService: CossacksSetupServicing {
         } else {
             bmpExists = false
         }
+        let explanation = "Minimap, ilk kez bir harita yüklendiğinde oyun tarafından otomatik oluşturulan"
+            + " bir BMP dosyasına kaydedilir."
+            + " Herhangi bir müdahale gerekmez; tek seferlik oyun içi harita yükleme yeterli."
         return SetupStep(
             id: "minimapFix",
             title: "Minimap verisi",
-            explanation: "Minimap, ilk kez bir harita yüklendiğinde oyun tarafından otomatik oluşturulan bir BMP dosyasına kaydedilir. Herhangi bir müdahale gerekmez; tek seferlik oyun içi harita yükleme yeterli.",
+            explanation: explanation,
             status: bmpExists
                 ? .ok(detail: "Minimap verisi mevcut")
                 : .needsAction(message: "İlk harita yüklendiğinde otomatik oluşacak"),
@@ -187,13 +203,18 @@ struct CossacksSetupService: CossacksSetupServicing {
             "/usr/local/bin/displayplacer"
         ]
         let found = paths.contains { FileManager.default.fileExists(atPath: $0) }
+        let explanation = "Oyun başlatılırken ekran otomatik olarak 1280×800 çözünürlüğe ayarlanır,"
+            + " oyun kapanınca eski haline döner."
+            + " Bu işlem için 'displayplacer' komut satırı aracı gerekiyor."
+            + " Homebrew üzerinden tek komutla kurulabilir."
+        let missingMsg = "displayplacer kurulu değil — aşağıdaki komutu terminale yapıştırın"
         return SetupStep(
             id: "displayplacer",
             title: "Ekran çözünürlüğü yönetimi",
-            explanation: "Oyun başlatılırken ekran otomatik olarak 1280×800 çözünürlüğe ayarlanır, oyun kapanınca eski haline döner. Bu işlem için 'displayplacer' komut satırı aracı gerekiyor. Homebrew üzerinden tek komutla kurulabilir.",
+            explanation: explanation,
             status: found
                 ? .ok(detail: "displayplacer kurulu")
-                : .needsAction(message: "displayplacer kurulu değil — aşağıdaki komutu terminale yapıştırın"),
+                : .needsAction(message: missingMsg),
             canAutoFix: false,
             actionLabel: found ? nil : "Komutu Kopyala",
             externalURL: nil,

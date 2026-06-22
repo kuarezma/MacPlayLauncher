@@ -201,7 +201,9 @@ struct ShaderPatchService: Sendable {
         lines.append("{")
         lines.append("   vec4 tex0 = texture2D(\(texName), gl_TexCoord[0].xy);")
         if hasCustColor {
-            lines.append("   tex0.rgb = mix(tex0.rgb, custColor.rgb*tex0.rgb, tex0.a*custColor.a*step(0.15, max(custColor.r, max(custColor.g, custColor.b))));")
+            let blend = "   tex0.rgb = mix(tex0.rgb, custColor.rgb*tex0.rgb,"
+                + " tex0.a*custColor.a*step(0.15, max(custColor.r, max(custColor.g, custColor.b))));"
+            lines.append(blend)
         }
         let alpha = useTexAlpha ? "tex0.a" : "1.0"
         lines.append("   gl_FragColor = vec4(tex0.rgb, \(alpha));")
