@@ -7,6 +7,10 @@ struct GameCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             CossacksBattlePreviewView()
+                .onTapGesture(count: 2) {
+                    guard appState.launchingProfileID == nil else { return }
+                    Task { await launchGame() }
+                }
 
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -69,13 +73,7 @@ struct GameCardView: View {
             )
 
             Button {
-                Task {
-                    if profile.requiresWineSteam == true {
-                        await appState.launchGameWithWineSteam(profileID: profile.id)
-                    } else {
-                        await appState.launchGameWithSteamInitiation(profileID: profile.id)
-                    }
-                }
+                Task { await launchGame() }
             } label: {
                 if appState.launchingProfileID == profile.id {
                     Label(String(localized: "game.launching"), systemImage: "hourglass")
@@ -100,5 +98,13 @@ struct GameCardView: View {
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(String(format: String(localized: "accessibility.gameCard"), profile.displayName))
+    }
+
+    private func launchGame() async {
+        if profile.requiresWineSteam == true {
+            await appState.launchGameWithWineSteam(profileID: profile.id)
+        } else {
+            await appState.launchGameWithSteamInitiation(profileID: profile.id)
+        }
     }
 }
