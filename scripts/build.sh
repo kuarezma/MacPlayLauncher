@@ -1,87 +1,102 @@
-#!/bin/bash
-# MacPlayLauncher build script — watchdog korumalı
-# Kullanım: ./scripts/build.sh
+#!/usr/bin/env bash
+# MacPlayLauncher build script
+# Kullanim: ./scripts/build.sh
 
 set -euo pipefail
 
-PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-SCHEME="MacPlayLauncher"
-DERIVED_DATA="$HOME/Library/Developer/Xcode/DerivedData"
-APP_OUT="$DERIVED_DATA/MacPlayLauncher-awvcrgyychqixgefthnxtatwxbzg/Build/Products/Debug/MacPlayLauncher.app"
+APP_NAME="MacPlayLauncher"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BUILD_PATH="/tmp/mpl_build"
+APP_OUT="/tmp/$APP_NAME.app"
+BUNDLE_VERSION="0.1.0"
 
-STALL_LIMIT=120    # DerivedData büyümezse kaç saniye bekle
-CHECK_INTERVAL=15  # kaç saniyede bir kontrol et
+cd "$ROOT_DIR"
 
-cd "$PROJECT_DIR"
+echo "== 1. Swift build basliyor =="
+swift build --build-path "$BUILD_PATH" -c debug
 
-# Önceki takılı build varsa temizle
-pkill -9 -f xcodebuild 2>/dev/null || true
-pkill -9 -f swift-build 2>/dev/null || true
-
-# SPM build.db şişmişse temizle
-BUILD_DB="$PROJECT_DIR/.build/build.db"
-if [ -f "$BUILD_DB" ]; then
-    DB_SIZE=$(du -k "$BUILD_DB" | cut -f1)
-    if [ "$DB_SIZE" -gt 500000 ]; then
-        echo "⚠️  build.db şişmiş (${DB_SIZE}KB), siliniyor..."
-        rm -f "$BUILD_DB" "$BUILD_DB-wal" "$BUILD_DB-journal" "$PROJECT_DIR/.build/.build.db.lock"
-    fi
+BINARY="$BUILD_PATH/arm64-apple-macosx/debug/$APP_NAME"
+if [ ! -f "$BINARY" ]; then
+    echo "Binary bulunamadi: $BINARY" >&2
+    exit 1
 fi
 
-echo "🔨 xcodegen generate..."
-xcodegen generate --quiet
+echo "== 2. App bundle olusturuluyor =="
+rm -rf "$APP_OUT"
+mkdir -p "$APP_OUT/Contents/MacOS"
+mkdir -p "$APP_OUT/Contents/Resources/tr.lproj"
+mkdir -p "$APP_OUT/Contents/Resources/en.lproj"
 
-echo "🔨 Build başlıyor (scheme: $SCHEME)..."
+cp "$BINARY" "$APP_OUT/Contents/MacOS/$APP_NAME"
 
-# DerivedData boyutunu izle — büyümezse watchdog devreye girer
-PREV_SIZE=0
-STALL_SECONDS=0
+if [ -d "$ROOT_DIR/Resources" ]; then
+    cp -R "$ROOT_DIR/Resources/"* "$APP_OUT/Contents/Resources/" 2>/dev/null || true
+fi
 
-# xcodebuild'i arka planda başlat
-xcodebuild \
-    -scheme "$SCHEME" \
-    -destination 'platform=macOS' \
-    -configuration Debug \
-    build \
-    2>&1 | grep -E "error:|Build succeeded|BUILD FAILED|Compiling|Linking" &
-BUILD_PID=$!
+XCSTRINGS="$ROOT_DIR/Resources/Localization/Localizable.xcstrings"
+if [ -f "$XCSTRINGS" ]; then
+    APP_OUT="$APP_OUT" XCSTRINGS="$XCSTRINGS" python3 - << 'PYEOF'
+import json
+import os
+from pathlib import Path
 
-while kill -0 $BUILD_PID 2>/dev/null; do
-    sleep $CHECK_INTERVAL
-    CURR_SIZE=$(du -sk "$DERIVED_DATA/MacPlayLauncher"* 2>/dev/null | awk '{sum+=$1} END{print sum}')
-    CURR_SIZE=${CURR_SIZE:-0}
+xcstrings_path = Path(os.environ["XCSTRINGS"])
+resources_path = Path(os.environ["APP_OUT"]) / "Contents" / "Resources"
+data = json.loads(xcstrings_path.read_text())
+strings = data.get("strings", {})
 
-    if [ "$CURR_SIZE" -le "$PREV_SIZE" ] && [ "$CURR_SIZE" -gt 0 ]; then
-        STALL_SECONDS=$((STALL_SECONDS + CHECK_INTERVAL))
-        echo "⏳ DerivedData büyümüyor (${STALL_SECONDS}s / ${STALL_LIMIT}s)..."
-        if [ "$STALL_SECONDS" -ge "$STALL_LIMIT" ]; then
-            echo "❌ Build takıldı! Öldürülüyor..."
-            kill -9 $BUILD_PID 2>/dev/null || true
-            pkill -9 -f xcodebuild 2>/dev/null || true
-            echo "➡️  Xcode'u açıp ⌘B ile dene: open '$PROJECT_DIR/MacPlayLauncher.xcodeproj'"
-            exit 1
-        fi
-    else
-        STALL_SECONDS=0
-        PREV_SIZE=$CURR_SIZE
-    fi
-done
+for language in ["tr", "en"]:
+    lines = []
+    for key, value in strings.items():
+        localizations = value.get("localizations", {})
+        text = (
+            localizations.get(language, {}).get("stringUnit", {}).get("value")
+            or localizations.get("en", {}).get("stringUnit", {}).get("value")
+            or localizations.get("tr", {}).get("stringUnit", {}).get("value")
+            or key
+        )
+        escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+        lines.append(f'"{key}" = "{escaped}";')
 
-wait $BUILD_PID
-EXIT_CODE=$?
+    output_path = resources_path / f"{language}.lproj" / "Localizable.strings"
+    output_path.write_text("\n".join(lines), encoding="utf-8")
 
-if [ $EXIT_CODE -eq 0 ]; then
-    echo ""
-    echo "✅ Build başarılı!"
-    echo "📦 App: $APP_OUT"
-    echo ""
-    read -p "Uygulamayı aç? (y/N): " OPEN_APP
-    if [[ "$OPEN_APP" =~ ^[Yy]$ ]]; then
-        open "$APP_OUT"
-    fi
-else
-    echo ""
-    echo "❌ Build başarısız (exit: $EXIT_CODE)"
-    echo "➡️  Xcode'da dene: open '$PROJECT_DIR/MacPlayLauncher.xcodeproj'"
-    exit $EXIT_CODE
+print(f"Strings: {len(strings)} anahtar")
+PYEOF
+fi
+
+python3 - << PYEOF
+import plistlib
+
+plist = {
+    "CFBundleExecutable": "$APP_NAME",
+    "CFBundleIdentifier": "ugur.MacPlayLauncher",
+    "CFBundleName": "$APP_NAME",
+    "CFBundleDisplayName": "MacPlay Launcher",
+    "CFBundleVersion": "$BUNDLE_VERSION",
+    "CFBundleShortVersionString": "$BUNDLE_VERSION",
+    "CFBundlePackageType": "APPL",
+    "LSMinimumSystemVersion": "14.0",
+    "NSPrincipalClass": "NSApplication",
+    "NSHighResolutionCapable": True,
+    "CFBundleIconFile": "AppIcon",
+    "CFBundleIconName": "AppIcon",
+}
+
+with open("$APP_OUT/Contents/Info.plist", "wb") as file:
+    plistlib.dump(plist, file)
+PYEOF
+
+if [ -f "$ROOT_DIR/MacPlay.entitlements" ]; then
+    echo "== 3. App imzalaniyor =="
+    codesign --force --sign - --entitlements "$ROOT_DIR/MacPlay.entitlements" "$APP_OUT" >/dev/null
+fi
+
+echo ""
+echo "Build basarili:"
+echo "$APP_OUT"
+echo ""
+read -r -p "Uygulamayi ac? (y/N): " OPEN_APP
+if [[ "$OPEN_APP" =~ ^[Yy]$ ]]; then
+    open "$APP_OUT"
 fi

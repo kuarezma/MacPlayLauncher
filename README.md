@@ -97,6 +97,8 @@ Then create the app bundle and open it (see `scripts/build.sh`):
 ./scripts/build.sh
 ```
 
+The script creates `/tmp/MacPlayLauncher.app` and asks whether to open it.
+
 ---
 
 ## How It Works
@@ -166,6 +168,7 @@ MacPlayLauncher/
 
 ## Changelog
 
+- 2026-06-22: Reworked `scripts/build.sh` to avoid the hanging Xcode build path and create `/tmp/MacPlayLauncher.app` through SwiftPM.
 - 2026-06-22: Added the Cossacks-style launcher preview, minimap/resource UI, optimization readiness checklist, and SwiftPM test target.
 - 2026-06-21: Aligned the CrossOver launch profile with the OpenGL proxy override and documented the minimap bootstrap fix.
 
