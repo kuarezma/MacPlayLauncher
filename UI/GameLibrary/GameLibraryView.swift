@@ -71,7 +71,7 @@ struct GameLibraryView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
 
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), spacing: 16)], spacing: 16) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 360), spacing: 16)], spacing: 16) {
                         ForEach(appState.profiles) { profile in
                             GameCardView(appState: appState, profile: profile)
                         }

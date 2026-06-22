@@ -13,6 +13,8 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 - Automatic display resolution switching (1280×800 for game, restored on exit)
 - CrossOver bottle integration (no manual Wine configuration)
 - OpenGL proxy launch override for the Cossacks 3 macOS shader/minimap fixes
+- Cossacks-style launcher preview with resource bar, minimap, buildings, troop formations, and mine-state visual cues
+- In-launcher optimization checklist for minimap, Wine Steam, CrossOver bottle, and game resolution readiness
 - SwiftUI native app, macOS 14+
 
 ---
@@ -109,6 +111,8 @@ OYNA button pressed
   → When cossacks.exe exits → DisplayResolutionService restores original resolution
 ```
 
+The library card also mirrors the expected in-game layout: resources are shown as a top bar, the minimap sits in the bottom-right, buildings use dense city blocks, troops appear in readable formations, and mines are represented as either active mine entrances or depleted dark pits. These are original SwiftUI visuals inspired by Cossacks-style RTS composition; the app does not bundle copyrighted gameplay screenshots or game assets.
+
 ---
 
 ## Build System Notes
@@ -162,6 +166,7 @@ MacPlayLauncher/
 
 ## Changelog
 
+- 2026-06-22: Added the Cossacks-style launcher preview, minimap/resource UI, optimization readiness checklist, and SwiftPM test target.
 - 2026-06-21: Aligned the CrossOver launch profile with the OpenGL proxy override and documented the minimap bootstrap fix.
 
 ---

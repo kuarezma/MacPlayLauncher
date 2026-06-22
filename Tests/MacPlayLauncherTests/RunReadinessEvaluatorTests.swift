@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class RunReadinessEvaluatorTests: XCTestCase {
     func testEmptyProfilesAreBlocked() {
@@ -8,7 +8,10 @@ final class RunReadinessEvaluatorTests: XCTestCase {
 
         XCTAssertEqual(result.status, .blocked)
         XCTAssertEqual(result.blockers.first?.source, .gameProfile)
-        XCTAssertEqual(result.blockers.first?.title, String(localized: "readiness.missingUserGameProfile.title"))
+        XCTAssertEqual(
+            result.blockers.first?.title,
+            "Kullanıcı tarafından yapılandırılmış oyun profili bulunamadı."
+        )
         XCTAssertFalse(result.canLaunch)
     }
 
@@ -105,11 +108,11 @@ final class RunReadinessEvaluatorTests: XCTestCase {
 
         XCTAssertEqual(
             result.blockers.first?.suggestedAction,
-            String(localized: "readiness.missingUserGameProfile.action")
+            "Add Game ekranından oyun klasörünü ve çalıştırılabilir dosyayı seçin."
         )
         XCTAssertEqual(
             result.blockers.last?.suggestedAction,
-            String(localized: "readiness.fixMissingBeforeLaunch")
+            "Eksikler giderilmeden çalıştırma aktif olmayacak."
         )
     }
 

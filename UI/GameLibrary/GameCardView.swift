@@ -5,9 +5,32 @@ struct GameCardView: View {
     let profile: GameProfile
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label(profile.displayName, systemImage: "gamecontroller.fill")
-                .font(.headline)
+        VStack(alignment: .leading, spacing: 14) {
+            CossacksBattlePreviewView()
+
+            HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label(profile.displayName, systemImage: "gamecontroller.fill")
+                        .font(.title3.weight(.semibold))
+
+                    Text("Cossacks 3 için hazır başlatma profili")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer(minLength: 12)
+
+                Text(
+                    String(
+                        format: String(localized: "game.playStats"),
+                        profile.launchCount,
+                        profile.totalPlayTimeMinutes
+                    )
+                )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.trailing)
+            }
 
             Text(
                 String(localized: "game.profileType")
@@ -41,9 +64,9 @@ struct GameCardView: View {
 
             Divider()
 
-            Text(String(format: String(localized: "game.playStats"), profile.launchCount, profile.totalPlayTimeMinutes))
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            CossacksOptimizationStatusView(
+                items: CossacksOptimizationAdvisor.statusItems(for: profile)
+            )
 
             Button {
                 Task {
@@ -71,6 +94,10 @@ struct GameCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.black.opacity(0.08), lineWidth: 1)
+        )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(String(format: String(localized: "accessibility.gameCard"), profile.displayName))
     }

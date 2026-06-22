@@ -11,10 +11,30 @@ let package = Package(
         .executableTarget(
             name: "MacPlayLauncher",
             path: ".",
-            exclude: ["build_output", "scripts", "Tests"],
+            exclude: [
+                "ARCHITECTURE.md",
+                "DEVELOPMENT.md",
+                "Docs",
+                "MacPlay.entitlements",
+                "README.md",
+                "build_output",
+                "project.yml",
+                "script",
+                "scripts",
+                "Tests"
+            ],
             sources: ["App", "Core", "UI"],
             resources: [
                 .process("Resources")
+            ]
+        ),
+        .testTarget(
+            name: "MacPlayLauncherTests",
+            dependencies: ["MacPlayLauncher"],
+            path: "Tests/MacPlayLauncherTests",
+            exclude: ["Fixtures"],
+            resources: [
+                .copy("../../Resources/Profiles/cossacks3.profile.json")
             ]
         )
     ]

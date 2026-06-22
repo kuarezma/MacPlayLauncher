@@ -4,46 +4,51 @@ enum GameProfileDisplayFormatter {
     static func runtimeTitle(for runtime: RuntimeKind) -> String {
         switch runtime {
         case .wineDXVKMoltenVK:
-            return String(localized: "runtime.wineDXVKMoltenVK")
+            return LocalizedFallback.text("runtime.wineDXVKMoltenVK", fallback: "Wine + DXVK + MoltenVK")
         case .wineD3DMetalExperimental:
-            return String(localized: "runtime.wineD3DMetalExperimental")
+            return LocalizedFallback.text("runtime.wineD3DMetalExperimental", fallback: "Wine + D3DMetal (Deneysel)")
         case .wineDXMTExperimental:
-            return String(localized: "runtime.wineDXMTExperimental")
+            return LocalizedFallback.text("runtime.wineDXMTExperimental", fallback: "Wine + DXMT (Deneysel)")
         case .systemWineFallback:
-            return String(localized: "runtime.systemWineFallback")
+            return LocalizedFallback.text("runtime.systemWineFallback", fallback: "Sistem Wine")
         case .crossOver:
-            return String(localized: "runtime.crossOver")
+            return LocalizedFallback.text("runtime.crossOver", fallback: "CrossOver")
         }
     }
 
     static func performanceTitle(for performanceMode: PerformanceMode) -> String {
         switch performanceMode {
         case .performance:
-            return String(localized: "performance.performance")
+            return LocalizedFallback.text("performance.performance", fallback: "Performans")
         case .balanced:
-            return String(localized: "performance.balanced")
+            return LocalizedFallback.text("performance.balanced", fallback: "Dengeli")
         case .coolBatterySafe:
-            return String(localized: "performance.coolBatterySafe")
+            return LocalizedFallback.text("performance.coolBatterySafe", fallback: "Serin ve pil dostu")
         }
     }
 
     static func windowsVersionTitle(for windowsVersion: WindowsVersion) -> String {
         switch windowsVersion {
         case .win10:
-            return String(localized: "windows.win10")
+            return LocalizedFallback.text("windows.win10", fallback: "Windows 10")
         case .win11:
-            return String(localized: "windows.win11")
+            return LocalizedFallback.text("windows.win11", fallback: "Windows 11")
         }
     }
 
     static func profileKindTitle(for profile: GameProfile) -> String {
         isUserConfigured(profile)
-            ? String(localized: "game.profileType.user")
-            : String(localized: "game.profileType.sample")
+            ? LocalizedFallback.text("game.profileType.user", fallback: "Kullanıcı profili")
+            : LocalizedFallback.text("game.profileType.sample", fallback: "Örnek profil")
     }
 
     static func setupNote(for profile: GameProfile) -> String? {
-        isUserConfigured(profile) ? nil : String(localized: "game.sampleProfile.note")
+        isUserConfigured(profile)
+            ? nil
+            : LocalizedFallback.text(
+                "game.sampleProfile.note",
+                fallback: "Bu örnek profil çalıştırılamaz; kendi oyun klasörünüzü ekleyin."
+            )
     }
 
     static func isUserConfigured(_ profile: GameProfile) -> Bool {

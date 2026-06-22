@@ -395,7 +395,13 @@ final class DiagnosticsViewModel {
                 .minute()
                 .locale(Locale(identifier: "tr_TR"))
         )
-        return String(format: String(localized: "diagnostics.realCheck.lastChecked"), formattedDate)
+        return String(
+            format: LocalizedFallback.text(
+                "diagnostics.realCheck.lastChecked",
+                fallback: "Son gerçek kontrol: %@"
+            ),
+            formattedDate
+        )
     }
 
     private var showsRealCheckDependencyDetails: Bool {

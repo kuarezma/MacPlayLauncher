@@ -1,10 +1,9 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class GameProfileTests: XCTestCase {
     func testBundledCossacks3ProfileDecodes() throws {
-        let bundle = try XCTUnwrap(Bundle(identifier: "ugur.MacPlayLauncher"))
-        let profile = try BundledGameProfileLoader(bundle: bundle).loadCossacks3Profile()
+        let profile = try BundledGameProfileLoader(bundle: .module).loadCossacks3Profile()
 
         XCTAssertEqual(profile.id, "cossacks3")
         XCTAssertEqual(profile.schemaVersion, 1)

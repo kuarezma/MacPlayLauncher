@@ -74,7 +74,9 @@ enum LibraryReadinessPlanner {
                 ? String(localized: "library.readinessStep.gameFolder.done")
                 : String(localized: "library.readinessStep.gameFolder.missing"),
             status: hasUserProfile ? .complete : .needsAction,
-            actionTitle: hasUserProfile ? nil : String(localized: "library.readinessAction.addGame"),
+            actionTitle: hasUserProfile
+                ? nil
+                : LocalizedFallback.text("library.readinessAction.addGame", fallback: "Oyun ekle"),
             action: hasUserProfile ? nil : .addGame
         )
     }
@@ -87,7 +89,9 @@ enum LibraryReadinessPlanner {
                 ? String(localized: "library.readinessStep.realCheck.done")
                 : String(localized: "library.readinessStep.realCheck.missing"),
             status: hasRealSystemCheck ? .complete : .needsAction,
-            actionTitle: hasRealSystemCheck ? nil : String(localized: "library.readinessAction.realCheck"),
+            actionTitle: hasRealSystemCheck
+                ? nil
+                : LocalizedFallback.text("library.readinessAction.realCheck", fallback: "Gerçek sistemi kontrol et"),
             action: hasRealSystemCheck ? nil : .openDiagnostics
         )
     }
@@ -112,7 +116,9 @@ enum LibraryReadinessPlanner {
             title: String(localized: "library.readinessStep.wine.title"),
             message: message,
             status: status,
-            actionTitle: wineReady ? nil : String(localized: "library.readinessAction.openDiagnostics"),
+            actionTitle: wineReady
+                ? nil
+                : LocalizedFallback.text("library.readinessAction.openDiagnostics", fallback: "Tanılamayı aç"),
             action: wineReady ? nil : .openDiagnostics
         )
     }
@@ -131,7 +137,9 @@ enum LibraryReadinessPlanner {
                 ? String(localized: "library.readinessStep.prefix.done")
                 : String(localized: "library.readinessStep.prefix.missing"),
             status: prefixExists ? .complete : (canCreatePrefix ? .needsAction : .blocked),
-            actionTitle: prefixExists ? nil : String(localized: "library.readinessAction.createPrefix"),
+            actionTitle: prefixExists
+                ? nil
+                : LocalizedFallback.text("library.readinessAction.createPrefix", fallback: "Prefix oluştur"),
             action: prefixExists ? nil : .openDiagnostics
         )
     }
@@ -147,7 +155,10 @@ enum LibraryReadinessPlanner {
                 ? String(localized: "library.readinessStep.experimental.done")
                 : experimentalBlockerMessage(from: experimentalReadinessResult),
             status: experimentalReady ? .complete : .blocked,
-            actionTitle: String(localized: "library.readinessAction.experimentalLaunch"),
+            actionTitle: LocalizedFallback.text(
+                "library.readinessAction.experimentalLaunch",
+                fallback: "Deneysel başlat"
+            ),
             action: .openDiagnostics
         )
     }

@@ -41,11 +41,20 @@ struct DefaultRunReadinessEvaluator: RunReadinessEvaluating {
             return [
                 RunReadinessBlocker(
                     id: "game-profile.missing",
-                    title: String(localized: "readiness.missingUserGameProfile.title"),
-                    message: String(localized: "readiness.missingUserGameProfile.message"),
+                    title: LocalizedFallback.text(
+                        "readiness.missingUserGameProfile.title",
+                        fallback: "Kullanıcı tarafından yapılandırılmış oyun profili bulunamadı."
+                    ),
+                    message: LocalizedFallback.text(
+                        "readiness.missingUserGameProfile.message",
+                        fallback: "Oyun klasörü ve çalıştırılabilir dosya bilgisi tamamlanmamış."
+                    ),
                     severity: .blocking,
                     source: .gameProfile,
-                    suggestedAction: String(localized: "readiness.missingUserGameProfile.action"),
+                    suggestedAction: LocalizedFallback.text(
+                        "readiness.missingUserGameProfile.action",
+                        fallback: "Add Game ekranından oyun klasörünü ve çalıştırılabilir dosyayı seçin."
+                    ),
                     isUserActionable: true
                 )
             ]
@@ -93,8 +102,15 @@ struct DefaultRunReadinessEvaluator: RunReadinessEvaluating {
     private func unsupportedBlocker(for dependency: RuntimeDependency) -> RunReadinessBlocker {
         RunReadinessBlocker(
             id: "\(dependency.kind.rawValue).unsupported",
-            title: "\(String(localized: "readiness.unsupportedDependency.title")): \(dependency.displayName)",
-            message: String(localized: "readiness.unsupportedDependency.message"),
+            title: blockerTitle(
+                key: "readiness.unsupportedDependency.title",
+                fallback: "Desteklenmeyen bileşen",
+                dependency: dependency
+            ),
+            message: LocalizedFallback.text(
+                "readiness.unsupportedDependency.message",
+                fallback: "Bu bileşen mevcut ortamda desteklenmiyor."
+            ),
             severity: .blocking,
             source: .unsupportedEnvironment,
             suggestedAction: dependency.suggestedAction,
@@ -105,11 +121,21 @@ struct DefaultRunReadinessEvaluator: RunReadinessEvaluating {
     private func missingBlocker(for dependency: RuntimeDependency) -> RunReadinessBlocker {
         RunReadinessBlocker(
             id: "\(dependency.kind.rawValue).missing",
-            title: "\(String(localized: "readiness.missingRuntimeDependency.title")): \(dependency.displayName)",
-            message: String(localized: "readiness.missingRuntimeDependency.message"),
+            title: blockerTitle(
+                key: "readiness.missingRuntimeDependency.title",
+                fallback: "Gerekli bileşen eksik",
+                dependency: dependency
+            ),
+            message: LocalizedFallback.text(
+                "readiness.missingRuntimeDependency.message",
+                fallback: "Oyunu başlatmadan önce eksik bileşen tamamlanmalı."
+            ),
             severity: .blocking,
             source: .runtimeDependency,
-            suggestedAction: dependency.suggestedAction ?? String(localized: "readiness.fixMissingBeforeLaunch"),
+            suggestedAction: dependency.suggestedAction ?? LocalizedFallback.text(
+                "readiness.fixMissingBeforeLaunch",
+                fallback: "Eksikler giderilmeden çalıştırma aktif olmayacak."
+            ),
             isUserActionable: true
         )
     }
@@ -117,13 +143,28 @@ struct DefaultRunReadinessEvaluator: RunReadinessEvaluating {
     private func unknownBlocker(for dependency: RuntimeDependency) -> RunReadinessBlocker {
         RunReadinessBlocker(
             id: "\(dependency.kind.rawValue).unknown",
-            title: "\(String(localized: "readiness.unknownDependency.title")): \(dependency.displayName)",
-            message: String(localized: "readiness.unknownDependency.message"),
+            title: blockerTitle(
+                key: "readiness.unknownDependency.title",
+                fallback: "Bileşen durumu bilinmiyor",
+                dependency: dependency
+            ),
+            message: LocalizedFallback.text(
+                "readiness.unknownDependency.message",
+                fallback: "Bu bileşenin durumu doğrulanamadı."
+            ),
             severity: .warning,
             source: .runtimeDependency,
             suggestedAction: dependency.suggestedAction,
             isUserActionable: dependency.suggestedAction != nil
         )
+    }
+
+    private func blockerTitle(
+        key: StaticString,
+        fallback: String,
+        dependency: RuntimeDependency
+    ) -> String {
+        "\(LocalizedFallback.text(key, fallback: fallback)): \(dependency.displayName)"
     }
 
     private func infoBlocker(for dependency: RuntimeDependency) -> RunReadinessBlocker {
