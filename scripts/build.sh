@@ -96,7 +96,9 @@ echo ""
 echo "Build basarili:"
 echo "$APP_OUT"
 echo ""
-read -r -p "Uygulamayi ac? (y/N): " OPEN_APP
-if [[ "$OPEN_APP" =~ ^[Yy]$ ]]; then
-    open "$APP_OUT"
+if [ -t 0 ]; then
+    read -r -p "Uygulamayi ac? (y/N): " OPEN_APP
+    if [[ "$OPEN_APP" =~ ^[Yy]$ ]]; then
+        open "$APP_OUT"
+    fi
 fi
