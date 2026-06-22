@@ -46,12 +46,13 @@ struct ShaderPatchService: Sendable {
             let trimmed = line.trimmingCharacters(in: .whitespaces)
             if trimmed.hasPrefix("#define NBONES") {
                 let parts = trimmed.components(separatedBy: .whitespaces)
-                if parts.count >= 3, let n = Int(parts[2]) { return n }
+                if parts.count >= 3, let boneCount = Int(parts[2]) { return boneCount }
             }
         }
         return nil
     }
 
+    // swiftlint:disable:next function_body_length
     private func boneFixedShader(nbones: Int) -> String {
         """
         #define NBONES \(nbones)
@@ -64,13 +65,43 @@ struct ShaderPatchService: Sendable {
         {
            float weight=gl_MultiTexCoord1.x;
            int index=int(gl_MultiTexCoord2.x);
-           mat4 bone=mat4(0.0);
-           for(int i=0;i<NBONES;i++){ if(i==index){ bone=boneMatrices[i]; } }
-           vec4 aposn=weight*(bone*gl_Vertex);
+           bool matched=false;
+           vec4 aposn=vec4(0.0);
+           vec4 anorm=vec4(0.0);
+           for(int i=0;i<NBONES;i++)
+           {
+              if(i==index)
+              {
+                 aposn=weight*(boneMatrices[i]*gl_Vertex);
+                 anorm=weight*(boneMatrices[i]*vec4(gl_Normal.xyz, 0.0));
+                 matched=true;
+              }
+           }
+           if(!matched)
+           {
+              aposn=gl_Vertex;
+              anorm=vec4(gl_Normal.xyz, 0.0);
+           }
 
            vec4 realpos=gl_ModelViewMatrix*aposn;
 
+           vec3 e=normalize(eye-realpos.xyz);
+           vec3 l=normalize(gl_LightSource[0].position.xyz-realpos.xyz);
+           vec3 h=normalize(l+e);
+           vec3 n=normalize(gl_NormalMatrix*anorm.xyz);
+
            gl_TexCoord[0]=gl_MultiTexCoord0;
+           gl_TexCoord[3]=gl_TextureMatrix[3]*cameraMVM*realpos;
+           gl_TexCoord[4].xyz=l;
+           gl_TexCoord[5].xyz=h;
+           gl_TexCoord[6].xyz=n;
+           gl_TexCoord[7].xyz=e;
+
+        #vendor_ifdef ATI
+           gl_TexCoord[0].w=abs(realpos.z);
+        #vendor_else
+           gl_TexCoord[0].w=length(realpos);
+        #vendor_endif
 
            gl_Position=gl_ModelViewProjectionMatrix*aposn;
         }
@@ -86,7 +117,8 @@ struct ShaderPatchService: Sendable {
         void main()
         {
            vec4 tex0 = texture2D(texUnit0, gl_TexCoord[0].xy);
-           tex0.rgb = mix(tex0.rgb, custColor.rgb*tex0.rgb, tex0.a*custColor.a*step(0.15, max(custColor.r, max(custColor.g, custColor.b))));
+           float team = step(0.15, max(custColor.r, max(custColor.g, custColor.b)));
+           tex0.rgb = mix(tex0.rgb, custColor.rgb*tex0.rgb, tex0.a*custColor.a*team);
            gl_FragColor = vec4(tex0.rgb, 1.0);
         }
         """
@@ -99,6 +131,7 @@ struct ShaderPatchService: Sendable {
 
     // MARK: - FX Shader Fix
 
+    // swiftlint:disable:next function_body_length
     private func applyFXFix() throws {
         let fx30 = """
         uniform sampler2D texUnit0;

@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class ShaderPatchServiceTests: XCTestCase {
     var tempDir: URL!
@@ -78,23 +78,29 @@ final class ShaderPatchServiceTests: XCTestCase {
         XCTAssertTrue(result.contains("for(int i=0;i<NBONES;i++)"))
         XCTAssertTrue(result.contains("#define NBONES 16"))
         XCTAssertFalse(result.contains("boneMatrices[index]"))
+        XCTAssertTrue(result.contains("gl_TexCoord[3]=gl_TextureMatrix[3]*cameraMVM*realpos"))
+        XCTAssertTrue(result.contains("gl_TexCoord[6].xyz=n"))
+        XCTAssertTrue(result.contains("gl_TexCoord[0].w=length(realpos)"))
     }
 
     func testApplyBoneFixPreservesNBONESCount() throws {
-        for n in [1, 3, 5, 22, 42] {
-            let name = "unit.sm.b\(n).test.vert"
+        for boneCount in [1, 3, 5, 22, 42] {
+            let name = "unit.sm.b\(boneCount).test.vert"
             let url = tempDir.appending(path: name, directoryHint: .notDirectory)
-            let original = "#define NBONES \(n)\nuniform mat4 boneMatrices[NBONES];\nvoid main(){}"
+            let original = "#define NBONES \(boneCount)\nuniform mat4 boneMatrices[NBONES];\nvoid main(){}"
             try original.write(to: url, atomically: true, encoding: .utf8)
         }
 
         try service.apply()
 
-        for n in [1, 3, 5, 22, 42] {
-            let name = "unit.sm.b\(n).test.vert"
+        for boneCount in [1, 3, 5, 22, 42] {
+            let name = "unit.sm.b\(boneCount).test.vert"
             let url = tempDir.appending(path: name, directoryHint: .notDirectory)
             let result = try String(contentsOf: url, encoding: .utf8)
-            XCTAssertTrue(result.contains("#define NBONES \(n)"), "NBONES mismatch for n=\(n)")
+            XCTAssertTrue(
+                result.contains("#define NBONES \(boneCount)"),
+                "NBONES mismatch for boneCount=\(boneCount)"
+            )
         }
     }
 
