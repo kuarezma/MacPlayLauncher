@@ -3286,6 +3286,23 @@
         }
       }
     },
+    "nav.setup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setup"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurulum"
+          }
+        }
+      }
+    },
     "performance.balanced": {
       "extractionState": "manual",
       "localizations": {

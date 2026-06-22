@@ -26,6 +26,22 @@ struct GameLibraryView: View {
                     Label(String(localized: "nav.settings"), systemImage: "gearshape")
                         .accessibilityLabel(String(localized: "accessibility.nav.settings"))
                 }
+
+                NavigationLink(value: AppState.NavigationItem.setup) {
+                    HStack {
+                        Label(String(localized: "nav.setup"), systemImage: "checklist")
+                        if appState.setupIncompleteCount > 0 {
+                            Spacer()
+                            Text("\(appState.setupIncompleteCount)")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(Color.orange)
+                                .clipShape(Capsule())
+                        }
+                    }
+                }
             }
             .navigationTitle(String(localized: "app.name"))
         } detail: {
@@ -44,6 +60,8 @@ struct GameLibraryView: View {
             DiagnosticsView(appState: appState)
         case .settings:
             SettingsView(appState: appState)
+        case .setup:
+            SetupWizardView(appState: appState)
         }
     }
 

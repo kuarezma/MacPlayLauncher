@@ -21,6 +21,7 @@ final class AppState {
         case addGame
         case diagnostics
         case settings
+        case setup
     }
 
     var selectedNavigationItem: NavigationItem? = .library
@@ -36,6 +37,9 @@ final class AppState {
     private(set) var diagnosticsDisplayMode: DiagnosticMode = .staticOnly
     private(set) var cachedDiagnosticSummary: RuntimeDiagnosticSummary?
     private(set) var cachedReadinessResult: RunReadinessResult?
+    private(set) var setupSteps: [SetupStep] = []
+    private(set) var isRefreshingSetup = false
+    var setupPatchErrorMessage: String?
 
     private let environment: AppEnvironment
 
@@ -405,6 +409,30 @@ final class AppState {
 
     func showSettings() {
         selectedNavigationItem = .settings
+    }
+
+    func showSetup() {
+        selectedNavigationItem = .setup
+    }
+
+    func refreshSetupStatus() async {
+        isRefreshingSetup = true
+        setupSteps = await environment.cossacksSetupService.detectSteps()
+        isRefreshingSetup = false
+    }
+
+    func applyShaderPatch() async {
+        setupPatchErrorMessage = nil
+        do {
+            try environment.cossacksSetupService.applyShaderPatch()
+            await refreshSetupStatus()
+        } catch {
+            setupPatchErrorMessage = ErrorPresenter.message(for: error)
+        }
+    }
+
+    var setupIncompleteCount: Int {
+        setupSteps.filter { !$0.status.isOK }.count
     }
 
     func openSteamInstall() {

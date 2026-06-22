@@ -19,14 +19,18 @@ enum CossacksOptimizationAdvisor {
 
     static func statusItems(for profile: GameProfile) -> [CossacksOptimizationStatusItem] {
         [
-            minimapStatus(for: profile),
+            dllConfigStatus(for: profile),
             steamStatus(for: profile),
             crossOverStatus(for: profile),
             resolutionStatus(for: profile)
         ]
     }
 
-    static func hasMinimapFixEnabled(_ profile: GameProfile) -> Bool {
+    // Checks whether the profile carries the WINEDLLOVERRIDES entry used by CrossOver.
+    // The opengl32 proxy is a leftover from earlier experiments and no longer drives
+    // the minimap fix (which is BMP-based); this entry is retained as a CrossOver
+    // integration marker rather than a functional minimap control.
+    static func hasDLLOverrideConfigured(_ profile: GameProfile) -> Bool {
         guard let override = profile.environment["WINEDLLOVERRIDES"] else {
             return false
         }
@@ -34,20 +38,20 @@ enum CossacksOptimizationAdvisor {
             && override.contains(fallbackRendererOverride)
     }
 
-    private static func minimapStatus(for profile: GameProfile) -> CossacksOptimizationStatusItem {
-        if hasMinimapFixEnabled(profile) {
+    private static func dllConfigStatus(for profile: GameProfile) -> CossacksOptimizationStatusItem {
+        if hasDLLOverrideConfigured(profile) {
             return CossacksOptimizationStatusItem(
-                id: "minimap",
-                title: "Minimap düzeltmesi",
-                message: "OpenGL proxy ve shader uyumu aktif.",
+                id: "dll",
+                title: "CrossOver DLL yapılandırması",
+                message: "WINEDLLOVERRIDES aktif (CrossOver entegrasyonu).",
                 state: .ready
             )
         }
 
         return CossacksOptimizationStatusItem(
-            id: "minimap",
-            title: "Minimap düzeltmesi",
-            message: "opengl32 override eksik; minimap şeffaf kalabilir.",
+            id: "dll",
+            title: "CrossOver DLL yapılandırması",
+            message: "WINEDLLOVERRIDES eksik; CrossOver entegrasyonu eksik olabilir.",
             state: .needsAttention
         )
     }

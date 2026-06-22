@@ -2,18 +2,18 @@
 import XCTest
 
 final class CossacksOptimizationAdvisorTests: XCTestCase {
-    func testHasMinimapFixEnabledWhenOpenGLProxyAndFallbackOverridesExist() {
+    func testHasDLLOverrideConfiguredWhenOpenGLProxyAndFallbackOverridesExist() {
         let profile = makeProfile(
             environment: ["WINEDLLOVERRIDES": "opengl32=n,b;d3d9,d3d11,dxgi=b"]
         )
 
-        XCTAssertTrue(CossacksOptimizationAdvisor.hasMinimapFixEnabled(profile))
+        XCTAssertTrue(CossacksOptimizationAdvisor.hasDLLOverrideConfigured(profile))
     }
 
-    func testHasMinimapFixDisabledWhenOverrideIsMissing() {
+    func testHasDLLOverrideNotConfiguredWhenOverrideIsMissing() {
         let profile = makeProfile(environment: [:])
 
-        XCTAssertFalse(CossacksOptimizationAdvisor.hasMinimapFixEnabled(profile))
+        XCTAssertFalse(CossacksOptimizationAdvisor.hasDLLOverrideConfigured(profile))
     }
 
     func testStatusItemsExposeReadyCrossOverAndSteamProfile() throws {
@@ -27,7 +27,7 @@ final class CossacksOptimizationAdvisorTests: XCTestCase {
         let items = CossacksOptimizationAdvisor.statusItems(for: profile)
 
         XCTAssertEqual(items.count, 4)
-        XCTAssertEqual(try XCTUnwrap(items.first { $0.id == "minimap" }).state, .ready)
+        XCTAssertEqual(try XCTUnwrap(items.first { $0.id == "dll" }).state, .ready)
         XCTAssertEqual(try XCTUnwrap(items.first { $0.id == "steam" }).state, .ready)
         XCTAssertEqual(try XCTUnwrap(items.first { $0.id == "crossover" }).state, .ready)
         XCTAssertEqual(try XCTUnwrap(items.first { $0.id == "resolution" }).state, .ready)
