@@ -42,6 +42,9 @@ targets:
     hostApplication: MacPlayLauncher
     sources:
       - Tests/MacPlayLauncherTests
+    resources:
+      - path: Resources/Profiles/cossacks3.profile.json
+        buildPhase: resources
     dependencies:
       - target: MacPlayLauncher
     settings:

@@ -3,7 +3,12 @@ import XCTest
 
 final class GameProfileTests: XCTestCase {
     func testBundledCossacks3ProfileDecodes() throws {
-        let profile = try BundledGameProfileLoader(bundle: .module).loadCossacks3Profile()
+        #if SWIFT_PACKAGE
+        let bundle = Bundle.module
+        #else
+        let bundle = Bundle(for: GameProfileTests.self)
+        #endif
+        let profile = try BundledGameProfileLoader(bundle: bundle).loadCossacks3Profile()
 
         XCTAssertEqual(profile.id, "cossacks3")
         XCTAssertEqual(profile.schemaVersion, 1)
