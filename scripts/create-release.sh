@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # MacPlayLauncher release script
 # Kullanim: ./scripts/create-release.sh <versiyon> [--dry-run]
-# Ornek:    ./scripts/create-release.sh v0.23.0
-#           ./scripts/create-release.sh v0.23.0 --dry-run
+# Ornek:    ./scripts/create-release.sh v0.24.0
+#           ./scripts/create-release.sh v0.24.0 --dry-run
 
 set -euo pipefail
 
 VERSION="${1:-}"
 if [ -z "$VERSION" ]; then
     echo "Kullanim: $0 <versiyon> [--dry-run]" >&2
-    echo "Ornek:    $0 v0.23.0" >&2
+    echo "Ornek:    $0 v0.24.0" >&2
     exit 1
 fi
 [[ ! "$VERSION" =~ ^v ]] && VERSION="v$VERSION"
@@ -223,7 +223,7 @@ SHA_LINE=""
 [ -f "$SHA256_OUT" ] && SHA_LINE="$(cat "$SHA256_OUT")"
 [ "$LOCAL_TEST_ONLY" = "true" ] && SHA_LINE="(notarize edilmemiş yerel test paketi)"
 
-NOTES="## ${VERSION} — Kolay Kurulum ve Notarized DMG
+NOTES="## ${VERSION} — Arka Plan Kurulumu ve Notarized DMG
 
 ### Değişiklikler
 ${COMMIT_LOG:-— değişiklik logu bulunamadı}
@@ -231,7 +231,8 @@ ${COMMIT_LOG:-— değişiklik logu bulunamadı}
 ### Kurulum
 1. \`MacPlayLauncher.dmg\` dosyasını indir
 2. Applications klasörüne sürükle
-3. Aç → **Kurulumu Başlat** butonuna bas
+3. Aç → uygun hazırlık adımları arka planda otomatik başlar
+4. Kurulum Rehberi ekranından ilerlemeyi izle; lisans ve Steam girişini kendin tamamla
 
 ### SHA256
 \`${SHA_LINE}\`"
