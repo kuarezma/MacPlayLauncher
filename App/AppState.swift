@@ -42,11 +42,16 @@ final class AppState {
     var setupActionMessage: String?
     var setupPatchErrorMessage: String?
     var setupStatusOverrides: [String: SetupStepStatus] = [:]
+    private(set) var setupOrchestrator: SetupOrchestrator?
 
     let environment: AppEnvironment
 
     init(environment: AppEnvironment) {
         self.environment = environment
+        self.setupOrchestrator = SetupOrchestrator(
+            setupService: environment.cossacksSetupService,
+            installerService: environment.setupInstallerService
+        )
     }
 
     func loadInitialProfiles() async {

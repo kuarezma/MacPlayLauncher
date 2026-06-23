@@ -6,6 +6,25 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 
 ---
 
+## Kullanıcı Kurulumu (Normal Kullanıcı)
+
+1. [GitHub Releases](../../releases) sayfasından `MacPlayLauncher.dmg` dosyasını indir
+2. DMG'yi aç → `MacPlayLauncher.app` simgesini `Applications` klasörüne sürükle
+3. Uygulamayı aç → **Kurulum Rehberi** sekmesi otomatik açılır
+4. **Kurulumu Başlat** butonuna bas — uygulama Rosetta, CrossOver, bottle ve displayplacer'ı sırayla kurar
+5. CrossOver trial/lisans aktivasyonu, Steam girişi ve Cossacks 3 indirmesi kullanıcıya aittir
+
+### Gereksinimler
+
+| Gereksinim | Detay |
+|---|---|
+| macOS | 14.0 (Sonoma) veya üzeri |
+| Mac | Apple Silicon (M1/M2/M3/M4) |
+| CrossOver | Trial ya da lisanslı — uygulama trial'ı otomatik kurar |
+| Steam hesabı | Cossacks 3 sahibi olunması gerekiyor |
+
+---
+
 ## Features
 
 - One-click launch: starts Wine Steam, waits for readiness, then launches the game
@@ -161,6 +180,11 @@ MacPlayLauncher/
 
 | Problem | Fix |
 |---|---|
+| "Uygulama açılamadı" / Gatekeeper uyarısı | System Settings → Privacy & Security → "Yine de Aç" |
+| Homebrew Terminal komutu çalışmıyor | Terminal'de `xcode-select --install` çalıştır, sonra tekrar dene |
+| CrossOver trial penceresi gözükmüyor | Dock'ta CrossOver ikonuna tıkla |
+| Steam Guard kodu isteniyor | Telefona gelen kodu gir; uygulama Steam girişini 10s aralıkla otomatik algılar |
+| Cossacks 3 Steam kütüphanesinde yok | Oyunu Steam üzerinden satın al (App ID: 333420) |
 | Game exits with code 53 | `steam_settings/offline.txt` must be renamed to `.disabled` |
 | "Couldn't find SteamClient64Dll" | Check `ColdClientLoader.ini` paths |
 | Wine Steam doesn't open | Check CrossOver bottle name is exactly `Cossacks3` |
@@ -169,6 +193,21 @@ MacPlayLauncher/
 | Build hangs for hours | Delete `build_output/` from project folder, run `swift build --build-path /tmp/mpl_build` |
 | Black screen / crash | Make sure `steam_settings/` folder has no `offline.txt` |
 | Minimap is transparent | Re-run `~/Cossacks3_Mac_Port/apply_minimap_fix.sh` and confirm the bundled profile uses `opengl32=n,b;d3d9,d3d11,dxgi=b` |
+
+### Notarization kurulumu (geliştirici — bir kez yapılır)
+
+Developer ID sertifikası edindikten sonra notary kimlik bilgilerini Keychain'e kaydet:
+
+```bash
+xcrun notarytool store-credentials "MacPlayNotary" \
+    --apple-id "APPLE_ID_EMAILINIZ" \
+    --team-id "TEAM_ID" \
+    --password "@keychain:APP_SPECIFIC_PASSWORD"
+```
+
+App-specific password için: [appleid.apple.com](https://appleid.apple.com) → Sign-In and Security → App-Specific Passwords.
+
+Kaydedildikten sonra `./scripts/create-release.sh v0.23.0` otomatik olarak notarize eder ve staple uygular.
 
 ---
 

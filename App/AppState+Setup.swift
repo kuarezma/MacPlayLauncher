@@ -6,6 +6,34 @@ extension AppState {
         selectedNavigationItem = .setup
     }
 
+    // MARK: - Orchestration
+
+    var isOrchestratorRunning: Bool {
+        setupOrchestrator?.isRunning ?? false
+    }
+
+    var orchestratorLogText: String {
+        setupOrchestrator?.lastLogText ?? ""
+    }
+
+    func toggleOrchestration() {
+        guard let orchestrator = setupOrchestrator else { return }
+        if orchestrator.isRunning {
+            orchestrator.pause()
+        } else {
+            orchestrator.startOrResume(steps: setupSteps) { [weak self] updated in
+                guard let self else { return }
+                self.setupSteps = updated
+            }
+        }
+    }
+
+    func stopOrchestration() {
+        setupOrchestrator?.stop()
+    }
+
+    // MARK: - Status Refresh
+
     func refreshSetupStatus() async {
         isRefreshingSetup = true
         let detectedSteps = await environment.cossacksSetupService.detectSteps()

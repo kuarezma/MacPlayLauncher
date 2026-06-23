@@ -152,28 +152,89 @@ struct SetupWizardView: View {
     }
 
     private var bottomBar: some View {
-        HStack(spacing: 12) {
-            Button {
-                Task { await appState.refreshSetupStatus() }
-            } label: {
-                Label("Yenile", systemImage: "arrow.clockwise")
-            }
-            .buttonStyle(.bordered)
-            .disabled(appState.isRefreshingSetup)
+        VStack(alignment: .leading, spacing: 10) {
+            orchestrationLogPanel
 
-            Spacer()
+            HStack(spacing: 10) {
+                orchestrationButton
 
-            if allStepsComplete {
                 Button {
-                    appState.selectedNavigationItem = .library
+                    Task { await appState.refreshSetupStatus() }
                 } label: {
-                    Label("Oyun Kütüphanesine Git", systemImage: "gamecontroller.fill")
+                    Label("Yenile", systemImage: "arrow.clockwise")
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.bordered)
+                .disabled(appState.isRefreshingSetup || appState.isOrchestratorRunning)
+
+                Spacer()
+
+                if allStepsComplete {
+                    Button {
+                        appState.selectedNavigationItem = .library
+                    } label: {
+                        Label("Oyun Kütüphanesine Git", systemImage: "gamecontroller.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
             }
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
+    }
+
+    @ViewBuilder
+    private var orchestrationButton: some View {
+        if allStepsComplete {
+            EmptyView()
+        } else {
+            Button {
+                appState.toggleOrchestration()
+            } label: {
+                if appState.isOrchestratorRunning {
+                    Label("Duraklat", systemImage: "pause.fill")
+                } else {
+                    Label(
+                        appState.orchestratorLogText.isEmpty
+                            ? "Kurulumu Başlat"
+                            : "Devam Et",
+                        systemImage: "play.fill"
+                    )
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(appState.isRefreshingSetup)
+        }
+    }
+
+    @ViewBuilder
+    private var orchestrationLogPanel: some View {
+        let logText = appState.orchestratorLogText
+        if !logText.isEmpty {
+            HStack(alignment: .top, spacing: 8) {
+                Text(logText)
+                    .font(.system(size: 11, design: .monospaced))
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(5)
+
+                Button {
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(logText, forType: .string)
+                } label: {
+                    Image(systemName: "doc.on.doc")
+                        .font(.system(size: 11))
+                }
+                .buttonStyle(.borderless)
+                .help("Logu kopyala")
+            }
+            .padding(8)
+            .background(Color(nsColor: .controlBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
+            )
+        }
     }
 
     private var allStepsComplete: Bool {

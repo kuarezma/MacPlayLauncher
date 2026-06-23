@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # MacPlayLauncher build script
-# Kullanim: ./scripts/build.sh
+# Kullanim: ./scripts/build.sh [versiyon]
+# Ornek:    ./scripts/build.sh v0.23.0
+#           ./scripts/build.sh          (git tag'dan okur)
 
 set -euo pipefail
 
@@ -8,7 +10,13 @@ APP_NAME="MacPlayLauncher"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_PATH="/tmp/mpl_build"
 APP_OUT="/tmp/$APP_NAME.app"
-BUNDLE_VERSION="0.1.0"
+
+# Sürüm: parametre > git tag > fallback
+_RAW_VERSION="${1:-}"
+if [ -z "$_RAW_VERSION" ]; then
+    _RAW_VERSION=$(git -C "$ROOT_DIR" describe --tags --abbrev=0 2>/dev/null || echo "0.0.0-dev")
+fi
+BUNDLE_VERSION="${_RAW_VERSION#v}"  # "v0.23.0" → "0.23.0"
 
 cd "$ROOT_DIR"
 

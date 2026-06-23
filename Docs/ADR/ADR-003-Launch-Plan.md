@@ -23,7 +23,17 @@ Before any experimental game launch, the project needs a single, reviewable plan
 - how process output and failures are handled
 - when `canLaunch` may become true in a later sprint
 
-Cossacks 3 remains the first target game. The launcher is personal-use only, sandboxed, and does not automate Steam login, Steam Guard/2FA, purchases, or license bypass. Runtime setup automation is governed by ADR-001.
+Cossacks 3 remains the first target game. The launcher is personal-use only and does not automate Steam login, Steam Guard/2FA, purchases, or license bypass. Runtime setup automation is governed by ADR-001.
+
+### App Sandbox Status (Updated v0.23)
+
+App Sandbox is **disabled**. This is intentional:
+
+- CrossOver must be invoked via `NSWorkspace.open` and process spawning, which require unrestricted process execution.
+- Wine prefix paths live under `~/Library/Application Support/CrossOver/`, outside any container the sandbox would permit.
+- Shell-based Homebrew and displayplacer installation require access to `/opt/homebrew/` and system utilities.
+
+See `MacPlay.entitlements` for the current entitlement set. The previous "sandboxed" description in this document was inaccurate and has been corrected here.
 
 ## Decision
 
