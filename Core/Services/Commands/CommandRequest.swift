@@ -6,6 +6,13 @@ enum CommandPurpose: Equatable, Hashable, Sendable {
     case dxvkFileCheck
     case moltenVKFileCheck
     case gameLaunch
+    case rosettaInstall
+    case homebrewInstallPrompt
+    case displayplacerInstall
+    case crossOverInstall
+    case crossOverOpen
+    case bottleCreate
+    case steamSetup
 }
 
 struct CommandRequest: Equatable, Hashable, Sendable {

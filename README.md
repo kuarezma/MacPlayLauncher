@@ -12,6 +12,7 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 - Real Steam multiplayer (friends list, matchmaking, achievements)
 - Automatic display resolution switching (1280×800 for game, restored on exit)
 - CrossOver bottle integration (no manual Wine configuration)
+- Guided setup automation for Rosetta, CrossOver trial, the `Cossacks3` bottle, Wine Steam startup, and displayplacer
 - OpenGL proxy launch override for the Cossacks 3 macOS shader/minimap fixes
 - Cossacks-style launcher preview with resource bar, minimap, buildings, troop formations, and mine-state visual cues
 - In-launcher optimization checklist for minimap, Wine Steam, CrossOver bottle, and game resolution readiness
@@ -25,26 +26,36 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 |---|---|
 | macOS | 14.0 (Sonoma) or newer |
 | Mac | Apple Silicon (M1/M2/M3/M4) |
-| CrossOver | [CrossOver 26+](https://www.codeweavers.com/crossover) — paid app |
+| CrossOver | [CrossOver 26+](https://www.codeweavers.com/crossover) — paid app with trial option |
 | Cossacks 3 | Must own on Steam |
-| displayplacer | `brew install displayplacer` |
+| displayplacer | Installed by the in-app setup guide when Homebrew is available |
 
 ---
 
 ## Setup Guide
 
-### 1. Install CrossOver and create a bottle
+### 1. Run the in-app Setup Guide
 
-1. Install [CrossOver](https://www.codeweavers.com/crossover)
-2. Create a new bottle named exactly **`Cossacks3`** (Win10, 64-bit)
+Open **Kurulum Rehberi** in MacPlay Launcher and run the missing steps from top to bottom.
 
-### 2. Install Wine Steam inside the bottle
+The guide can automate:
 
-1. In CrossOver, install **Steam** inside the `Cossacks3` bottle
-2. Launch Steam from CrossOver, log into your Steam account
+- Rosetta installation via Apple's `softwareupdate`
+- CrossOver trial installation through Homebrew cask when Homebrew is available
+- opening the official Homebrew installer in Terminal when Homebrew is missing
+- creating the `Cossacks3` CrossOver bottle with the `win10_64` template
+- installing `displayplacer` through Homebrew
+- downloading the official Steam Windows installer and starting it inside the `Cossacks3` bottle
+
+CrossOver trial/license approval, Steam login, Steam Guard/2FA, and buying or owning Cossacks 3 remain user-controlled steps. The app never stores Steam or CrossOver credentials.
+
+### 2. Sign in to Steam and install Cossacks 3
+
+1. Let the setup guide open or install Steam inside the `Cossacks3` bottle
+2. Log in to Steam yourself when the login window appears
 3. In Wine Steam → Library, install **Cossacks 3** (let it download completely)
 
-### 3. Configure ColdClientLoader
+### 3. Configure ColdClientLoader if your port files require it
 
 In the Cossacks 3 game folder inside the bottle:
 ```
@@ -70,13 +81,7 @@ GAMEDIR="$BOTTLE/Program Files (x86)/Steam/steamapps/common/Cossacks 3"
 ln -s "$GAMEDIR" "$BOTTLE/Cossacks3"
 ```
 
-### 5. Install displayplacer
-
-```bash
-brew install displayplacer
-```
-
-### 6. Apply the current macOS port files
+### 5. Apply the current macOS port files
 
 The working Cossacks 3 port expects the patched shader set and `opengl32.dll` proxy in the game folder. If you keep the separate `~/Cossacks3_Mac_Port` helper repo, run its minimap fix script after updating game files:
 
@@ -84,7 +89,7 @@ The working Cossacks 3 port expects the patched shader set and `opengl32.dll` pr
 ~/Cossacks3_Mac_Port/apply_minimap_fix.sh
 ```
 
-### 7. Build and run MacPlayLauncher
+### 6. Build and run MacPlayLauncher
 
 ```bash
 git clone https://github.com/kuarezma/MacPlayLauncher.git
@@ -169,6 +174,7 @@ MacPlayLauncher/
 
 ## Changelog
 
+- 2026-06-23: Added guided setup automation for Rosetta, CrossOver trial, `Cossacks3` bottle creation, Wine Steam preparation, and displayplacer.
 - 2026-06-23: Made `scripts/build.sh` finish successfully in non-interactive runs after creating `/tmp/MacPlayLauncher.app`.
 - 2026-06-23: Limited the Cossacks shader patcher to safe fragment/fx fixes and stopped rewriting unit bone vertex shaders so cavalry rendering keeps the working path.
 - 2026-06-22: Preserved lighting, fog, and texture outputs in the Cossacks bone shader patch so cavalry meshes avoid dynamic bone indexing without losing render data.

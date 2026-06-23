@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for Sprint 15 planning. Runtime download, install, and launch wiring remain deferred to later sprints.
+Accepted for Sprint 15 planning. Amended in v0.22.0 to allow controlled setup automation for Rosetta, CrossOver trial, displayplacer, bottle creation, and Steam preparation.
 
 ## Context
 
@@ -22,11 +22,22 @@ Before launch planning, the project needs a single, reviewable decision for:
 - how DXVK and MoltenVK relate to Wine and prefixes in later work
 - how future launch resolves Wine without trusting `PATH`
 
-Cossacks 3 remains the first target game. The app runs inside the macOS App Sandbox and does not automate Homebrew or Steam installs.
+Cossacks 3 remains the first target game. The app does not bypass licenses, Steam login, Steam Guard/2FA, purchases, or CrossOver trial approval.
 
 ## Decision
 
-### V1 Wine supply model
+### V1 CrossOver supply model
+
+V1 targets CrossOver as the supported runtime path for Cossacks 3.
+
+- CrossOver may be installed by the launcher through Homebrew cask with `brew install --cask crossover`.
+- If Homebrew is missing, the launcher opens a visible Terminal script containing the official Homebrew installer command. It does not run a hidden shell pipeline in the background.
+- CrossOver trial/license approval remains a user action in the official CrossOver UI.
+- The launcher may create a private `Cossacks3` bottle with CrossOver's `cxbottle` tool and the `win10_64` template.
+- The launcher may download the official Steam Windows installer over HTTPS and start it inside the `Cossacks3` bottle.
+- Steam login, Steam Guard/2FA, purchasing, and ownership checks remain user-controlled.
+
+### Legacy Homebrew Wine supply model
 
 V1 uses **user-managed system Wine**, not launcher-managed acquisition.
 
@@ -37,17 +48,30 @@ V1 uses **user-managed system Wine**, not launcher-managed acquisition.
 - `PATH`, `which wine`, shell wrappers, and user-selected Wine binaries are rejected.
 - The launcher does not download, extract, install, update, or bundle Wine in V1.
 
-This aligns with Sprint 5B diagnostics and keeps runtime responsibility visible to the user.
+This remains the diagnostic fallback for non-CrossOver Wine profiles. The Cossacks 3 default path now prefers CrossOver automation.
 
 ### Rejected for V1
 
 - Bundled Wine runtime inside the app package
-- Launcher-driven runtime download or install
+- Launcher-driven Wine runtime download or install
 - Self-built and self-hosted Wine distribution from the launcher
 - Automatic Homebrew invocation (`brew install wine`)
 - Trusting `PATH` or arbitrary filesystem locations for launch
+- CrossOver license or trial bypass
+- Steam credential, QR, 2FA, purchase, or ownership automation
 
 These remain future options only if a separate sprint amends this ADR.
+
+### Controlled setup automation
+
+The launcher may run only allowlisted setup executables:
+
+- `/usr/sbin/softwareupdate` for Rosetta installation
+- `/usr/bin/open` for visible Terminal/Homebrew prompts and CrossOver launch
+- `/opt/homebrew/bin/brew` or `/usr/local/bin/brew` for Homebrew-managed tools
+- CrossOver's `cxbottle` and `cxstart` tools under `/Applications/CrossOver.app`
+
+The launcher must not execute arbitrary shell strings through `sh -c`, `bash -c`, or `zsh -c` from the app process. When Homebrew itself is missing, the official Homebrew installer command is written into a visible `.command` file and opened in Terminal so the user can see and approve it.
 
 ### Future bundled runtime option (plan only)
 
@@ -100,9 +124,10 @@ MoltenVK follows the same boundary as DXVK:
 ### Security and sandbox
 
 - Runtime discovery stays read-only and allowlist-based.
-- Any future runtime write operation must stay under Application Support and pass checksum validation first.
-- The launcher must not execute game `.exe` files during runtime planning or acquisition work.
-- Shell execution, `softwareupdate`, and package-manager automation remain out of scope.
+- Setup execution stays allowlist-based and avoids arbitrary shell execution in the app process.
+- CrossOver and displayplacer installation use Homebrew when Homebrew is already available.
+- The launcher may start official installers inside the `Cossacks3` bottle but must not collect credentials or bypass license/login UI.
+- Game ownership and Steam authentication remain outside launcher control.
 
 ### Cossacks 3 reference
 
@@ -116,20 +141,16 @@ Sprint 15 does not change profile defaults or diagnostics behavior.
 
 ## Consequences
 
-- Sprint 15 is documentation-only for runtime acquisition; no runtime directories, downloads, or install flows are introduced.
-- `WineDiagnosticProvider` remains the authoritative V1 discovery rule set; launch work must not widen discovery silently.
+- `WineDiagnosticProvider` remains the authoritative discovery rule set for Homebrew Wine profiles; CrossOver profiles use CrossOver-specific setup and launch tooling.
 - DXVK and MoltenVK stay passive in diagnostics until a later implementation sprint.
-- Prefix bootstrap (`wineprefixcreate` or equivalent) remains a separate sprint after launch planning.
-- `canLaunch` stays false until a future launch sprint explicitly changes launch policy.
+- CrossOver bottle bootstrap is allowed only through `cxbottle` for the known `Cossacks3` bottle.
 - A future bundled-runtime sprint requires a new ADR amendment or ADR addendum with checksum and storage rules.
 
 ## Out of Scope for Sprint 15
 
-- runtime download, install, or update UI
+- bundled Wine runtime download, install, or update UI
 - bundled Wine binaries in the app
 - real DXVK or MoltenVK detection
 - `wineprefixcreate` or Wine prefix bootstrap commands
 - `WINEPREFIX` / launch env wiring
-- game launch
-- changing `canLaunch`
-- Homebrew automation or install prompts
+- Steam credential entry, Steam Guard automation, purchase automation, or CrossOver trial/license bypass

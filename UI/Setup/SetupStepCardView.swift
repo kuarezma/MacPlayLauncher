@@ -55,7 +55,7 @@ struct SetupStepCardView: View {
     @ViewBuilder
     private var statusIcon: some View {
         switch step.status {
-        case .checking:
+        case .checking, .installing:
             ProgressView()
                 .scaleEffect(0.6)
         case .ok:
@@ -70,6 +70,14 @@ struct SetupStepCardView: View {
             Image(systemName: "lock.fill")
                 .foregroundStyle(Color(nsColor: .tertiaryLabelColor))
                 .font(.system(size: 14))
+        case .waitingForUser:
+            Image(systemName: "person.crop.circle.badge.clock")
+                .foregroundStyle(.blue)
+                .font(.system(size: 16))
+        case .failed:
+            Image(systemName: "xmark.octagon.fill")
+                .foregroundStyle(.red)
+                .font(.system(size: 16))
         }
     }
 
@@ -78,6 +86,10 @@ struct SetupStepCardView: View {
         switch step.status {
         case .checking:
             Text("Kontrol ediliyor…")
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+        case .installing(let message):
+            Text(message)
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
         case .ok(let detail):
@@ -92,6 +104,14 @@ struct SetupStepCardView: View {
             Text(reason)
                 .font(.system(size: 12))
                 .foregroundStyle(Color(nsColor: .tertiaryLabelColor))
+        case .waitingForUser(let message):
+            Text(message)
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+        case .failed(let message):
+            Text(message)
+                .font(.system(size: 12))
+                .foregroundStyle(.red)
         }
     }
 
@@ -101,6 +121,7 @@ struct SetupStepCardView: View {
             Button(label) { onAction?() }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
+                .disabled(isInstalling)
         } else if let url = step.externalURL, let label = step.actionLabel {
             Link(label, destination: url)
                 .buttonStyle(.bordered)
@@ -117,11 +138,19 @@ struct SetupStepCardView: View {
         return false
     }
 
+    private var isInstalling: Bool {
+        if case .installing = step.status { return true }
+        return false
+    }
+
     private var titleColor: Color {
         switch step.status {
         case .ok: return .primary
         case .needsAction: return .primary
         case .checking: return .primary
+        case .installing: return .primary
+        case .waitingForUser: return .primary
+        case .failed: return .primary
         case .blocked: return Color(nsColor: .tertiaryLabelColor)
         }
     }

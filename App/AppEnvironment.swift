@@ -17,6 +17,7 @@ struct AppEnvironment: Sendable {
     let experimentalRunReadinessEvaluator: any RunReadinessEvaluating
     let gameLauncher: any GameLaunching
     let cossacksSetupService: any CossacksSetupServicing
+    let setupInstallerService: any SetupInstallerServicing
     let appSupportURL: URL
 
     init(
@@ -36,6 +37,7 @@ struct AppEnvironment: Sendable {
         experimentalRunReadinessEvaluator: (any RunReadinessEvaluating)? = nil,
         gameLauncher: (any GameLaunching)? = nil,
         cossacksSetupService: (any CossacksSetupServicing)? = nil,
+        setupInstallerService: (any SetupInstallerServicing)? = nil,
         appSupportURL: URL = FileManager.default.temporaryDirectory
             .appending(path: "MacPlayLauncher", directoryHint: .isDirectory)
     ) {
@@ -55,6 +57,7 @@ struct AppEnvironment: Sendable {
         self.experimentalRunReadinessEvaluator = experimentalRunReadinessEvaluator ?? runReadinessEvaluator
         self.gameLauncher = gameLauncher ?? DisabledGameLauncher()
         self.cossacksSetupService = cossacksSetupService ?? CossacksSetupService()
+        self.setupInstallerService = setupInstallerService ?? SetupInstallerService()
         self.appSupportURL = appSupportURL
     }
 
@@ -66,7 +69,10 @@ struct AppEnvironment: Sendable {
             in: .userDomainMask
         ).first ?? FileManager.default.temporaryDirectory
         let appSupportURL = baseURL.appending(path: "MacPlayLauncher", directoryHint: .isDirectory)
-        let store = JSONStore<GameProfile>(directoryURL: appSupportURL.appending(path: "Profiles"), fileSystem: fileSystem)
+        let store = JSONStore<GameProfile>(
+            directoryURL: appSupportURL.appending(path: "Profiles"),
+            fileSystem: fileSystem
+        )
         let bookmarkManager = BookmarkManager()
         let prefixManager = PrefixManager(appSupportURL: appSupportURL, fileSystem: fileSystem)
         let gameLauncher = DefaultGameLauncher(
@@ -121,6 +127,7 @@ struct AppEnvironment: Sendable {
             experimentalLaunchPolicy: live.experimentalLaunchPolicy,
             experimentalRunReadinessEvaluator: live.experimentalRunReadinessEvaluator,
             gameLauncher: live.gameLauncher,
+            setupInstallerService: live.setupInstallerService,
             appSupportURL: live.appSupportURL
         )
     }

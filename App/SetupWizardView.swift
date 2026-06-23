@@ -26,6 +26,14 @@ struct SetupWizardView: View {
                         .padding(.top, 8)
                 }
 
+                if let message = appState.setupActionMessage {
+                    Text(message)
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 8)
+                }
+
                 if let step = selectedStep {
                     VStack(alignment: .leading, spacing: 0) {
                         Divider()
@@ -83,14 +91,15 @@ struct SetupWizardView: View {
     @ViewBuilder
     private var progressBadge: some View {
         let steps = appState.setupSteps
-        if steps.isEmpty { EmptyView() }
-        else {
+        if steps.isEmpty {
+            EmptyView()
+        } else {
             let done = steps.filter { $0.status.isOK }.count
             let total = steps.count
             HStack(spacing: 4) {
-                ForEach(0..<total, id: \.self) { i in
+                ForEach(0..<total, id: \.self) { index in
                     Circle()
-                        .fill(i < done ? Color.green : Color(nsColor: .tertiarySystemFill))
+                        .fill(index < done ? Color.green : Color(nsColor: .tertiarySystemFill))
                         .frame(width: 8, height: 8)
                 }
             }
@@ -175,7 +184,7 @@ struct SetupWizardView: View {
 
     private func handleAutoFix(step: SetupStep) async {
         guard step.canAutoFix else { return }
-        await appState.applyShaderPatch()
+        await appState.performSetupAction(for: step)
     }
 
     private func handleCopy(step: SetupStep) {

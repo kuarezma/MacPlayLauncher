@@ -1269,13 +1269,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu uygulama şu anda kurulum yapmaz."
+            "value": "Kurulum işlemleri Kurulum Rehberi ekranından yönetilir."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu uygulama şu anda kurulum yapmaz."
+            "value": "Kurulum işlemleri Kurulum Rehberi ekranından yönetilir."
           }
         }
       }
@@ -1337,13 +1337,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bazı bileşenler eksik veya henüz yapılandırılmadı. Bu ekran kurulum yapmaz."
+            "value": "Bazı bileşenler eksik veya henüz yapılandırılmadı. Kurulum için Kurulum Rehberi ekranını kullanın."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bazı bileşenler eksik veya henüz yapılandırılmadı. Bu ekran kurulum yapmaz."
+            "value": "Bazı bileşenler eksik veya henüz yapılandırılmadı. Kurulum için Kurulum Rehberi ekranını kullanın."
           }
         }
       }
@@ -4108,13 +4108,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "MacPlay Launcher kişisel kullanım içindir; otomatik kurulum veya oyun çalıştırma yapmaz."
+            "value": "MacPlay Launcher kişisel kullanım içindir; kurulum adımları kullanıcı onayı gerektiren resmi araçlarla yönetilir."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "MacPlay Launcher kişisel kullanım içindir; otomatik kurulum veya oyun çalıştırma yapmaz."
+            "value": "MacPlay Launcher kişisel kullanım içindir; kurulum adımları kullanıcı onayı gerektiren resmi araçlarla yönetilir."
           }
         }
       }

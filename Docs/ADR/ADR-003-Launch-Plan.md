@@ -23,7 +23,7 @@ Before any experimental game launch, the project needs a single, reviewable plan
 - how process output and failures are handled
 - when `canLaunch` may become true in a later sprint
 
-Cossacks 3 remains the first target game. The launcher is personal-use only, sandboxed, and does not automate Steam login or runtime installation.
+Cossacks 3 remains the first target game. The launcher is personal-use only, sandboxed, and does not automate Steam login, Steam Guard/2FA, purchases, or license bypass. Runtime setup automation is governed by ADR-001.
 
 ## Decision
 

@@ -4,14 +4,26 @@ import Foundation
 
 enum SetupStepStatus: Equatable, Sendable {
     case checking
+    case installing(message: String)
+    case waitingForUser(message: String)
     case ok(detail: String)
     case needsAction(message: String)
     case blocked(reason: String)
+    case failed(message: String)
 
     var isOK: Bool {
         if case .ok = self { return true }
         return false
     }
+}
+
+enum SetupAutomationTarget: String, Equatable, Sendable {
+    case rosetta
+    case crossOver
+    case bottle
+    case steam
+    case displayplacer
+    case shaderPatch
 }
 
 struct SetupStep: Identifiable, Equatable, Sendable {
@@ -20,9 +32,32 @@ struct SetupStep: Identifiable, Equatable, Sendable {
     let explanation: String
     let status: SetupStepStatus
     let canAutoFix: Bool
+    let automationTarget: SetupAutomationTarget?
     let actionLabel: String?
     let externalURL: URL?
     let copyCommand: String?
+
+    init(
+        id: String,
+        title: String,
+        explanation: String,
+        status: SetupStepStatus,
+        canAutoFix: Bool,
+        automationTarget: SetupAutomationTarget? = nil,
+        actionLabel: String?,
+        externalURL: URL?,
+        copyCommand: String?
+    ) {
+        self.id = id
+        self.title = title
+        self.explanation = explanation
+        self.status = status
+        self.canAutoFix = canAutoFix
+        self.automationTarget = automationTarget
+        self.actionLabel = actionLabel
+        self.externalURL = externalURL
+        self.copyCommand = copyCommand
+    }
 }
 
 // MARK: - Protocol
@@ -45,6 +80,7 @@ struct CossacksSetupService: CossacksSetupServicing {
         let bottlePath = home.appending(path: "\(Self.bottleBase)/\(Self.bottleName)", directoryHint: .isDirectory)
 
         return [
+            detectRosetta(),
             detectCrossOver(),
             detectBottle(bottlePath: bottlePath),
             detectGameInstall(bottlePath: bottlePath),
@@ -69,21 +105,58 @@ struct CossacksSetupService: CossacksSetupServicing {
 
     // MARK: - Detectors
 
+    private func detectRosetta() -> SetupStep {
+        let explanation = "Rosetta, Apple Silicon Mac'lerde bazı Intel tabanlı yardımcı bileşenleri çalıştırır."
+            + " CrossOver ve Windows oyun uyumluluğu için gerekli olabilir."
+            + " Uygulama Apple'ın resmi softwareupdate aracıyla kurulum başlatabilir."
+        if CurrentSystemArchitectureProvider().architecture == .intel {
+            return SetupStep(
+                id: "rosetta",
+                title: "Rosetta",
+                explanation: explanation,
+                status: .ok(detail: "Bu Mac'te Rosetta gerekli değil"),
+                canAutoFix: false,
+                actionLabel: nil,
+                externalURL: nil,
+                copyCommand: nil
+            )
+        }
+
+        let installed = FileManager.default.fileExists(
+            atPath: "/Library/Apple/usr/libexec/oah/libRosettaRuntime"
+        )
+        return SetupStep(
+            id: "rosetta",
+            title: "Rosetta",
+            explanation: explanation,
+            status: installed
+                ? .ok(detail: "Rosetta kurulu")
+                : .needsAction(message: "Rosetta kurulu değil — uygulama resmi kurulum aracını çalıştırabilir"),
+            canAutoFix: !installed,
+            automationTarget: installed ? nil : .rosetta,
+            actionLabel: installed ? nil : "Rosetta'yı Kur",
+            externalURL: nil,
+            copyCommand: nil
+        )
+    }
+
     private func detectCrossOver() -> SetupStep {
         let exists = FileManager.default.fileExists(atPath: Self.crossOverAppPath)
         let explanation = "CrossOver, Windows oyunlarını Mac'te çalıştıran bir uygulama."
             + " Cossacks 3'ün macOS'ta çalışabilmesi için CrossOver kurulu olması gerekiyor."
             + " CrossOver, yüklü oyunlara izole bir Windows ortamı (bottle) sağlıyor."
+            + " Trial sürüm Homebrew cask ile kurulabilir; lisans/trial onayı kullanıcıya bırakılır."
         return SetupStep(
             id: "crossover",
             title: "CrossOver",
             explanation: explanation,
             status: exists
                 ? .ok(detail: "CrossOver kurulu")
-                : .needsAction(message: "CrossOver kurulu değil — indirme sayfasını açın"),
-            canAutoFix: false,
-            actionLabel: exists ? nil : "CrossOver İndir",
-            externalURL: exists ? nil : URL(string: "https://www.codeweavers.com/crossover"),
+                : .needsAction(message: "CrossOver kurulu değil — trial sürüm otomatik kurulabilir"),
+            canAutoFix: !exists,
+            automationTarget: exists ? nil : .crossOver,
+            actionLabel: exists ? nil : "İndir ve Kur",
+            externalURL: nil,
             copyCommand: nil
         )
     }
@@ -100,9 +173,10 @@ struct CossacksSetupService: CossacksSetupServicing {
             status: exists
                 ? .ok(detail: "'Cossacks3' bottle mevcut")
                 : .needsAction(message: "CrossOver'da 'Cossacks3' adlı yeni bir bottle oluşturun (Windows 10, 64-bit)"),
-            canAutoFix: false,
-            actionLabel: exists ? nil : "CrossOver'ı Aç",
-            externalURL: exists ? nil : URL(string: "crossover://install"),
+            canAutoFix: !exists,
+            automationTarget: exists ? nil : .bottle,
+            actionLabel: exists ? nil : "Bottle Oluştur",
+            externalURL: nil,
             copyCommand: nil
         )
     }
@@ -131,10 +205,11 @@ struct CossacksSetupService: CossacksSetupServicing {
             explanation: explanation,
             status: exeFound
                 ? .ok(detail: "Cossacks 3 kurulu bulundu")
-                : .needsAction(message: "Oyun kurulu değil — Steam ile bottle'a yükleyin"),
-            canAutoFix: false,
-            actionLabel: exeFound ? nil : "Steam Mağazasını Aç",
-            externalURL: exeFound ? nil : URL(string: "https://store.steampowered.com/app/333420"),
+                : .needsAction(message: "Oyun kurulu değil — Steam kurulumu ve giriş ekranı açılabilir"),
+            canAutoFix: !exeFound,
+            automationTarget: exeFound ? nil : .steam,
+            actionLabel: exeFound ? nil : "Steam'i Hazırla",
+            externalURL: nil,
             copyCommand: nil
         )
     }
@@ -168,6 +243,7 @@ struct CossacksSetupService: CossacksSetupServicing {
                 ? .ok(detail: "Grafik yamaları uygulanmış")
                 : .needsAction(message: "Grafik yamaları henüz uygulanmamış — düzeltmek için butona tıkla"),
             canAutoFix: true,
+            automationTarget: .shaderPatch,
             actionLabel: patched ? nil : "Yamayı Uygula",
             externalURL: nil,
             copyCommand: nil
@@ -208,7 +284,7 @@ struct CossacksSetupService: CossacksSetupServicing {
             + " oyun kapanınca eski haline döner."
             + " Bu işlem için 'displayplacer' komut satırı aracı gerekiyor."
             + " Homebrew üzerinden tek komutla kurulabilir."
-        let missingMsg = "displayplacer kurulu değil — aşağıdaki komutu terminale yapıştırın"
+        let missingMsg = "displayplacer kurulu değil — Homebrew varsa otomatik kurulabilir"
         return SetupStep(
             id: "displayplacer",
             title: "Ekran çözünürlüğü yönetimi",
@@ -216,10 +292,11 @@ struct CossacksSetupService: CossacksSetupServicing {
             status: found
                 ? .ok(detail: "displayplacer kurulu")
                 : .needsAction(message: missingMsg),
-            canAutoFix: false,
-            actionLabel: found ? nil : "Komutu Kopyala",
+            canAutoFix: !found,
+            automationTarget: found ? nil : .displayplacer,
+            actionLabel: found ? nil : "Otomatik Kur",
             externalURL: nil,
-            copyCommand: found ? nil : "brew install jakehilborn/jakehilborn/displayplacer"
+            copyCommand: found ? nil : "brew install displayplacer"
         )
     }
 

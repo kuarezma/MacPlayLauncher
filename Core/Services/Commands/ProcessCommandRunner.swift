@@ -131,7 +131,12 @@ struct ProcessCommandRunner: CommandRunning {
             .union(defaultAllowedCrossOverURLs)
             .union([
                 URL(fileURLWithPath: "/usr/bin/true"),
-                URL(fileURLWithPath: "/usr/bin/arch")
+                URL(fileURLWithPath: "/usr/bin/arch"),
+                URL(fileURLWithPath: "/usr/bin/open"),
+                URL(fileURLWithPath: "/usr/sbin/softwareupdate"),
+                URL(fileURLWithPath: "/opt/homebrew/bin/brew"),
+                URL(fileURLWithPath: "/usr/local/bin/brew"),
+                URL(fileURLWithPath: "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/cxbottle")
             ])
     }
 

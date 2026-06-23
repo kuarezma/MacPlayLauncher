@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class CossacksSetupServiceTests: XCTestCase {
     let service = CossacksSetupService()
@@ -10,12 +10,15 @@ final class CossacksSetupServiceTests: XCTestCase {
         let steps = await service.detectSteps()
 
         let ids = steps.map(\.id)
-        XCTAssertEqual(ids, ["crossover", "bottle", "gameInstall", "shaderPatch", "minimapFix", "displayplacer"])
+        XCTAssertEqual(
+            ids,
+            ["rosetta", "crossover", "bottle", "gameInstall", "shaderPatch", "minimapFix", "displayplacer"]
+        )
     }
 
-    func testDetectStepsAlwaysReturnsSixSteps() async {
+    func testDetectStepsAlwaysReturnsSevenSteps() async {
         let steps = await service.detectSteps()
-        XCTAssertEqual(steps.count, 6)
+        XCTAssertEqual(steps.count, 7)
     }
 
     // MARK: - crossover step
@@ -34,14 +37,16 @@ final class CossacksSetupServiceTests: XCTestCase {
         }
     }
 
-    func testCrossOverStepHasExternalURLWhenNotInstalled() async throws {
+    func testCrossOverStepHasAutomationWhenNotInstalled() async throws {
         guard !FileManager.default.fileExists(atPath: "/Applications/CrossOver.app") else {
             throw XCTSkip("CrossOver is installed on this machine")
         }
         let steps = await service.detectSteps()
         let step = try XCTUnwrap(steps.first { $0.id == "crossover" })
 
-        XCTAssertNotNil(step.externalURL)
+        XCTAssertTrue(step.canAutoFix)
+        XCTAssertEqual(step.automationTarget, .crossOver)
+        XCTAssertNil(step.externalURL)
         XCTAssertNotNil(step.actionLabel)
     }
 
@@ -76,13 +81,14 @@ final class CossacksSetupServiceTests: XCTestCase {
 
     // MARK: - displayplacer step
 
-    func testDisplayPlacerStepHasCopyCommandWhenMissing() async throws {
+    func testDisplayPlacerStepHasAutomationWhenMissing() async throws {
         let steps = await service.detectSteps()
         let step = try XCTUnwrap(steps.first { $0.id == "displayplacer" })
 
         if case .needsAction = step.status {
-            XCTAssertNotNil(step.copyCommand)
-            XCTAssertTrue(step.copyCommand?.contains("displayplacer") == true)
+            XCTAssertTrue(step.canAutoFix)
+            XCTAssertEqual(step.automationTarget, .displayplacer)
+            XCTAssertEqual(step.copyCommand, "brew install displayplacer")
         }
     }
 
@@ -103,8 +109,11 @@ final class CossacksSetupServiceTests: XCTestCase {
     func testSetupStepStatusIsOKReturnsTrueOnlyForOK() {
         XCTAssertTrue(SetupStepStatus.ok(detail: "done").isOK)
         XCTAssertFalse(SetupStepStatus.checking.isOK)
+        XCTAssertFalse(SetupStepStatus.installing(message: "install").isOK)
+        XCTAssertFalse(SetupStepStatus.waitingForUser(message: "wait").isOK)
         XCTAssertFalse(SetupStepStatus.needsAction(message: "fix it").isOK)
         XCTAssertFalse(SetupStepStatus.blocked(reason: "wait").isOK)
+        XCTAssertFalse(SetupStepStatus.failed(message: "failed").isOK)
     }
 
     // MARK: - applyShaderPatch

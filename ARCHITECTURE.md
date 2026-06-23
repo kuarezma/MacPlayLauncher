@@ -232,3 +232,12 @@ Sprint 18 turns the existing diagnostics and experimental readiness signals into
 - Settings exposes read-only operational context: diagnostics source, experimental launch status, and the Application Support data folder.
 
 Sprint 18 still excludes automatic Wine/Rosetta/DXVK/MoltenVK installation, Steam automation, Wine prefix bootstrap commands, and production-default launch enablement. `DefaultRunReadinessEvaluator` remains non-launchable by design.
+
+## v0.22 Controlled Setup Automation
+
+v0.22 introduces guided setup automation from the Kurulum Rehberi screen.
+
+- `SetupInstallerService` owns allowlisted setup commands for Rosetta, Homebrew-visible prompts, displayplacer, CrossOver cask installation, `Cossacks3` bottle creation, and Steam preparation.
+- `CossacksSetupService` still owns setup detection and shader patching, but setup steps now carry an optional `SetupAutomationTarget` so UI actions route through the installer service.
+- `AppState` tracks temporary setup action states such as installing, waiting for user approval, completed, and failed without changing persisted profile data.
+- Command execution remains allowlist-based. The app does not run hidden shell pipelines, trust `PATH`, bypass CrossOver trial/license UI, store Steam credentials, automate Steam Guard, or purchase games.
