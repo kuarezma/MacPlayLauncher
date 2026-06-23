@@ -8,8 +8,8 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 
 ## Kullanıcı Kurulumu (Normal Kullanıcı)
 
-1. [GitHub Releases](../../releases) sayfasından `MacPlayLauncher.dmg` dosyasını indir
-2. DMG'yi aç → `MacPlayLauncher.app` simgesini `Applications` klasörüne sürükle
+1. [GitHub Releases](../../releases) sayfasından `MacPlayLauncher.dmg` veya `MacPlayLauncher.zip` dosyasını indir
+2. DMG'yi aç veya ZIP'i çıkar → `MacPlayLauncher.app` simgesini `Applications` klasörüne sürükle
 3. Uygulamayı aç — uygulama uygun kurulum adımlarını arka planda kendisi başlatır
 4. **Kurulum Rehberi** ekranından ilerlemeyi izle; gerekirse yalnızca duraklat/devam ettir
 5. CrossOver trial/lisans aktivasyonu, Steam girişi ve Cossacks 3 indirmesi kullanıcıya aittir
@@ -214,6 +214,7 @@ Kaydedildikten sonra `./scripts/create-release.sh v0.24.0` otomatik olarak notar
 
 ## Changelog
 
+- 2026-06-23: Updated install notes to cover both DMG and ZIP release artifacts.
 - 2026-06-23: Fixed release checksum generation so SHA256SUMS keeps the hash and artifact path.
 - 2026-06-23: Prepared v0.24.0 release notes for background setup automation and CrossOver-managed runtime readiness.
 - 2026-06-23: Started eligible setup automation in the background and stopped showing separate Wine/DXVK/MoltenVK blockers for CrossOver profiles.
