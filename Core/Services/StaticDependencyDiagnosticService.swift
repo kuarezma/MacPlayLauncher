@@ -2,12 +2,25 @@ import Foundation
 
 struct StaticDependencyDiagnosticService: DependencyDiagnosticServicing {
     func loadSummary(profiles: [GameProfile]) async -> RuntimeDiagnosticSummary {
-        RuntimeDiagnosticSummary(
-            dependencies: [
+        let runtimeDependencies: [RuntimeDependency]
+        if RuntimeDependencyFactory.usesOnlyCrossOverRuntime(profiles) {
+            runtimeDependencies = [
+                RuntimeDependencyFactory.staticRosettaDependency(),
+                RuntimeDependencyFactory.crossOverManagedWineDependency(),
+                RuntimeDependencyFactory.crossOverManagedDXVKDependency(),
+                RuntimeDependencyFactory.crossOverManagedMoltenVKDependency()
+            ]
+        } else {
+            runtimeDependencies = [
                 RuntimeDependencyFactory.staticRosettaDependency(),
                 RuntimeDependencyFactory.staticWineDependency(),
                 RuntimeDependencyFactory.passiveDXVKDependency(),
-                RuntimeDependencyFactory.passiveMoltenVKDependency(),
+                RuntimeDependencyFactory.passiveMoltenVKDependency()
+            ]
+        }
+
+        return RuntimeDiagnosticSummary(
+            dependencies: runtimeDependencies + [
                 RuntimeDependencyFactory.gameProfileDependency(for: profiles)
             ],
             notes: [

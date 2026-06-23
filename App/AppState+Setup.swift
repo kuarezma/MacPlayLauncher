@@ -28,6 +28,25 @@ extension AppState {
         }
     }
 
+    func startAutomaticSetupIfNeeded() async {
+        guard let orchestrator = setupOrchestrator, !orchestrator.isRunning else {
+            return
+        }
+
+        if setupSteps.isEmpty {
+            await refreshSetupStatus()
+        }
+
+        guard setupSteps.contains(where: shouldAutoAdvanceSetupStep) else {
+            return
+        }
+
+        orchestrator.startOrResume(steps: setupSteps) { [weak self] updated in
+            guard let self else { return }
+            self.setupSteps = updated
+        }
+    }
+
     func stopOrchestration() {
         setupOrchestrator?.stop()
     }
@@ -118,6 +137,17 @@ extension AppState {
             return "displayplacer kuruluyor…"
         case .shaderPatch:
             return "Grafik yamaları uygulanıyor…"
+        }
+    }
+
+    private func shouldAutoAdvanceSetupStep(_ step: SetupStep) -> Bool {
+        switch step.status {
+        case .needsAction, .checking, .installing:
+            return step.canAutoFix && step.automationTarget != nil
+        case .waitingForUser:
+            return true
+        case .ok, .blocked, .failed:
+            return false
         }
     }
 }

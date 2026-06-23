@@ -895,13 +895,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Manuel kurulum notu"
+            "value": "Otomatik hazırlık notu"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Manuel kurulum notu"
+            "value": "Otomatik hazırlık notu"
           }
         }
       }
@@ -1252,13 +1252,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eksik bileşenleri manuel kurmanız gerekir."
+            "value": "Uygulama uygun adımları arka planda başlatır; lisans ve Steam girişi gibi onaylar kullanıcıda kalır."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eksik bileşenleri manuel kurmanız gerekir."
+            "value": "Uygulama uygun adımları arka planda başlatır; lisans ve Steam girişi gibi onaylar kullanıcıda kalır."
           }
         }
       }
@@ -1269,13 +1269,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kurulum işlemleri Kurulum Rehberi ekranından yönetilir."
+            "value": "Kurulum işlemleri otomatik başlatılır ve Kurulum Rehberi ekranından izlenebilir."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kurulum işlemleri Kurulum Rehberi ekranından yönetilir."
+            "value": "Kurulum işlemleri otomatik başlatılır ve Kurulum Rehberi ekranından izlenebilir."
           }
         }
       }
@@ -1813,13 +1813,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
+            "value": "CrossOver profillerinde DXVK ve MoltenVK ayrı kullanıcı kurulumu gerektirmez."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "DXVK ve MoltenVK yapılandırması prefix/runtime aşamasında değerlendirilecek."
+            "value": "CrossOver profillerinde DXVK ve MoltenVK ayrı kullanıcı kurulumu gerektirmez."
           }
         }
       }
@@ -1830,13 +1830,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kurulum, indirme veya oyun çalıştırma yapılmaz."
+            "value": "Eksik hazırlık adımları arka planda başlatılır; oyun çalıştırma yalnızca hazır koşullarda yapılır."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kurulum, indirme veya oyun çalıştırma yapılmaz."
+            "value": "Eksik hazırlık adımları arka planda başlatılır; oyun çalıştırma yalnızca hazır koşullarda yapılır."
           }
         }
       }

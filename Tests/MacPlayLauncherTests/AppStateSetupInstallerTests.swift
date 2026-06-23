@@ -66,6 +66,68 @@ final class AppStateSetupInstallerTests: XCTestCase {
         )
     }
 
+    func testStartAutomaticSetupIfNeededRunsFirstAutoFixableStep() async throws {
+        let missingStep = SetupStep(
+            id: "displayplacer",
+            title: "Ekran çözünürlüğü yönetimi",
+            explanation: "test",
+            status: .needsAction(message: "missing"),
+            canAutoFix: true,
+            automationTarget: .displayplacer,
+            actionLabel: "Otomatik Kur",
+            externalURL: nil,
+            copyCommand: "brew install displayplacer"
+        )
+        let readyStep = SetupStep(
+            id: "displayplacer",
+            title: "Ekran çözünürlüğü yönetimi",
+            explanation: "test",
+            status: .ok(detail: "displayplacer kurulu"),
+            canAutoFix: false,
+            actionLabel: nil,
+            externalURL: nil,
+            copyCommand: nil
+        )
+        let setupService = SequencedCossacksSetupService(responses: [[missingStep], [missingStep], [readyStep]])
+        let installer = FakeSetupInstallerService(result: .completed("displayplacer kuruldu."))
+        let appState = try makeAppState(
+            setupService: setupService,
+            installerService: installer
+        )
+
+        await appState.startAutomaticSetupIfNeeded()
+        let deadline = ContinuousClock.now.advanced(by: .seconds(2))
+        while appState.isOrchestratorRunning, ContinuousClock.now < deadline {
+            try? await Task.sleep(for: .milliseconds(20))
+        }
+
+        XCTAssertEqual(installer.installedTargets, [.displayplacer])
+        XCTAssertFalse(appState.isOrchestratorRunning)
+    }
+
+    func testStartAutomaticSetupIfNeededSkipsManualOnlySteps() async throws {
+        let manualStep = SetupStep(
+            id: "minimapFix",
+            title: "Minimap verisi",
+            explanation: "test",
+            status: .needsAction(message: "oyunda otomatik oluşacak"),
+            canAutoFix: false,
+            actionLabel: nil,
+            externalURL: nil,
+            copyCommand: nil
+        )
+        let installer = FakeSetupInstallerService(result: .completed("olmamalı"))
+        let appState = try makeAppState(
+            setupService: FakeCossacksSetupService(steps: [manualStep]),
+            installerService: installer
+        )
+
+        await appState.startAutomaticSetupIfNeeded()
+
+        XCTAssertTrue(installer.installedTargets.isEmpty)
+        XCTAssertFalse(appState.isOrchestratorRunning)
+    }
+
     private func makeAppState(
         setupService: any CossacksSetupServicing,
         installerService: any SetupInstallerServicing
@@ -125,6 +187,26 @@ private struct FakeCossacksSetupService: CossacksSetupServicing {
 
     func detectSteps() async -> [SetupStep] {
         steps
+    }
+
+    func applyShaderPatch() throws {}
+}
+
+private final class SequencedCossacksSetupService: CossacksSetupServicing, @unchecked Sendable {
+    private let lock = NSLock()
+    private let responses: [[SetupStep]]
+    private var index = 0
+
+    init(responses: [[SetupStep]]) {
+        self.responses = responses
+    }
+
+    func detectSteps() async -> [SetupStep] {
+        lock.withLock {
+            let response = responses[min(index, responses.count - 1)]
+            index += 1
+            return response
+        }
     }
 
     func applyShaderPatch() throws {}

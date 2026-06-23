@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class StaticDependencyDiagnosticServiceTests: XCTestCase {
     func testServiceReturnsDeterministicRuntimeDependencies() async {
@@ -33,6 +33,16 @@ final class StaticDependencyDiagnosticServiceTests: XCTestCase {
         XCTAssertEqual(gameProfile?.userFacingDescription, String(localized: "diagnostics.gameProfile.ready"))
     }
 
+    func testBundledCrossOverProfileDoesNotRequireSeparateWineDXVKOrMoltenVKSetup() async {
+        let service = StaticDependencyDiagnosticService()
+        let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
+
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .wine })?.status, .notRequired)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .dxvk })?.status, .notRequired)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .moltenVK })?.status, .notRequired)
+        XCTAssertNil(summary.dependencies.first(where: { $0.kind == .wine })?.suggestedAction)
+    }
+
     func testIncompleteProfileIsNotReady() async {
         let service = StaticDependencyDiagnosticService()
         var profile = configuredProfile()
@@ -55,7 +65,7 @@ final class StaticDependencyDiagnosticServiceTests: XCTestCase {
 
     func testMissingDependencyHasTurkishSuggestedAction() async {
         let service = StaticDependencyDiagnosticService()
-        let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
+        let summary = await service.loadSummary(profiles: [configuredProfile()])
         guard let wine = summary.dependencies.first(where: { $0.kind == .wine }) else {
             return XCTFail("Wine dependency should exist.")
         }

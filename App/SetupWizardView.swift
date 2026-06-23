@@ -54,6 +54,7 @@ struct SetupWizardView: View {
                 await appState.refreshSetupStatus()
                 selectedStepID = appState.setupSteps.first(where: { !$0.status.isOK })?.id
             }
+            await appState.startAutomaticSetupIfNeeded()
         }
     }
 

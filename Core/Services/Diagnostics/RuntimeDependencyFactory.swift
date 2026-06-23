@@ -41,6 +41,21 @@ enum RuntimeDependencyFactory {
         )
     }
 
+    static func crossOverManagedWineDependency() -> RuntimeDependency {
+        RuntimeDependency(
+            displayName: "Wine",
+            kind: .wine,
+            status: .notRequired,
+            version: nil,
+            installPath: nil,
+            userFacingDescription: "Wine katmanı CrossOver tarafından yönetilir; "
+                + "kullanıcıdan ayrı Wine kurulumu istenmez.",
+            missingReason: nil,
+            suggestedAction: nil,
+            setupGuide: nil
+        )
+    }
+
     static func passiveDXVKDependency() -> RuntimeDependency {
         RuntimeDependency(
             displayName: "DXVK",
@@ -61,6 +76,21 @@ enum RuntimeDependencyFactory {
         )
     }
 
+    static func crossOverManagedDXVKDependency() -> RuntimeDependency {
+        RuntimeDependency(
+            displayName: "DXVK",
+            kind: .dxvk,
+            status: .notRequired,
+            version: nil,
+            installPath: nil,
+            userFacingDescription: "DXVK ayarı CrossOver bottle içinde yönetilir; "
+                + "uygulama kurulum akışını arka planda hazırlar.",
+            missingReason: nil,
+            suggestedAction: nil,
+            setupGuide: nil
+        )
+    }
+
     static func passiveMoltenVKDependency() -> RuntimeDependency {
         RuntimeDependency(
             displayName: "MoltenVK",
@@ -78,6 +108,21 @@ enum RuntimeDependencyFactory {
                     String(localized: "diagnostics.moltenVK.guide.step2")
                 ]
             )
+        )
+    }
+
+    static func crossOverManagedMoltenVKDependency() -> RuntimeDependency {
+        RuntimeDependency(
+            displayName: "MoltenVK",
+            kind: .moltenVK,
+            status: .notRequired,
+            version: nil,
+            installPath: nil,
+            userFacingDescription: "MoltenVK, CrossOver grafik katmanı tarafından ele alınır; "
+                + "kullanıcıdan ayrı kurulum beklenmez.",
+            missingReason: nil,
+            suggestedAction: nil,
+            setupGuide: nil
         )
     }
 
@@ -112,5 +157,14 @@ enum RuntimeDependencyFactory {
 
     private static func hasValue(_ value: String?) -> Bool {
         value?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+    }
+
+    static func usesOnlyCrossOverRuntime(_ profiles: [GameProfile]) -> Bool {
+        let configuredProfiles = profiles.filter(isConfiguredProfile)
+        guard !configuredProfiles.isEmpty else {
+            return false
+        }
+
+        return configuredProfiles.allSatisfy { $0.runtime == .crossOver }
     }
 }

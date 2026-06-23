@@ -9,6 +9,7 @@ struct MacPlayApp: App {
             GameLibraryView(appState: appState)
                 .task {
                     await appState.loadInitialProfiles()
+                    await appState.startAutomaticSetupIfNeeded()
                 }
         }
         .commands {
@@ -37,4 +38,3 @@ struct MacPlayApp: App {
         }
     }
 }
-

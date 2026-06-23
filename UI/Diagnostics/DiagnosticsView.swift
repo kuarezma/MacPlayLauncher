@@ -1,6 +1,7 @@
-import SwiftUI
 import Observation
+import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct DiagnosticsView: View {
     @Bindable var appState: AppState
     @State private var viewModel = DiagnosticsViewModel()
@@ -24,6 +25,7 @@ struct DiagnosticsView: View {
         .task {
             viewModel.setAllowsManualRealCheck(appState.canRunManualRealDiagnosticCheck)
             viewModel.setExperimentalLaunchEnabled(appState.isExperimentalLaunchEnabled)
+            await appState.startAutomaticSetupIfNeeded()
             refreshPrefixState()
             if let cached = appState.restoreCachedDiagnosticsIfAvailable() {
                 viewModel.update(

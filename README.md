@@ -10,8 +10,8 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 
 1. [GitHub Releases](../../releases) sayfasından `MacPlayLauncher.dmg` dosyasını indir
 2. DMG'yi aç → `MacPlayLauncher.app` simgesini `Applications` klasörüne sürükle
-3. Uygulamayı aç → **Kurulum Rehberi** sekmesi otomatik açılır
-4. **Kurulumu Başlat** butonuna bas — uygulama Rosetta, CrossOver, bottle ve displayplacer'ı sırayla kurar
+3. Uygulamayı aç — uygulama uygun kurulum adımlarını arka planda kendisi başlatır
+4. **Kurulum Rehberi** ekranından ilerlemeyi izle; gerekirse yalnızca duraklat/devam ettir
 5. CrossOver trial/lisans aktivasyonu, Steam girişi ve Cossacks 3 indirmesi kullanıcıya aittir
 
 ### Gereksinimler
@@ -31,7 +31,8 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 - Real Steam multiplayer (friends list, matchmaking, achievements)
 - Automatic display resolution switching (1280×800 for game, restored on exit)
 - CrossOver bottle integration (no manual Wine configuration)
-- Guided setup automation for Rosetta, CrossOver trial, the `Cossacks3` bottle, Wine Steam startup, and displayplacer
+- Background setup automation for Rosetta, CrossOver trial, the `Cossacks3` bottle, Wine Steam startup, and displayplacer
+- CrossOver profiles no longer ask users to install Wine, DXVK, or MoltenVK separately
 - OpenGL proxy launch override for the Cossacks 3 macOS shader/minimap fixes
 - Cossacks-style launcher preview with resource bar, minimap, buildings, troop formations, and mine-state visual cues
 - In-launcher optimization checklist for minimap, Wine Steam, CrossOver bottle, and game resolution readiness
@@ -55,9 +56,9 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 
 ### 1. Run the in-app Setup Guide
 
-Open **Kurulum Rehberi** in MacPlay Launcher and run the missing steps from top to bottom.
+Open MacPlay Launcher. The app detects missing setup steps and starts eligible automation in the background. Open **Kurulum Rehberi** to follow progress, pause, or resume.
 
-The guide can automate:
+The app can automate:
 
 - Rosetta installation via Apple's `softwareupdate`
 - CrossOver trial installation through Homebrew cask when Homebrew is available
@@ -66,7 +67,7 @@ The guide can automate:
 - installing `displayplacer` through Homebrew
 - downloading the official Steam Windows installer and starting it inside the `Cossacks3` bottle
 
-CrossOver trial/license approval, Steam login, Steam Guard/2FA, and buying or owning Cossacks 3 remain user-controlled steps. The app never stores Steam or CrossOver credentials.
+CrossOver trial/license approval, Steam login, Steam Guard/2FA, and buying or owning Cossacks 3 remain user-controlled steps. The app never stores Steam or CrossOver credentials. CrossOver-managed profiles do not require separate user installation of Wine, DXVK, or MoltenVK.
 
 ### 2. Sign in to Steam and install Cossacks 3
 
@@ -213,6 +214,7 @@ Kaydedildikten sonra `./scripts/create-release.sh v0.23.0` otomatik olarak notar
 
 ## Changelog
 
+- 2026-06-23: Started eligible setup automation in the background and stopped showing separate Wine/DXVK/MoltenVK blockers for CrossOver profiles.
 - 2026-06-23: Added guided setup automation for Rosetta, CrossOver trial, `Cossacks3` bottle creation, Wine Steam preparation, and displayplacer.
 - 2026-06-23: Made `scripts/build.sh` finish successfully in non-interactive runs after creating `/tmp/MacPlayLauncher.app`.
 - 2026-06-23: Limited the Cossacks shader patcher to safe fragment/fx fixes and stopped rewriting unit bone vertex shaders so cavalry rendering keeps the working path.

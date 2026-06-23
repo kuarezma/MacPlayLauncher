@@ -241,3 +241,13 @@ v0.22 introduces guided setup automation from the Kurulum Rehberi screen.
 - `CossacksSetupService` still owns setup detection and shader patching, but setup steps now carry an optional `SetupAutomationTarget` so UI actions route through the installer service.
 - `AppState` tracks temporary setup action states such as installing, waiting for user approval, completed, and failed without changing persisted profile data.
 - Command execution remains allowlist-based. The app does not run hidden shell pipelines, trust `PATH`, bypass CrossOver trial/license UI, store Steam credentials, automate Steam Guard, or purchase games.
+
+## v0.23 Background Setup Automation
+
+v0.23 starts eligible setup automation without requiring the user to press the Kurulum Rehberi button first.
+
+- `AppState.startAutomaticSetupIfNeeded()` refreshes setup status and starts the existing `SetupOrchestrator` when an auto-fixable step is pending.
+- App launch, Diagnostics, and Kurulum Rehberi all call the same entrypoint, so the process is automatic but still observable and pausable from the UI.
+- CrossOver-configured profiles treat Wine, DXVK, and MoltenVK as CrossOver-managed runtime responsibilities instead of separate user-installed blockers.
+- Non-CrossOver Wine profiles keep the existing Homebrew Wine diagnostic behavior.
+- The security boundary is unchanged: no hidden shell pipeline, no credential handling, no CrossOver license bypass, and no Steam login automation.

@@ -20,16 +20,29 @@ struct RealDependencyDiagnosticService: DependencyDiagnosticServicing {
 
     func loadSummary(profiles: [GameProfile]) async -> RuntimeDiagnosticSummary {
         let rosetta = await rosettaProvider.diagnose()
-        let wine = await wineProvider.diagnose()
-        let dxvk = await dxvkProvider.diagnose()
-        let moltenVK = await moltenVKProvider.diagnose()
+        let runtimeDependencies: [RuntimeDependency]
 
-        return RuntimeDiagnosticSummary(
-            dependencies: [
+        if RuntimeDependencyFactory.usesOnlyCrossOverRuntime(profiles) {
+            runtimeDependencies = [
+                rosetta,
+                RuntimeDependencyFactory.crossOverManagedWineDependency(),
+                RuntimeDependencyFactory.crossOverManagedDXVKDependency(),
+                RuntimeDependencyFactory.crossOverManagedMoltenVKDependency()
+            ]
+        } else {
+            let wine = await wineProvider.diagnose()
+            let dxvk = await dxvkProvider.diagnose()
+            let moltenVK = await moltenVKProvider.diagnose()
+            runtimeDependencies = [
                 rosetta,
                 wine,
                 dxvk,
-                moltenVK,
+                moltenVK
+            ]
+        }
+
+        return RuntimeDiagnosticSummary(
+            dependencies: runtimeDependencies + [
                 RuntimeDependencyFactory.gameProfileDependency(for: profiles)
             ],
             notes: [

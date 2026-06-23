@@ -1,12 +1,14 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class RealDependencyDiagnosticServiceTests: XCTestCase {
     func testProviderResultsAreReflectedInSummary() async {
         let service = RealDependencyDiagnosticService(
             rosettaProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .rosetta, status: .ready)),
-            wineProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .wine, status: .ready, version: "9.0")),
+            wineProvider: FakeRuntimeDiagnosticProvider(
+                dependency: dependency(kind: .wine, status: .ready, version: "9.0")
+            ),
             dxvkProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .dxvk, status: .missing)),
             moltenVKProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .moltenVK, status: .missing))
         )
@@ -51,6 +53,21 @@ final class RealDependencyDiagnosticServiceTests: XCTestCase {
         XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .gameProfile })?.status, .ready)
     }
 
+    func testBundledCrossOverProfileUsesManagedRuntimeDependencies() async {
+        let service = RealDependencyDiagnosticService(
+            rosettaProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .rosetta, status: .ready)),
+            wineProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .wine, status: .missing)),
+            dxvkProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .dxvk, status: .missing)),
+            moltenVKProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .moltenVK, status: .missing))
+        )
+
+        let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
+
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .wine })?.status, .notRequired)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .dxvk })?.status, .notRequired)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .moltenVK })?.status, .notRequired)
+    }
+
     func testIncompleteProfileDoesNotMakeGameProfileReady() async {
         let service = makeService()
         var profile = configuredProfile()
@@ -74,7 +91,9 @@ final class RealDependencyDiagnosticServiceTests: XCTestCase {
             rosettaProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .rosetta, status: .ready)),
             wineProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .wine, status: .unknown)),
             dxvkProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .dxvk, status: .notRequired)),
-            moltenVKProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .moltenVK, status: .notRequired))
+            moltenVKProvider: FakeRuntimeDiagnosticProvider(
+                dependency: dependency(kind: .moltenVK, status: .notRequired)
+            )
         )
 
         let summary = await service.loadSummary(profiles: [configuredProfile()])
