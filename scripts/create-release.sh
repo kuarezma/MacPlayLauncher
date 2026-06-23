@@ -197,7 +197,7 @@ fi
 
 echo "== 6. SHA256 checksum =="
 if [ "$DRY_RUN" = "false" ]; then
-    shasum -a 256 "$DMG_OUT" | sed "s|.*/||" > "$SHA256_OUT"
+    shasum -a 256 "$DMG_OUT" | awk '{print $1 "  " $2}' > "$SHA256_OUT"
     echo "Checksum: $(cat "$SHA256_OUT")"
 else
     echo "[DRY-RUN] shasum -a 256 $DMG_OUT → $SHA256_OUT"

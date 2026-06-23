@@ -214,6 +214,7 @@ Kaydedildikten sonra `./scripts/create-release.sh v0.24.0` otomatik olarak notar
 
 ## Changelog
 
+- 2026-06-23: Fixed release checksum generation so SHA256SUMS keeps the hash and artifact path.
 - 2026-06-23: Prepared v0.24.0 release notes for background setup automation and CrossOver-managed runtime readiness.
 - 2026-06-23: Started eligible setup automation in the background and stopped showing separate Wine/DXVK/MoltenVK blockers for CrossOver profiles.
 - 2026-06-23: Added guided setup automation for Rosetta, CrossOver trial, `Cossacks3` bottle creation, Wine Steam preparation, and displayplacer.
