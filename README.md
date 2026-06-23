@@ -214,6 +214,7 @@ Kaydedildikten sonra `./scripts/create-release.sh v0.24.0` otomatik olarak notar
 
 ## Changelog
 
+- 2026-06-23: Updated CI to run the current sprint verification, use stable SwiftPM tests, and allow only controlled setup installer command usage.
 - 2026-06-23: Updated install notes to cover both DMG and ZIP release artifacts.
 - 2026-06-23: Fixed release checksum generation so SHA256SUMS keeps the hash and artifact path.
 - 2026-06-23: Prepared v0.24.0 release notes for background setup automation and CrossOver-managed runtime readiness.

@@ -65,6 +65,7 @@ else
 fi
 
 section "4. Scope boundary"
+AUTHORIZED_SETUP_COMMAND_FILES='^(Core/Services/SetupInstallerService\.swift|Core/Services/CossacksSetupService\.swift|Core/Services/Commands/ProcessCommandRunner\.swift):'
 FORBIDDEN=(
   'softwareupdate'
   'which wine'
@@ -73,12 +74,12 @@ FORBIDDEN=(
   'install-rosetta'
 )
 for pattern in "${FORBIDDEN[@]}"; do
-  hits="$(rg_swift -n "$pattern" || true)"
+  hits="$(rg_swift -n "$pattern" | rg -v "$AUTHORIZED_SETUP_COMMAND_FILES" || true)"
   if [[ -n "$hits" ]]; then
-    fail "forbidden pattern '$pattern' in production Swift:"
+    fail "unauthorized pattern '$pattern' in production Swift:"
     echo "$hits" | sed 's/^/    /'
   else
-    pass "no '$pattern' in Core/App/UI Swift"
+    pass "no unauthorized '$pattern' in Core/App/UI Swift"
   fi
 done
 

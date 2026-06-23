@@ -28,8 +28,8 @@ jobs:
       - name: Lint Swift code
         run: swiftlint lint
 
-      - name: Run sprint verification
-        run: ./scripts/verify-sprint-17.sh
+      - name: Run current sprint verification
+        run: ./scripts/verify-sprint-18.sh
 
       - name: Run XCTest suite
-        run: xcodebuild -scheme MacPlayLauncher -destination 'platform=macOS' test
+        run: swift test --build-path /tmp/mpl_ci_build
