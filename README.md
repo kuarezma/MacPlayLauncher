@@ -1,8 +1,8 @@
 # MacPlay Launcher
 
-A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon Macs using CrossOver + Wine, without needing a Windows license. Supports **real Steam multiplayer** via an embedded Wine Steam session.
+A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon Macs using a local WineCX/Wine runtime, without needing CrossOver or a Windows license. Supports the tested local Cossacks 3 port path.
 
-> Built for M-series Macs. Tested on M3 MacBook with CrossOver 26.
+> Built for M-series Macs. Current Cossacks 3 flow targets the local `~/Cossacks3_Mac_Port` WineCX port.
 
 ---
 
@@ -12,7 +12,7 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 2. DMG'yi aç veya ZIP'i çıkar → `MacPlayLauncher.app` simgesini `Applications` klasörüne sürükle
 3. Uygulamayı aç — uygulama uygun kurulum adımlarını arka planda kendisi başlatır
 4. **Kurulum Rehberi** ekranından ilerlemeyi izle; gerekirse yalnızca duraklat/devam ettir
-5. CrossOver trial/lisans aktivasyonu, Steam girişi ve Cossacks 3 indirmesi kullanıcıya aittir
+5. Yerel `~/Cossacks3_Mac_Port` klasörünü hazır tut; CrossOver trial/lisans adımı gerekmez
 
 ### Gereksinimler
 
@@ -20,8 +20,8 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 |---|---|
 | macOS | 14.0 (Sonoma) veya üzeri |
 | Mac | Apple Silicon (M1/M2/M3/M4) |
-| CrossOver | Trial ya da lisanslı — uygulama trial'ı otomatik kurar |
-| Steam hesabı | Cossacks 3 sahibi olunması gerekiyor |
+| Yerel port | `~/Cossacks3_Mac_Port` içinde `winecx_engine` ve `oyun_dosyalari` |
+| Oyun dosyası | `oyun_dosyalari/steamclient_loader_x86.exe` ve `cossacks.exe` |
 
 ---
 
@@ -30,13 +30,13 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 - One-click launch: starts Wine Steam, waits for readiness, then launches the game
 - Real Steam multiplayer (friends list, matchmaking, achievements)
 - Automatic display resolution switching (1280×800 for game, restored on exit)
-- CrossOver bottle integration (no manual Wine configuration)
-- Background setup automation for Rosetta, CrossOver trial, the `Cossacks3` bottle, Wine Steam startup, and displayplacer
-- CrossOver profiles no longer ask users to install Wine, DXVK, or MoltenVK separately
-- OpenGL proxy launch override for the Cossacks 3 macOS shader/minimap fixes
+- Local Cossacks 3 WineCX port integration without CrossOver trial/runtime dependency
+- Background setup checks for Rosetta, the local Cossacks 3 port, shader repair, minimap data, and displayplacer
+- Local WineCX runtime is preferred before Homebrew Wine
+- WineD3D launch override for the Cossacks 3 macOS shader/minimap fixes
 - Free local port shader repair that restores visible unit bone shaders before applying safe fragment/fx fixes
 - Cossacks-style launcher preview with resource bar, minimap, buildings, troop formations, and mine-state visual cues
-- In-launcher optimization checklist for minimap, Wine Steam, CrossOver bottle, and game resolution readiness
+- In-launcher optimization checklist for minimap, local Wine runtime, and game resolution readiness
 - SwiftUI native app, macOS 14+
 
 ---
@@ -47,8 +47,7 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 |---|---|
 | macOS | 14.0 (Sonoma) or newer |
 | Mac | Apple Silicon (M1/M2/M3/M4) |
-| CrossOver | [CrossOver 26+](https://www.codeweavers.com/crossover) — paid app with trial option |
-| Cossacks 3 | Must own on Steam |
+| Local Cossacks 3 port | `~/Cossacks3_Mac_Port` with the bundled WineCX engine and game files |
 | displayplacer | Installed by the in-app setup guide when Homebrew is available |
 
 ---
@@ -62,55 +61,47 @@ Open MacPlay Launcher. The app detects missing setup steps and starts eligible a
 The app can automate:
 
 - Rosetta installation via Apple's `softwareupdate`
-- CrossOver trial installation through Homebrew cask when Homebrew is available
 - opening the official Homebrew installer in Terminal when Homebrew is missing
-- creating the `Cossacks3` CrossOver bottle with the `win10_64` template
 - installing `displayplacer` through Homebrew
-- downloading the official Steam Windows installer and starting it inside the `Cossacks3` bottle
+- detecting the local Cossacks 3 port and applying safe shader/minimap checks
 
-CrossOver trial/license approval, Steam login, Steam Guard/2FA, and buying or owning Cossacks 3 remain user-controlled steps. The app never stores Steam or CrossOver credentials. CrossOver-managed profiles do not require separate user installation of Wine, DXVK, or MoltenVK.
+The app does not store game-service credentials and does not bypass license checks. The current Cossacks 3 flow does not require CrossOver trial/license approval.
 
-### 2. Sign in to Steam and install Cossacks 3
+### 2. Prepare the local Cossacks 3 port
 
-1. Let the setup guide open or install Steam inside the `Cossacks3` bottle
-2. Log in to Steam yourself when the login window appears
-3. In Wine Steam → Library, install **Cossacks 3** (let it download completely)
+The tested path is:
+
+```bash
+~/Cossacks3_Mac_Port/oyun_dosyalari
+```
+
+It should contain:
+
+```bash
+cossacks.exe
+steamclient_loader_x86.exe
+data/shaders/obj
+```
 
 ### 3. Configure ColdClientLoader if your port files require it
 
-In the Cossacks 3 game folder inside the bottle:
-```
-~/Library/Application Support/CrossOver/Bottles/Cossacks3/drive_c/Program Files (x86)/Steam/steamapps/common/Cossacks 3/
-```
+In `~/Cossacks3_Mac_Port/oyun_dosyalari`, keep `ColdClientLoader.ini` pointed at the local game executable:
 
-Edit `ColdClientLoader.ini` — set the `SteamClient` paths to the real Steam DLLs:
 ```ini
 [SteamClient]
 Exe=cossacks.exe
 AppId=333420
-SteamClientDll=C:\Program Files (x86)\Steam\steamclient.dll
-SteamClient64Dll=C:\Program Files (x86)\Steam\steamclient64.dll
 ```
 
-Make sure `steam_settings/offline.txt` does **not** exist (rename it to `offline.txt.disabled` if present).
+### 4. Apply the current macOS port files
 
-### 4. Create the C:\Cossacks3 symlink inside the bottle
-
-```bash
-BOTTLE="$HOME/Library/Application Support/CrossOver/Bottles/Cossacks3/drive_c"
-GAMEDIR="$BOTTLE/Program Files (x86)/Steam/steamapps/common/Cossacks 3"
-ln -s "$GAMEDIR" "$BOTTLE/Cossacks3"
-```
-
-### 5. Apply the current macOS port files
-
-The working Cossacks 3 port expects the patched shader set and `opengl32.dll` proxy in the game folder. If you keep the separate `~/Cossacks3_Mac_Port` helper repo, run its minimap fix script after updating game files:
+The working Cossacks 3 port expects the patched shader set in the game folder. If you keep the separate `~/Cossacks3_Mac_Port` helper repo, run its minimap fix script after updating game files:
 
 ```bash
 ~/Cossacks3_Mac_Port/apply_minimap_fix.sh
 ```
 
-### 6. Build and run MacPlayLauncher
+### 5. Build and run MacPlayLauncher
 
 ```bash
 git clone https://github.com/kuarezma/MacPlayLauncher.git
@@ -131,11 +122,10 @@ The script creates `/tmp/MacPlayLauncher.app` and asks whether to open it.
 
 ```
 OYNA button pressed
-  → WineSteamService launches steam.exe inside Cossacks3 bottle
-  → Waits for steamwebhelper.exe to appear (Steam is ready)
+  → Local WineCX engine is selected from ~/Cossacks3_Mac_Port/winecx_engine/wswine.bundle/bin/wine64
   → DisplayResolutionService sets display to 1280×800
-  → GameLaunchPlanner builds: cxstart --bottle Cossacks3 --env WINEDLLOVERRIDES=opengl32=n,b;d3d9,d3d11,dxgi=b C:\Cossacks3\steamclient_loader_x86.exe
-  → ColdClientLoader connects to running Wine Steam → launches cossacks.exe
+  → GameLaunchPlanner starts steamclient_loader_x86.exe from ~/Cossacks3_Mac_Port/oyun_dosyalari
+  → ColdClientLoader launches cossacks.exe through the local Wine prefix
   → When cossacks.exe exits → DisplayResolutionService restores original resolution
 ```
 
@@ -184,17 +174,13 @@ MacPlayLauncher/
 |---|---|
 | "Uygulama açılamadı" / Gatekeeper uyarısı | System Settings → Privacy & Security → "Yine de Aç" |
 | Homebrew Terminal komutu çalışmıyor | Terminal'de `xcode-select --install` çalıştır, sonra tekrar dene |
-| CrossOver trial penceresi gözükmüyor | Dock'ta CrossOver ikonuna tıkla |
-| Steam Guard kodu isteniyor | Telefona gelen kodu gir; uygulama Steam girişini 10s aralıkla otomatik algılar |
-| Cossacks 3 Steam kütüphanesinde yok | Oyunu Steam üzerinden satın al (App ID: 333420) |
+| Yerel WineCX bulunamadı | `~/Cossacks3_Mac_Port/winecx_engine/wswine.bundle/bin/wine64` yolunu kontrol et |
 | Game exits with code 53 | `steam_settings/offline.txt` must be renamed to `.disabled` |
-| "Couldn't find SteamClient64Dll" | Check `ColdClientLoader.ini` paths |
-| Wine Steam doesn't open | Check CrossOver bottle name is exactly `Cossacks3` |
-| Game opens but no multiplayer | Steam must be running before ColdClientLoader starts |
-| Game opens in the wrong window/workdir state | The Cossacks profile should use `~/Cossacks3_Mac_Port/oyun_dosyalari` as its CrossOver working directory |
+| "Couldn't find SteamClient64Dll" | Yerel port için `ColdClientLoader.ini` yollarını kontrol et |
+| Game opens in the wrong window/workdir state | The Cossacks profile should use `~/Cossacks3_Mac_Port/oyun_dosyalari` as its working directory |
 | Build hangs for hours | Delete `build_output/` from project folder, run `swift build --build-path /tmp/mpl_build` |
 | Black screen / crash | Make sure `steam_settings/` folder has no `offline.txt` |
-| Minimap is transparent | Re-run `~/Cossacks3_Mac_Port/apply_minimap_fix.sh` and confirm the bundled profile uses `opengl32=n,b;d3d9,d3d11,dxgi=b` |
+| Minimap is transparent | Re-run `~/Cossacks3_Mac_Port/apply_minimap_fix.sh` and confirm the bundled profile uses `d3d9,d3d11,dxgi=b` |
 
 ### Notarization kurulumu (geliştirici — bir kez yapılır)
 
@@ -215,6 +201,7 @@ Kaydedildikten sonra `./scripts/create-release.sh v0.24.0` otomatik olarak notar
 
 ## Changelog
 
+- 2026-06-24: Removed the default Cossacks 3 CrossOver dependency by switching setup, profile, Wine resolution, and local `oyna.sh` launch flow to the local WineCX port.
 - 2026-06-24: Restored Cossacks visible unit vertex shaders from local backups and kept the launcher shader patch limited to safe fragment/fx fixes.
 - 2026-06-23: Updated CI to run the current sprint verification, use stable SwiftPM tests, and allow only controlled setup installer command usage.
 - 2026-06-23: Updated install notes to cover both DMG and ZIP release artifacts.

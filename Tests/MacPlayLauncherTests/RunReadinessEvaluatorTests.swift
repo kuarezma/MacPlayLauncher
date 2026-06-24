@@ -15,12 +15,11 @@ final class RunReadinessEvaluatorTests: XCTestCase {
         XCTAssertFalse(result.canLaunch)
     }
 
-    func testBundledSampleProfileIsConfiguredForCrossOver() {
-        // sampleCossacks3 has a crossOverBottleName — that's sufficient for CrossOver launch
+    func testBundledSampleProfileRequiresUserSelectedLocalPaths() {
         let result = evaluate(profiles: [.sampleCossacks3], dependencies: readyDependencies())
 
-        XCTAssertEqual(result.status, .ready)
-        XCTAssertTrue(result.blockers.isEmpty)
+        XCTAssertEqual(result.status, .blocked)
+        XCTAssertEqual(result.blockers.first?.id, "game-profile.missing")
         XCTAssertFalse(result.canLaunch)
     }
 
@@ -117,8 +116,8 @@ final class RunReadinessEvaluatorTests: XCTestCase {
     }
 
     func testMultipleBlockersKeepDeterministicOrder() {
-        // sampleCossacks3 is now configured (CrossOver with bottle name)
-        // so only runtime dependency blockers appear, in deterministic order
+        // The bundled sample is no longer implicitly configured via a CrossOver bottle,
+        // so the missing profile blocker appears before runtime blockers.
         let result = evaluate(profiles: [.sampleCossacks3], dependencies: [
             dependency(kind: .rosetta, status: .unknown),
             dependency(kind: .wine, status: .missing),
@@ -127,6 +126,7 @@ final class RunReadinessEvaluatorTests: XCTestCase {
 
         XCTAssertEqual(result.status, .unsupported)
         XCTAssertEqual(result.blockers.map(\.id), [
+            "game-profile.missing",
             "moltenVK.unsupported",
             "wine.missing",
             "rosetta.unknown"

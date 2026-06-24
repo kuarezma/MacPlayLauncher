@@ -34,8 +34,8 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
         prefixPath: "Prefixes/cossacks3",
         executableBookmarkData: nil,
         workingDirectoryBookmarkData: nil,
-        runtime: .crossOver,
-        crossOverBottleName: "Cossacks3",
+        runtime: .systemWineFallback,
+        crossOverBottleName: nil,
         performanceMode: .balanced,
         wineArch: .win64,
         windowsVersion: .win10,
@@ -74,15 +74,15 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
             )
         ],
         environment: [
-            "WINEARCH": "win64",
-            "DXVK_STATE_CACHE": "1"
+            "WINEDLLOVERRIDES": "d3d9,d3d11,dxgi=b",
+            "WINEESYNC": "0"
         ],
         launchArguments: [],
         knownIssues: [
-            "First launch may stutter while shader and pipeline cache are generated.",
-            "Steam login is not part of V1."
+            "İlk açılışta görünmez onay kutusu çıkarsa oyun penceresine tıklayıp Return tuşuna basın.",
+            "Bu profil CrossOver gerektirmez; yerel WineCX motorunu kullanır."
         ],
-        requiresWineSteam: nil,
+        requiresWineSteam: false,
         lastPlayedAt: nil,
         totalPlayTimeMinutes: 0,
         launchCount: 0

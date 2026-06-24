@@ -19,7 +19,10 @@ struct WineExecutableResolver: Sendable {
     }
 
     private static var defaultAllowedWineURLs: [URL] {
-        [
+        let localCossacksWine = FileManager.default.homeDirectoryForCurrentUser
+            .appending(path: "Cossacks3_Mac_Port/winecx_engine/wswine.bundle/bin/wine64")
+        return [
+            localCossacksWine,
             URL(fileURLWithPath: "/opt/homebrew/bin/wine"),
             URL(fileURLWithPath: "/usr/local/bin/wine")
         ]

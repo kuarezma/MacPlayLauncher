@@ -44,16 +44,15 @@ final class RealDependencyDiagnosticServiceTests: XCTestCase {
         XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .gameProfile })?.status, .ready)
     }
 
-    func testBundledSampleProfileMakesGameProfileReady() async {
-        // sampleCossacks3 has crossOverBottleName — sufficient for CrossOver
+    func testBundledSampleProfileRequiresUserSelectedLocalPaths() async {
         let service = makeService()
 
         let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
 
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .gameProfile })?.status, .ready)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .gameProfile })?.status, .missing)
     }
 
-    func testBundledCrossOverProfileUsesManagedRuntimeDependencies() async {
+    func testBundledLocalProfileUsesRegularRuntimeDependencies() async {
         let service = RealDependencyDiagnosticService(
             rosettaProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .rosetta, status: .ready)),
             wineProvider: FakeRuntimeDiagnosticProvider(dependency: dependency(kind: .wine, status: .missing)),
@@ -63,9 +62,9 @@ final class RealDependencyDiagnosticServiceTests: XCTestCase {
 
         let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
 
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .wine })?.status, .notRequired)
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .dxvk })?.status, .notRequired)
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .moltenVK })?.status, .notRequired)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .wine })?.status, .missing)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .dxvk })?.status, .missing)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .moltenVK })?.status, .missing)
     }
 
     func testIncompleteProfileDoesNotMakeGameProfileReady() async {

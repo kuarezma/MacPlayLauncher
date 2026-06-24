@@ -23,24 +23,23 @@ final class StaticDependencyDiagnosticServiceTests: XCTestCase {
         XCTAssertEqual(gameProfile?.missingReason, String(localized: "diagnostics.gameProfile.missingReason"))
     }
 
-    func testBundledSampleProfileIsConfiguredForCrossOver() async {
-        // sampleCossacks3 has crossOverBottleName — sufficient for CrossOver
+    func testBundledSampleProfileRequiresUserSelectedLocalPaths() async {
         let service = StaticDependencyDiagnosticService()
         let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
         let gameProfile = summary.dependencies.first { $0.kind == .gameProfile }
 
-        XCTAssertEqual(gameProfile?.status, .ready)
-        XCTAssertEqual(gameProfile?.userFacingDescription, String(localized: "diagnostics.gameProfile.ready"))
+        XCTAssertEqual(gameProfile?.status, .missing)
+        XCTAssertEqual(gameProfile?.userFacingDescription, String(localized: "diagnostics.gameProfile.missing"))
     }
 
-    func testBundledCrossOverProfileDoesNotRequireSeparateWineDXVKOrMoltenVKSetup() async {
+    func testBundledLocalProfileUsesRegularWineDiagnostics() async {
         let service = StaticDependencyDiagnosticService()
         let summary = await service.loadSummary(profiles: [GameProfile.sampleCossacks3])
 
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .wine })?.status, .notRequired)
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .dxvk })?.status, .notRequired)
-        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .moltenVK })?.status, .notRequired)
-        XCTAssertNil(summary.dependencies.first(where: { $0.kind == .wine })?.suggestedAction)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .wine })?.status, .missing)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .dxvk })?.status, .missing)
+        XCTAssertEqual(summary.dependencies.first(where: { $0.kind == .moltenVK })?.status, .missing)
+        XCTAssertNotNil(summary.dependencies.first(where: { $0.kind == .wine })?.suggestedAction)
     }
 
     func testIncompleteProfileIsNotReady() async {

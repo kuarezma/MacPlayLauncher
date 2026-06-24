@@ -4,25 +4,26 @@
   ],
   "displayName" : "Cossacks 3",
   "environment" : {
-    "WINEDLLOVERRIDES" : "opengl32=n,b;d3d9,d3d11,dxgi=b"
+    "WINEDLLOVERRIDES" : "d3d9,d3d11,dxgi=b",
+    "WINEESYNC" : "0"
   },
   "executableBookmarkData" : null,
   "executablePath" : null,
   "id" : "cossacks3",
   "knownIssues" : [
     "Oyun açılırken görünmez bir onay kutusu çıkabilir — pencereye tıklayıp Return tuşuna basın.",
-    "Ekran çözünürlüğü 1280×800 olarak ayarlanmalıdır (CrossOver bottle'da sanal masaüstü)."
+    "Ekran çözünürlüğü 1280×800 olarak ayarlanmalıdır.",
+    "Bu profil CrossOver gerektirmez; yerel WineCX motorunu kullanır."
   ],
-  "requiresWineSteam" : true,
+  "requiresWineSteam" : false,
   "lastPlayedAt" : null,
   "launchArguments" : [
-    "C:\\Cossacks3\\steamclient_loader_x86.exe"
+
   ],
   "launchCount" : 0,
   "performanceMode" : "balanced",
   "prefixPath" : "Prefixes/cossacks3",
-  "runtime" : "crossOver",
-  "crossOverBottleName" : "Cossacks3",
+  "runtime" : "systemWineFallback",
   "schemaVersion" : 1,
   "totalPlayTimeMinutes" : 0,
   "windowsVersion" : "win10",

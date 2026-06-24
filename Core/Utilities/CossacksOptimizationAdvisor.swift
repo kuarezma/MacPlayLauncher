@@ -21,37 +21,33 @@ enum CossacksOptimizationAdvisor {
         [
             dllConfigStatus(for: profile),
             steamStatus(for: profile),
-            crossOverStatus(for: profile),
+            runtimeStatus(for: profile),
             resolutionStatus(for: profile)
         ]
     }
 
-    // Checks whether the profile carries the WINEDLLOVERRIDES entry used by CrossOver.
-    // The opengl32 proxy is a leftover from earlier experiments and no longer drives
-    // the minimap fix (BMP-based); this entry is retained as a CrossOver
-    // integration marker rather than a functional minimap control.
+    // The local Cossacks port uses WineD3D; DXVK is intentionally not required.
     static func hasDLLOverrideConfigured(_ profile: GameProfile) -> Bool {
         guard let override = profile.environment["WINEDLLOVERRIDES"] else {
             return false
         }
-        return override.contains(minimapOpenGLOverride)
-            && override.contains(fallbackRendererOverride)
+        return override.contains(fallbackRendererOverride)
     }
 
     private static func dllConfigStatus(for profile: GameProfile) -> CossacksOptimizationStatusItem {
         if hasDLLOverrideConfigured(profile) {
             return CossacksOptimizationStatusItem(
                 id: "dll",
-                title: "CrossOver DLL yapılandırması",
-                message: "WINEDLLOVERRIDES aktif (CrossOver entegrasyonu).",
+                title: "WineD3D yapılandırması",
+                message: "WINEDLLOVERRIDES aktif; DXVK yerine WineD3D kullanılıyor.",
                 state: .ready
             )
         }
 
         return CossacksOptimizationStatusItem(
             id: "dll",
-            title: "CrossOver DLL yapılandırması",
-            message: "WINEDLLOVERRIDES eksik; CrossOver entegrasyonu eksik olabilir.",
+            title: "WineD3D yapılandırması",
+            message: "WINEDLLOVERRIDES eksik; yerel port grafik ayarı kontrol edilmeli.",
             state: .needsAttention
         )
     }
@@ -68,36 +64,27 @@ enum CossacksOptimizationAdvisor {
 
         return CossacksOptimizationStatusItem(
             id: "steam",
-            title: "Wine Steam",
-            message: "Bu profil Steam hazırlığını otomatik istemiyor.",
-            state: .needsAttention
+            title: "Yerel loader",
+            message: "steamclient_loader_x86.exe doğrudan yerel WineCX ile başlatılır.",
+            state: .ready
         )
     }
 
-    private static func crossOverStatus(for profile: GameProfile) -> CossacksOptimizationStatusItem {
-        guard profile.runtime == .crossOver else {
+    private static func runtimeStatus(for profile: GameProfile) -> CossacksOptimizationStatusItem {
+        guard profile.runtime != .crossOver else {
             return CossacksOptimizationStatusItem(
-                id: "crossover",
-                title: "CrossOver bottle",
-                message: "Profil CrossOver yerine farklı Wine çalışma zamanı kullanıyor.",
-                state: .unavailable
-            )
-        }
-
-        if let bottleName = profile.crossOverBottleName, !bottleName.isEmpty {
-            return CossacksOptimizationStatusItem(
-                id: "crossover",
-                title: "CrossOver bottle",
-                message: "\(bottleName) bottle hedefleniyor.",
-                state: .ready
+                id: "runtime",
+                title: "Çalışma zamanı",
+                message: "Profil hâlâ CrossOver kullanıyor; yerel port için güncellenmeli.",
+                state: .needsAttention
             )
         }
 
         return CossacksOptimizationStatusItem(
-            id: "crossover",
-            title: "CrossOver bottle",
-            message: "Bottle adı eksik; oyun başlatılamaz.",
-            state: .needsAttention
+            id: "runtime",
+            title: "Çalışma zamanı",
+            message: "Profil yerel Wine/WineCX çalışma zamanı kullanıyor.",
+            state: .ready
         )
     }
 

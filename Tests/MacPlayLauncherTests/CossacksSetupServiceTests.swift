@@ -12,65 +12,13 @@ final class CossacksSetupServiceTests: XCTestCase {
         let ids = steps.map(\.id)
         XCTAssertEqual(
             ids,
-            ["rosetta", "crossover", "bottle", "gameInstall", "shaderPatch", "minimapFix", "displayplacer"]
+            ["rosetta", "gameInstall", "shaderPatch", "minimapFix", "displayplacer"]
         )
     }
 
-    func testDetectStepsAlwaysReturnsSevenSteps() async {
+    func testDetectStepsReturnsFiveSteps() async {
         let steps = await service.detectSteps()
-        XCTAssertEqual(steps.count, 7)
-    }
-
-    // MARK: - crossover step
-
-    func testCrossOverStepStatusWhenAppExists() async throws {
-        let crossOverExists = FileManager.default.fileExists(atPath: "/Applications/CrossOver.app")
-        let steps = await service.detectSteps()
-        let step = try XCTUnwrap(steps.first { $0.id == "crossover" })
-
-        if crossOverExists {
-            XCTAssertTrue(step.status.isOK, "CrossOver exists, step should be OK")
-        } else {
-            if case .needsAction = step.status { } else {
-                XCTFail("CrossOver missing, expected needsAction")
-            }
-        }
-    }
-
-    func testCrossOverStepHasAutomationWhenNotInstalled() async throws {
-        guard !FileManager.default.fileExists(atPath: "/Applications/CrossOver.app") else {
-            throw XCTSkip("CrossOver is installed on this machine")
-        }
-        let steps = await service.detectSteps()
-        let step = try XCTUnwrap(steps.first { $0.id == "crossover" })
-
-        XCTAssertTrue(step.canAutoFix)
-        XCTAssertEqual(step.automationTarget, .crossOver)
-        XCTAssertNil(step.externalURL)
-        XCTAssertNotNil(step.actionLabel)
-    }
-
-    // MARK: - bottle step
-
-    func testBottleStepBlockedStatusChain() async throws {
-        let steps = await service.detectSteps()
-        let bottleStep = try XCTUnwrap(steps.first { $0.id == "bottle" })
-
-        if case .needsAction = bottleStep.status {
-            let gameStep = try XCTUnwrap(steps.first { $0.id == "gameInstall" })
-            let localPortExists = FileManager.default.fileExists(
-                atPath: FileManager.default.homeDirectoryForCurrentUser
-                    .appending(path: "Cossacks3_Mac_Port/oyun_dosyalari/cossacks.exe")
-                    .path
-            )
-            if localPortExists {
-                XCTAssertTrue(gameStep.status.isOK)
-            } else if case .blocked = gameStep.status {
-                // Expected when neither CrossOver bottle nor local free port is available.
-            } else {
-                XCTFail("gameInstall should be blocked when bottle and local free port are missing")
-            }
-        }
+        XCTAssertEqual(steps.count, 5)
     }
 
     // MARK: - shaderPatch step
@@ -88,7 +36,7 @@ final class CossacksSetupServiceTests: XCTestCase {
         // blocked is also valid when game not installed
     }
 
-    func testShaderPatchStepUsesLocalFreePortDirectoryBeforeCrossOver() async throws {
+    func testShaderPatchStepUsesLocalFreePortDirectory() async throws {
         let tempGameDirectory = FileManager.default.temporaryDirectory
             .appending(path: "CossacksSetupServiceTests-\(UUID().uuidString)", directoryHint: .isDirectory)
         let shaderDirectory = tempGameDirectory.appending(path: "data/shaders/obj", directoryHint: .isDirectory)
@@ -161,16 +109,11 @@ final class CossacksSetupServiceTests: XCTestCase {
 
     func testApplyShaderPatchThrowsGameNotFoundWhenNoGame() throws {
         let home = FileManager.default.homeDirectoryForCurrentUser
-        let bottlePath = home.appending(
-            path: "Library/Application Support/CrossOver/Bottles/Cossacks3",
-            directoryHint: .isDirectory
-        )
         let localPortPath = home.appending(
             path: "Cossacks3_Mac_Port/oyun_dosyalari/data/shaders/obj",
             directoryHint: .isDirectory
         )
-        guard !FileManager.default.fileExists(atPath: bottlePath.path),
-              !FileManager.default.fileExists(atPath: localPortPath.path) else {
+        guard !FileManager.default.fileExists(atPath: localPortPath.path) else {
             throw XCTSkip("Game shader directory exists on this machine — skip gameNotFound test")
         }
         XCTAssertThrowsError(try service.applyShaderPatch()) { error in
