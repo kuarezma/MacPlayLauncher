@@ -34,6 +34,7 @@ A free, open-source macOS launcher for running **Cossacks 3** on Apple Silicon M
 - Background setup automation for Rosetta, CrossOver trial, the `Cossacks3` bottle, Wine Steam startup, and displayplacer
 - CrossOver profiles no longer ask users to install Wine, DXVK, or MoltenVK separately
 - OpenGL proxy launch override for the Cossacks 3 macOS shader/minimap fixes
+- Free local port shader repair that restores visible unit bone shaders before applying safe fragment/fx fixes
 - Cossacks-style launcher preview with resource bar, minimap, buildings, troop formations, and mine-state visual cues
 - In-launcher optimization checklist for minimap, Wine Steam, CrossOver bottle, and game resolution readiness
 - SwiftUI native app, macOS 14+
@@ -214,6 +215,7 @@ Kaydedildikten sonra `./scripts/create-release.sh v0.24.0` otomatik olarak notar
 
 ## Changelog
 
+- 2026-06-24: Restored Cossacks visible unit vertex shaders from local backups and kept the launcher shader patch limited to safe fragment/fx fixes.
 - 2026-06-23: Updated CI to run the current sprint verification, use stable SwiftPM tests, and allow only controlled setup installer command usage.
 - 2026-06-23: Updated install notes to cover both DMG and ZIP release artifacts.
 - 2026-06-23: Fixed release checksum generation so SHA256SUMS keeps the hash and artifact path.

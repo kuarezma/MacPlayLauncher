@@ -74,6 +74,15 @@ struct CossacksSetupService: CossacksSetupServicing {
     private static let crossOverAppPath = "/Applications/CrossOver.app"
     private static let bottleName = "Cossacks3"
     private static let bottleBase = "Library/Application Support/CrossOver/Bottles"
+    private let localPortGameDirectory: URL
+
+    init(localPortGameDirectory: URL? = nil) {
+        let home = FileManager.default.homeDirectoryForCurrentUser
+        self.localPortGameDirectory = localPortGameDirectory ?? home.appending(
+            path: "Cossacks3_Mac_Port/oyun_dosyalari",
+            directoryHint: .isDirectory
+        )
+    }
 
     func detectSteps() async -> [SetupStep] {
         let home = FileManager.default.homeDirectoryForCurrentUser
@@ -97,7 +106,15 @@ struct CossacksSetupService: CossacksSetupServicing {
             throw CossacksSetupError.gameNotFound
         }
         let patcher = ShaderPatchService(gameShaderPath: shaderPath)
-        if !patcher.isAlreadyPatched() {
+        let needsFragmentPatch = !patcher.isAlreadyPatched()
+        let needsUnitRepair = try patcher.needsUnitVertexShaderRepair()
+        if needsFragmentPatch || needsUnitRepair {
+            try patcher.createTimestampedBackup()
+        }
+        if needsUnitRepair {
+            try patcher.repairUnitVertexShadersFromBestBackupIfAvailable()
+        }
+        if needsFragmentPatch {
             try patcher.createBackupIfNeeded()
             try patcher.apply()
         }
@@ -183,14 +200,15 @@ struct CossacksSetupService: CossacksSetupServicing {
 
     private func detectGameInstall(bottlePath: URL) -> SetupStep {
         let explanation = "Cossacks 3, Steam üzerinden indirilir."
-            + " Steam'i CrossOver bottle'ına kurmanız ve ardından Cossacks 3'ü Steam'den indirmeniz gerekiyor."
+            + " Ücretsiz port klasörü ya da CrossOver bottle içindeki oyun dosyaları bulunmalıdır."
             + " Bu adım tamamlandıktan sonra launcher oyunu otomatik bulacak."
-        guard FileManager.default.fileExists(atPath: bottlePath.path) else {
+        let localGameFound = findGameExecutable(in: localPortGameDirectory) != nil
+        guard localGameFound || FileManager.default.fileExists(atPath: bottlePath.path) else {
             return SetupStep(
                 id: "gameInstall",
                 title: "Cossacks 3 kurulumu",
                 explanation: explanation,
-                status: .blocked(reason: "Önce bottle oluşturulmalı"),
+                status: .blocked(reason: "Önce ücretsiz port klasörü veya oyun ortamı hazırlanmalı"),
                 canAutoFix: false,
                 actionLabel: nil,
                 externalURL: nil,
@@ -198,7 +216,7 @@ struct CossacksSetupService: CossacksSetupServicing {
             )
         }
 
-        let exeFound = findGameExecutable(in: bottlePath) != nil
+        let exeFound = localGameFound || findGameExecutable(in: bottlePath) != nil
         return SetupStep(
             id: "gameInstall",
             title: "Cossacks 3 kurulumu",
@@ -218,7 +236,7 @@ struct CossacksSetupService: CossacksSetupServicing {
         let explanation = "Cossacks 3 eski OpenGL/GLSL 1.20 grafik sistemi kullanıyor."
             + " Apple Silicon (M1–M4) işlemciler bu sistemi tam desteklemiyor."
             + " Bu yama; güvenli fragment/fx shader düzeltmeleriyle efektleri ve nesne görüntüsünü dengeliyor."
-            + " Birlik kemik vertex shader'larına dokunmaz; atlı ve asker modellerinin çalışan çizim yolunu korur."
+            + " Görünür birlik kemik vertex shader'larını yedekten geri yükler ve tekrar yazmaz."
             + " Tek tıkla otomatik uygulanır."
         guard let shaderPath = findShaderPath(in: bottlePath) else {
             return SetupStep(
@@ -304,6 +322,7 @@ struct CossacksSetupService: CossacksSetupServicing {
 
     private func findGameExecutable(in bottlePath: URL) -> URL? {
         let candidates = [
+            "cossacks.exe",
             "drive_c/Program Files (x86)/Steam/steamapps/common/Cossacks 3/cossacks.exe",
             "drive_c/Cossacks3/cossacks.exe",
             "drive_c/GOG Games/Cossacks 3/cossacks.exe"
@@ -315,23 +334,35 @@ struct CossacksSetupService: CossacksSetupServicing {
 
     private func findShaderPath(in bottlePath: URL) -> URL? {
         let candidates = [
-            "drive_c/Program Files (x86)/Steam/steamapps/common/Cossacks 3/data/shaders/obj",
-            "drive_c/Cossacks3/data/shaders/obj",
-            "drive_c/GOG Games/Cossacks 3/data/shaders/obj"
+            localPortGameDirectory.appending(path: "data/shaders/obj", directoryHint: .isDirectory),
+            bottlePath.appending(
+                path: "drive_c/Program Files (x86)/Steam/steamapps/common/Cossacks 3/data/shaders/obj",
+                directoryHint: .isDirectory
+            ),
+            bottlePath.appending(path: "drive_c/Cossacks3/data/shaders/obj", directoryHint: .isDirectory),
+            bottlePath.appending(path: "drive_c/GOG Games/Cossacks 3/data/shaders/obj", directoryHint: .isDirectory)
         ]
-        return candidates
-            .map { bottlePath.appending(path: $0, directoryHint: .isDirectory) }
-            .first { FileManager.default.fileExists(atPath: $0.path) }
+        return candidates.first { FileManager.default.fileExists(atPath: $0.path) }
     }
 
     private func findMinimapBMPPath(in bottlePath: URL) -> URL? {
+        let steamMinimapPath = "drive_c/Program Files (x86)/Steam/steamapps/common/Cossacks 3"
+            + "/data/gen/bitmap/ext/mac_minimap.bmp"
         let candidates = [
-            "drive_c/Program Files (x86)/Steam/steamapps/common/Cossacks 3/data/gen/bitmap/ext/mac_minimap.bmp",
-            "drive_c/Cossacks3/data/gen/bitmap/ext/mac_minimap.bmp"
+            localPortGameDirectory.appending(
+                path: "data/gen/bitmap/ext/mac_minimap.bmp",
+                directoryHint: .notDirectory
+            ),
+            bottlePath.appending(
+                path: steamMinimapPath,
+                directoryHint: .notDirectory
+            ),
+            bottlePath.appending(
+                path: "drive_c/Cossacks3/data/gen/bitmap/ext/mac_minimap.bmp",
+                directoryHint: .notDirectory
+            )
         ]
-        return candidates
-            .map { bottlePath.appending(path: $0, directoryHint: .notDirectory) }
-            .first
+        return candidates.first
     }
 }
 
@@ -344,7 +375,7 @@ enum CossacksSetupError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .gameNotFound:
-            return "Oyun dizini bulunamadı. Cossacks 3'ün CrossOver bottle'ına kurulu olduğundan emin olun."
+            return "Oyun dizini bulunamadı. Ücretsiz Cossacks 3 port klasörünü veya CrossOver kurulumunu kontrol edin."
         case .patchFailed(let reason):
             return "Yama uygulanamadı: \(reason)"
         }

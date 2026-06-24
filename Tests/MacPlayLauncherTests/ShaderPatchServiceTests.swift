@@ -2,18 +2,20 @@
 import XCTest
 
 final class ShaderPatchServiceTests: XCTestCase {
+    var tempRoot: URL!
     var tempDir: URL!
     var service: ShaderPatchService!
 
     override func setUpWithError() throws {
-        tempDir = FileManager.default.temporaryDirectory
+        tempRoot = FileManager.default.temporaryDirectory
             .appending(path: "ShaderPatchTests-\(UUID().uuidString)", directoryHint: .isDirectory)
+        tempDir = tempRoot.appending(path: "obj", directoryHint: .isDirectory)
         try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
         service = ShaderPatchService(gameShaderPath: tempDir)
     }
 
     override func tearDownWithError() throws {
-        try? FileManager.default.removeItem(at: tempDir)
+        try? FileManager.default.removeItem(at: tempRoot)
     }
 
     // MARK: - isAlreadyPatched
@@ -36,7 +38,7 @@ final class ShaderPatchServiceTests: XCTestCase {
         XCTAssertFalse(service.isAlreadyPatched())
     }
 
-    func testIsAlreadyPatchedReturnsTrueWhenFragmentProbeIsMinimal() throws {
+    func testIsAlreadyPatchedReturnsTrueWhenFragmentProbesAreMinimal() throws {
         let patched = """
         uniform sampler2D texUnit0;
         void main() {
@@ -54,7 +56,7 @@ final class ShaderPatchServiceTests: XCTestCase {
 
     // MARK: - Unit Vertex Shaders
 
-    func testApplyLeavesBoneVertexShaderUntouched() throws {
+    func testApplyLeavesUnitVertexShaderUntouched() throws {
         let url = tempDir.appending(path: "unit.sm.b16.id10.vert", directoryHint: .notDirectory)
         let original = """
         #define NBONES 16
@@ -73,6 +75,25 @@ final class ShaderPatchServiceTests: XCTestCase {
 
         let result = try String(contentsOf: url, encoding: .utf8)
         XCTAssertEqual(result, original)
+    }
+
+    func testUnitVertexRepairRestoresFromObjYedek() throws {
+        let backupDir = tempRoot.appending(path: "obj_yedek", directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: backupDir, withIntermediateDirectories: true)
+        let backupURL = backupDir.appending(path: "unit.sm.b42.id22.vert", directoryHint: .notDirectory)
+        let original = "#define NBONES 42\nvoid main(){ gl_Position=gl_Vertex; }"
+        try original.write(to: backupURL, atomically: true, encoding: .utf8)
+
+        let targetURL = tempDir.appending(path: "unit.sm.b42.id22.vert", directoryHint: .notDirectory)
+        try "#define NBONES 42\nvoid main(){ gl_Position=vec4(0.0); }"
+            .write(to: targetURL, atomically: true, encoding: .utf8)
+
+        XCTAssertTrue(try service.needsUnitVertexShaderRepair())
+        let result = try service.repairUnitVertexShadersFromBestBackupIfAvailable()
+
+        XCTAssertEqual(result.backupSourceURL, backupDir)
+        XCTAssertEqual(result.restoredFileNames, ["unit.sm.b42.id22.vert"])
+        XCTAssertEqual(try String(contentsOf: targetURL, encoding: .utf8), original)
     }
 
     // MARK: - Minimal Frag Fix
@@ -111,13 +132,12 @@ final class ShaderPatchServiceTests: XCTestCase {
 
         try service.createBackupIfNeeded()
 
-        let backupPath = tempDir.deletingLastPathComponent().appending(path: "obj_yedek", directoryHint: .isDirectory)
+        let backupPath = tempRoot.appending(path: "obj_yedek", directoryHint: .isDirectory)
         XCTAssertTrue(FileManager.default.fileExists(atPath: backupPath.path))
-        try? FileManager.default.removeItem(at: backupPath)
     }
 
     func testCreateBackupIsIdempotent() throws {
-        let backupURL = tempDir.deletingLastPathComponent().appending(path: "obj_yedek", directoryHint: .isDirectory)
+        let backupURL = tempRoot.appending(path: "obj_yedek", directoryHint: .isDirectory)
         try FileManager.default.createDirectory(at: backupURL, withIntermediateDirectories: true)
         let marker = backupURL.appending(path: "marker.txt", directoryHint: .notDirectory)
         try "original".write(to: marker, atomically: true, encoding: .utf8)
@@ -127,6 +147,5 @@ final class ShaderPatchServiceTests: XCTestCase {
 
         let markerContent = try String(contentsOf: marker, encoding: .utf8)
         XCTAssertEqual(markerContent, "original")
-        try? FileManager.default.removeItem(at: backupURL)
     }
 }

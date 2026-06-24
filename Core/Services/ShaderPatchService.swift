@@ -1,5 +1,12 @@
 import Foundation
 
+struct UnitVertexShaderRepairResult: Equatable, Sendable {
+    let backupSourceURL: URL?
+    let restoredFileNames: [String]
+
+    var restoredCount: Int { restoredFileNames.count }
+}
+
 struct ShaderPatchService: Sendable {
     let gameShaderPath: URL
 
@@ -19,6 +26,59 @@ struct ShaderPatchService: Sendable {
     func createBackupIfNeeded() throws {
         guard !FileManager.default.fileExists(atPath: backupPath.path) else { return }
         try FileManager.default.copyItem(at: gameShaderPath, to: backupPath)
+    }
+
+    @discardableResult
+    func createTimestampedBackup(prefix: String = "obj_unit_render_backup") throws -> URL {
+        let parent = gameShaderPath.deletingLastPathComponent()
+        var candidate = parent.appending(
+            path: "\(prefix)_\(Self.timestamp())",
+            directoryHint: .isDirectory
+        )
+        var suffix = 2
+        while FileManager.default.fileExists(atPath: candidate.path) {
+            candidate = parent.appending(
+                path: "\(prefix)_\(Self.timestamp())_\(suffix)",
+                directoryHint: .isDirectory
+            )
+            suffix += 1
+        }
+        try FileManager.default.copyItem(at: gameShaderPath, to: candidate)
+        return candidate
+    }
+
+    func needsUnitVertexShaderRepair() throws -> Bool {
+        guard let source = bestUnitVertexShaderBackupSource() else { return false }
+        return try unitVertexShaderURLs(in: source).contains { sourceURL in
+            let targetURL = gameShaderPath.appending(
+                path: sourceURL.lastPathComponent,
+                directoryHint: .notDirectory
+            )
+            return !FileManager.default.contentsEqual(atPath: sourceURL.path, andPath: targetURL.path)
+        }
+    }
+
+    @discardableResult
+    func repairUnitVertexShadersFromBestBackupIfAvailable() throws -> UnitVertexShaderRepairResult {
+        guard let source = bestUnitVertexShaderBackupSource() else {
+            return UnitVertexShaderRepairResult(backupSourceURL: nil, restoredFileNames: [])
+        }
+        var restoredFileNames: [String] = []
+        for sourceURL in try unitVertexShaderURLs(in: source) {
+            let targetURL = gameShaderPath.appending(
+                path: sourceURL.lastPathComponent,
+                directoryHint: .notDirectory
+            )
+            if FileManager.default.fileExists(atPath: targetURL.path) {
+                try FileManager.default.removeItem(at: targetURL)
+            }
+            try FileManager.default.copyItem(at: sourceURL, to: targetURL)
+            restoredFileNames.append(sourceURL.lastPathComponent)
+        }
+        return UnitVertexShaderRepairResult(
+            backupSourceURL: source,
+            restoredFileNames: restoredFileNames.sorted()
+        )
     }
 
     func apply() throws {
@@ -161,5 +221,48 @@ struct ShaderPatchService: Sendable {
         lines.append("   gl_FragColor = vec4(tex0.rgb, \(alpha));")
         lines.append("}")
         return lines.joined(separator: "\n")
+    }
+
+    // MARK: - Unit Vertex Repair
+
+    private func bestUnitVertexShaderBackupSource() -> URL? {
+        for candidate in unitVertexBackupCandidates() {
+            if let urls = try? unitVertexShaderURLs(in: candidate), !urls.isEmpty {
+                return candidate
+            }
+        }
+        return nil
+    }
+
+    private func unitVertexBackupCandidates() -> [URL] {
+        let shaderRoot = gameShaderPath.deletingLastPathComponent()
+        let gameDirectory = shaderRoot.deletingLastPathComponent().deletingLastPathComponent()
+        let portRoot = gameDirectory.deletingLastPathComponent()
+        return [
+            shaderRoot.appending(path: "obj_yedek", directoryHint: .isDirectory),
+            shaderRoot.appending(path: "obj_before_vert_fix", directoryHint: .isDirectory),
+            portRoot.appending(
+                path: ".local_backups/working_shader_restore_20260623_005447",
+                directoryHint: .isDirectory
+            )
+        ]
+    }
+
+    private func unitVertexShaderURLs(in directory: URL) throws -> [URL] {
+        guard FileManager.default.fileExists(atPath: directory.path) else { return [] }
+        return try FileManager.default
+            .contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+            .filter { url in
+                let name = url.lastPathComponent
+                return name.hasPrefix("unit.sm.b") && name.hasSuffix(".vert")
+            }
+            .sorted { $0.lastPathComponent < $1.lastPathComponent }
+    }
+
+    private static func timestamp() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        return formatter.string(from: Date())
     }
 }
