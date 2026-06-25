@@ -95,21 +95,25 @@
 
 ---
 
-## Dalga 2 — Hatalar (T-010'da detaylandırıldı)
+## Dalga 2 — Hatalar (T-010 taslak + Opus rafine)
+
+> **Opus notu (Dalga 1 dersi):** Bunlar **gerçek oyun-runtime hataları** — Dalga 1'in test-kanıtlanabilir işlerinden farklı; nihai doğrulama gerçek oyunla/ekran görüntüsüyle olur. Akış: **görsel/runtime olanlarda önce teşhis (Gemini Pro / Opus)** → Sonnet uygula → Opus review. Dosya mutasyonları **geri-alınabilir** + `SecurityScopedAccessManager` erişimiyle yapılır; erişim yoksa UI rehberliğine düşülür.
 
 ### T-012 · Siyah Ekran & Exit-53 Otomasyonu
-- **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-011 · **branch:** `fix/blackscreen-exit53`
-- **iş:** `steam_settings/offline.txt` veya `steam_appid.txt` kontrolü. Eğer `offline.txt` varsa sil/devre dışı bırak. Hata kodu 53 alındığında kullanıcıya çözüm öneren bir UI uyarısı sun.
-- **verify:** `swift test` yeşil · exit-code 53 durumları için mock testleri başarılı.
+- **sahip:** Sonnet (Claude Code) · **zeka:** 🟠 Yüksek · **durum:** todo · **bağımlı:** T-011 · **branch:** `fix/blackscreen-exit53`
+- **iş:** Oyun klasöründe `steam_settings/offline.txt` **tespiti** + exit-53 yakalanınca aksiyon-önerili UI uyarısı.
+- **⚠️ Opus kapsam notu:** **SİLME yok.** Geri-alınabilir şekilde `offline.txt → offline.txt.disabled` yeniden adlandır. Oyun klasörüne erişim **yalnız** `SecurityScopedAccessManager`/bookmark deseniyle (mevcut allowlist mimarisi); erişim yoksa UI rehber-uyarısına düş. `CossacksSetupService` tespit desenini yeniden kullan — yeni `Process()`/mutasyon yolu açma.
+- **verify:** `swift test` yeşil · offline.txt tespiti + rename + exit-53 için fake/mock testleri.
 
 ### T-013 · Minimap Şeffaflık & Shader Yama İyileştirmesi
-- **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-012 · **branch:** `fix/minimap-shaders`
-- **iş:** Cossacks 3 minimap şeffaflık hatası için Swift servisleri seviyesinde shader yama logic'ini iyileştir. Cavalry/unit render sorunlarına yol açmadığını doğrula.
-- **verify:** `ShaderPatchServiceTests` yeşil.
+- **sahip:** Sonnet (Claude Code) · **zeka:** 🟠 Yüksek · **durum:** todo · **bağımlı:** T-012 · **branch:** `fix/minimap-shaders`
+- **⚠️ Önce teşhis:** Bu görsel bir hata — **önce Gemini Pro görsel teşhisi** (kullanıcı ekran görüntüsü verir) veya mevcut `ShaderPatchService` davranış analizi. Kör kod yazma.
+- **iş:** `ShaderPatchService` shader yama logic'ini iyileştir; cavalry/unit render'ı bozmadığını doğrula (regresyon).
+- **verify:** `ShaderPatchServiceTests` yeşil + görsel onay (ekran görüntüsü).
 
 ### T-014 · Yanlış Pencere & Çalışma Dizini Fix
-- **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-013 · **branch:** `fix/workdir-window`
-- **iş:** Oyunun yanlış pencere modunda veya yanlış çalışma dizininde açılması sorununu çözmek için `GameLaunchPlanner` içindeki working directory çözümlemesini ve pencere argümanlarını normalize et.
+- **sahip:** Sonnet (Claude Code) · **zeka:** 🟡 Orta · **durum:** todo · **bağımlı:** T-013 · **branch:** `fix/workdir-window`
+- **iş:** `GameLaunchPlanner` working directory çözümlemesi + pencere argümanlarını normalize et (oyun doğru dizinde/pencere modunda açılsın).
 - **verify:** `GameLaunchPlannerTests` yeşil.
 
 ## Dalga 3 — Yeni yetenek (taslak)

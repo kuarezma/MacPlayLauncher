@@ -9,6 +9,7 @@ NEXT: ✅ DALGA 1 TAMAM — Dalga 2 hazır → Sonnet (Claude Code) → T-012 (s
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · Dalga 2 rafine + CI yeşil** — Dalga 1 push edildi (`origin/main`, 20 commit), CI `macOS Build and Test` **success** (1m33s). Dalga 2 backlog (Flash taslağı) rafine edildi: T-012 **silme → geri-alınabilir rename + security-scoped** (kapsam-güvenliği), T-013 **önce görsel teşhis (Gemini Pro)**, zeka seviyeleri eklendi (🟠/🟠/🟡). NEXT → Sonnet (T-012).
 - **2026-06-25 · Opus (Claude Code) · T-011 done — 🏁 DALGA 1 KAPANDI** — Final gate (main): `swiftlint` **0 uyarı (106→0)**, `swift test` **226 yeşil** (1 skip, başta 204), `verify-sprint-18` 17/17, `Process()` yalnız `ProcessCommandRunner` (güvenlik sınırı sağlam). 12 turun tamamı tur tur gate'lenip main'e alındı (18 commit, FastForward zinciri). **Dalga 1 (Kod Sağlığı) hedefleri eksiksiz.** Dalga 2 (hatalar: T-012 exit-53/siyah ekran, T-013 minimap/shader, T-014 pencere/workdir) backlog hazır. NEXT → Sonnet (T-012), kullanıcı başlatınca.
 - **2026-06-25 · Gemini 3.5 Flash (Antigravity) · T-010 done** — `README.md` Changelog güncellendi (v0.24 Wave 1 Code Health eklemeleri yapıldı). `Docs/coordination/TASKS.md` dosyası güncellenerek T-010 ve T-009 tamamlandı olarak işaretlendi; Dalga 2 (Hatalar) hedefleri T-012, T-013, T-014 olarak detaylandırılarak backlog taslağı oluşturuldu ve görev tablosu güncellendi. `HANDOFF.md` temizlendi ve devir teslim ayarlandı. NEXT → Opus (T-011, 🔴 Maksimum) on `main`.
 
