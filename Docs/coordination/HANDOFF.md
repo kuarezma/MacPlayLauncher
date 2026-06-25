@@ -1,4 +1,4 @@
-NEXT: Sonnet (Claude Code) → T-014 (pencere/workdir fix, 🟡 Orta) · branch: `fix/workdir-window`
+NEXT: 🏁 Dalga 2 tamamlandı (T-012 ✅ T-013 ⛔ T-014 ✅) — kullanıcı kararı: T-016 render-yolu teşhisi (opsiyonel) veya başka hedef.
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Sonnet (Claude Code) → T-014 (pencere/workdir fix, 🟡 Orta) · branch:
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-26 · Sonnet (Claude Code) · T-014 done** — `GameLaunchPlanner.makeWineLaunchPlan`: `workingDirectoryBookmarkData` nil olduğunda `profile.workingDirectory` string'e düşüş (CrossOver ile aynı pattern), ikinci fallback executable parent dizini. `launchArguments` içindeki duplicate executable path filtrelendi. 3 yeni test (238 toplam), swiftlint 0. 🏁 Dalga 2 tamamlandı.
 - **2026-06-25 · Sonnet (Claude Code) · T-012 done** — `steam_settings/offline.txt` tespiti yeni setup step olarak eklendi; `SetupAutomationTarget.offlineTxt` → `FileManager.moveItem` ile `offline.txt.disabled` rename (erişim yoksa terminale yönlendirme). `ProcessGameLaunchExecutor.start()` terminationHandler → `NotificationCenter.gameProcessDidTerminate` post; `AppState` observer exit-53 için `launchExitAlertMessage` set ediyor. `GameProcessMonitor` `ProcessCommandRunner.swift`'ten ayrı dosyaya taşındı (file_length). 9 yeni test, 235 yeşil, swiftlint 0. Devir → Sonnet (T-014).
 
 - **2026-06-25 · Opus (Claude Code) · Yol Z kapandı — FREE yollar tükendi (dürüst sentez)** — Zink-on-MoltenVK temelden çalışmıyor: Mesa Zink `nullDescriptor` (robustness2) ister, MoltenVK vermiyor → bizim düzeltemeyeceğimiz Vulkan-katmanı eksiği. **Checkpoint (0C.1 sanity) bunu kaynaktan-build'den ÖNCE yakaladı → boşa saatler önlendi.** Artık 3 bağımsız duvar denendi ve doğrulandı: (1) DXVK=yanlış katman, (2) newer-engine=GL'i kırıyor, (3) Zink=MoltenVK feature-gap. Bu **erken pes etmek değil, kanıtlı tükenme.** Kalan: CX26 (paralı — ama **14-gün ücretsiz TRIAL ile $0 doğrulanabilir**) veya mevcut hâli kabul. Öneri: verimli işe dön (launcher cilası T-012/T-014) + ayrıca CX26 trial ile cavalry/FPS'i $0 test et. NEXT → kullanıcı kararı.

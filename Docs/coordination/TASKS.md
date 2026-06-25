@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**Dalga 1: 12/12 ✅ TAMAM** · `▰▰▰▰▰▰▰▰▰▰▰▰` · **Dalga 2: 1/3** `▰▱▱` (T-012 ✅, T-013 ⛔, T-014 todo)
+**Dalga 1: 12/12 ✅ TAMAM** · `▰▰▰▰▰▰▰▰▰▰▰▰` · **Dalga 2: 2/3 ✅** `▰⛔▰` (T-012 ✅, T-013 ⛔ engine-bloklu, T-014 ✅)
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -25,7 +25,7 @@
 | T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-012 | Siyah ekran & Exit-53 otomasyonu | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-013 | Minimap şeffaflık & shader yama | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
-| T-014 | Yanlış pencere & çalışma dizini fix | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-014 | Yanlış pencere & çalışma dizini fix | Sonnet (Claude Code) | 🟡 Orta | ✅ done |
 
 > Zeka seviyesi ölçeği + araç ayarları: [`../../AGENTS.md`](../../AGENTS.md) Bölüm 2C. Model başlamadan önce bu seviyeyi kullanıcıya bildirir (protokol Bölüm 3, adım 0).
 > Bir görevi tamamlayınca **hem** bu özet satırını **hem** aşağıdaki detay bloğunu güncelle.
@@ -115,9 +115,9 @@
 > Referans shader aileleri: `unit.sm.b{1,3,5,16,18,20,22,24,27,42}.id*.vert` + shadow/prefixsiz `b*.vert` + `unit.smx{3,9}.id8.frag`.
 
 ### T-014 · Yanlış Pencere & Çalışma Dizini Fix
-- **sahip:** Sonnet (Claude Code) · **zeka:** 🟡 Orta · **durum:** todo · **bağımlı:** T-012 (T-013 engine-bloklu, atlandı) · **branch:** `fix/workdir-window`
+- **sahip:** Sonnet (Claude Code) · **zeka:** 🟡 Orta · **durum:** done · **bağımlı:** T-012 (T-013 engine-bloklu, atlandı) · **branch:** `fix/workdir-window`
 - **iş:** `GameLaunchPlanner` working directory çözümlemesi + pencere argümanlarını normalize et (oyun doğru dizinde/pencere modunda açılsın).
-- **verify:** `GameLaunchPlannerTests` yeşil.
+- **verify:** ✅ `GameLaunchPlannerTests` yeşil (9 test, 3 yeni) · ✅ 238 test toplam · ✅ swiftlint 0
 
 ### T-015 · Performans — kalabalıkta FPS 0-10
 - **sahip:** — · **zeka:** 🔴 · **durum:** ⛔ blocked — engine/OpenGL sınırı (FPS fix repo-DIŞI) · **bağımlı:** —
