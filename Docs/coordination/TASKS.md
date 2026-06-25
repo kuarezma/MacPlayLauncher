@@ -65,13 +65,14 @@
 
 ### T-007 · Sertleştirme tasarımı (spec)
 - **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-006 · **branch:** `docs/hardening-spec`
-- **iş:** `DisplayResolutionService` + `GameProcessMonitor`'u `ProcessCommandRunner` allowlist sınırından geçirme tasarımı; `WineSteamService` sabit CrossOver yolunu resolver'a taşıma. Güvenlik gerekçesi + allowlist'e eklenecek yollar.
+- **NOT (T-002 devri):** `DisplayResolutionService` + `GameProcessMonitor` allowlist yönlendirmesi T-002'de Codex tarafından **erken yapıldı**; geçici olarak `BlockingCommandRunner` (semaphore köprüsü, `Task.detached`) ile çalışıyor. Asıl tasarım işi artık: **async-güvenli sınırı tasarla → `BlockingCommandRunner` semaphore köprüsünü tamamen kaldır** (launch akışını async yap, çağıranları `await`'e geçir).
+- **iş:** Yukarıdaki async-güvenli boundary tasarımı + `WineSteamService` çift-yol (nil → bare `Process()`) tutarsızlığını gider + sabit CrossOver yolunu resolver'a taşı. Güvenlik gerekçesi + allowlist yolları.
 - **verify:** spec dosyası (`Docs/coordination/HARDENING-SPEC.md`) mevcut
 
 ### T-008 · Sertleştirme uygulaması
 - **sahip:** Codex (GPT 5.5) · **durum:** todo · **bağımlı:** T-007 · **branch:** `refactor/command-boundary`
-- **iş:** T-007 spec'ini uygula. Tüm `Process()` çağrılarının `ProcessCommandRunner` üzerinden gittiğini garanti et.
-- **verify:** `swift test` yeşil · `./scripts/verify-sprint-18.sh` yeşil (`Process()` yalnız `ProcessCommandRunner.swift` kriteri)
+- **iş:** T-007 spec'ini uygula: `BlockingCommandRunner` köprüsünü kaldır, çağrı yerlerini async-güvenli yap, `WineSteamService` çift-yolunu tek yola indir, tüm `Process()` çağrılarının `ProcessCommandRunner` üzerinden gittiğini garanti et.
+- **verify:** `swift test` yeşil · `./scripts/verify-sprint-18.sh` yeşil (`Process()` yalnız `ProcessCommandRunner.swift` kriteri) · `BlockingCommandRunner` kaldırıldı
 
 ### T-009 · Tüm-kod denetimi + doküman + görsel teşhis
 - **sahip:** Gemini 3.1 Pro (Antigravity) · **durum:** todo · **bağımlı:** T-008 · **branch:** `docs/audit-architecture`

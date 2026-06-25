@@ -458,7 +458,13 @@ private enum BlockingCommandRunner {
         let semaphore = DispatchSemaphore(value: 0)
         let resultBox = BlockingCommandResultBox()
 
-        Task {
+        // Geçici köprü (T-007/T-008'de async-güvenli sınırla kaldırılacak):
+        // `Task.detached` zorunlu — düz `Task {}` çağıranın actor'ını (örn. @MainActor)
+        // miras alır; ardından `semaphore.wait()` o thread'i bloklayınca görev hiç
+        // koşamaz ve kilitlenir. Detached görev cooperative pool'da koştuğu için bu
+        // self-deadlock olmaz; bloklama semantiği refactor öncesi senkron Process
+        // davranışıyla aynıdır. Yalnızca kısa, deneysel-launch yolundaki komutlarda kullanılır.
+        Task.detached {
             do {
                 let result = try await commandRunner.run(request)
                 resultBox.store(.success(result))
