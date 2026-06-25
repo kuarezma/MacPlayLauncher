@@ -106,13 +106,13 @@
 - **verify:** `swift test` yeşil · offline.txt tespiti + rename + exit-53 için fake/mock testleri.
 
 ### T-013 · Atlı Birim (Binici) Render Hatası
-- **sahip:** Codex (GPT 5.5 — prior shader/WineCX bağlamı onda) · **zeka:** 🔴 Maksimum · **durum:** todo · **bağımlı:** — · **branch:** `fix/cavalry-rider`
+- **sahip:** Codex (GPT 5.5) · **zeka:** 🔴 Maksimum · **durum:** ⛔ blocked — WineCX 23.7 engine sınırı (launcher-scope KAPANDI) · **bağımlı:** — · **branch:** —
 - **✅ Opus görsel teşhisi (2026-06-25, kullanıcı ekran görüntüsü):** Minimap artık **idare ediyor** (cossacks3.app ile geliyor) → **düşük öncelik**. Asıl hata: **atlı birimin binicisi atın üstünde değil, yanında/yerde duruyor.** Teşhis: binici mesh render ediliyor ama **eyer-kemiği (saddle bone) transform'u uygulanmıyor** → vertex'ler yerel orijinde kalıyor. = **vertex bone-skinning** sorunu (`ShaderPatchService` `unit.sm.b*.vert` bone shader alanı) **VEYA** WineCX GL/D3D bone-matrix çeviri sınırı.
 - **⚠️ Fizibilite (dürüst):** Kök neden WineCX-engine ise (önceki not: "daha yeni WineCX gerek"), **launcher'daki `ShaderPatchService` düzeltmesi YETMEZ** → fix `~/Cossacks3_Mac_Port` runtime/WineCX tarafında, bu repo DIŞINDA.
-- **iş — önce Codex'e danış:** (1) Codex prior bağlamıyla belirlesin: shader-yaması mı, WineCX mi? (2) **Shader ise** → `ShaderPatchService` bone-transform yamasını ekle, cavalry'yi bozmadan. **WineCX ise** → bu repo dışı; runtime'a/Dalga 3'e devret, launcher sadece teşhis/uyarı yapsın.
-- **verify:** `ShaderPatchServiceTests` yeşil + **gerçek oyunda görsel onay** (binici eyerde).
-
-> Not: Minimap şeffaflık işi tamamlandı sayılır (idare ediyor); ayrı tur gerekirse düşük öncelikli alt-görev açılır.
+- **✅ Codex verdikti (DEVAM_NOTU.md kanıtı):** Shader-side düzeltmeler **tükenmiş**; dinamik `boneMatrices[index]` Apple/Wine GL'de bozuluyor, if-chain/sabit-indeks/guard denemeleri "en iyi sonuç" verdi ama kalan kusur **WineCX 23.7 engine sınırı**. CrossOver 26 ile düzelebilir (ücretsiz CX26 build yok). `ShaderPatchService` artık vertex üretmiyor; yalnız bilinen-iyi shader geri-yükleme + fragment yama + teşhis yapıyor.
+- **KARAR:** Launcher-scope **KAPANDI**. Mükemmel eyer = engine upgrade (yeni WineCX / CrossOver 26) → repo-DIŞI runtime işi. Launcher'ın tek opsiyonel rolü: WineCX sürümünü tespit edip "atlı render yeni engine ister" bilgilendirme notu (düşük öncelik, istenirse alt-görev).
+- **Minimap:** idare ediyor → kapalı.
+> Referans shader aileleri: `unit.sm.b{1,3,5,16,18,20,22,24,27,42}.id*.vert` + shadow/prefixsiz `b*.vert` + `unit.smx{3,9}.id8.frag`.
 
 ### T-014 · Yanlış Pencere & Çalışma Dizini Fix
 - **sahip:** Sonnet (Claude Code) · **zeka:** 🟡 Orta · **durum:** todo · **bağımlı:** T-013 · **branch:** `fix/workdir-window`
