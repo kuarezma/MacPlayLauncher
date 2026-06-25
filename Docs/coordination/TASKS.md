@@ -7,14 +7,14 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 3/12 (%25)** · `▰▰▰▱▱▱▱▱▱▱▱▱`
+**İlerleme: 4/12 (%33)** · `▰▰▰▰▱▱▱▱▱▱▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
 | T-000 | Koordinasyon sistemi kurulumu | Opus (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-001 | Mekanik lint temizliği | Haiku (Claude Code) | 🟢 Düşük | ✅ done |
 | T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | 🟡 Orta | ✅ done |
-| T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
 | T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
 | T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ⬜ todo |
@@ -45,9 +45,9 @@
 - **verify:** `swift test --build-path /tmp/mpl_ci_build` yeşil; yeni testler koşuyor
 
 ### T-003 · Launch & bookmark testleri
-- **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-001 · **branch:** `test/launch-bookmark`
+- **sahip:** Sonnet (Claude Code) · **durum:** done · **bağımlı:** T-001 · **branch:** `test/launch-bookmark`
 - **iş:** `ProcessGameLaunchExecutor` (gerçek launch yolu) ve security-scoped bookmark yaşam döngüsü (`SecurityScopedAccessManager` start/stop) için entegrasyon testleri. `paralel: evet` (T-002 ile farklı dosyalar).
-- **verify:** `swift test --build-path /tmp/mpl_ci_build` yeşil
+- **verify:** ✅ `swift test --build-path /tmp/mpl_ci_build` yeşil (226 test)
 
 ### T-004 · Refactor tasarımı (spec)
 - **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-002, T-003 · **branch:** `docs/refactor-spec`
