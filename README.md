@@ -201,6 +201,10 @@ Kaydedildikten sonra `./scripts/create-release.sh v0.24.0` otomatik olarak notar
 
 ## Changelog
 
+- 2026-06-25: Refactored core services to be fully async/await native, eliminating the legacy `BlockingCommandRunner` bridge and removing all blocking semaphore patterns.
+- 2026-06-25: Enforced strict command execution boundaries by routing `DisplayResolutionService`, `GameProcessMonitor`, and `WineSteamService` directly through `CommandRunning`.
+- 2026-06-25: Resolved CrossOver executable paths through `AppEnvironment` wiring instead of hardcoded strings in services.
+- 2026-06-25: Achieved zero SwiftLint warnings across the codebase to ensure strict adherence to style guidelines.
 - 2026-06-24: Removed the default Cossacks 3 CrossOver dependency by switching setup, profile, Wine resolution, and local `oyna.sh` launch flow to the local WineCX port.
 - 2026-06-24: Restored Cossacks visible unit vertex shaders from local backups and kept the launcher shader patch limited to safe fragment/fx fixes.
 - 2026-06-23: Updated CI to run the current sprint verification, use stable SwiftPM tests, and allow only controlled setup installer command usage.

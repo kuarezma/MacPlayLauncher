@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 10/12 (%83)** · `▰▰▰▰▰▰▰▰▰▰▱▱`
+**İlerleme: 11/15 (%73)** · `▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -21,8 +21,11 @@
 | T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ✅ done |
 | T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ✅ done |
-| T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ⬜ todo |
+| T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ✅ done |
 | T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
+| T-012 | Siyah ekran & Exit-53 otomasyonu | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-013 | Minimap şeffaflık & shader yama | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-014 | Yanlış pencere & çalışma dizini fix | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
 
 > Zeka seviyesi ölçeği + araç ayarları: [`../../AGENTS.md`](../../AGENTS.md) Bölüm 2C. Model başlamadan önce bu seviyeyi kullanıcıya bildirir (protokol Bölüm 3, adım 0).
 > Bir görevi tamamlayınca **hem** bu özet satırını **hem** aşağıdaki detay bloğunu güncelle.
@@ -76,12 +79,12 @@
 - **verify:** `swift test` yeşil · `./scripts/verify-sprint-18.sh` yeşil (`Process()` yalnız `ProcessCommandRunner.swift` kriteri) · `BlockingCommandRunner` kaldırıldı
 
 ### T-009 · Tüm-kod denetimi + doküman + görsel teşhis
-- **sahip:** Gemini 3.1 Pro (Antigravity) · **durum:** todo · **bağımlı:** T-008 · **branch:** `docs/audit-architecture`
+- **sahip:** Gemini 3.1 Pro (Antigravity) · **durum:** done · **bağımlı:** T-008 · **branch:** `docs/audit-architecture`
 - **iş:** Geniş-bağlam tutarlılık denetimi (kalan baypaslar, ölü kod, çapraz tutarsızlık) → rapor (`Docs/coordination/AUDIT.md`). `ARCHITECTURE.md`'ye yeni sprint girişi. Kullanıcı ekran görüntüsü verirse minimap/shader **görsel** teşhis.
 - **verify:** `AUDIT.md` mevcut; `ARCHITECTURE.md` güncel
 
 ### T-010 · Changelog & triyaj
-- **sahip:** Gemini 3.5 Flash (Antigravity) · **durum:** todo · **bağımlı:** T-009 · **branch:** `docs/changelog-triage`
+- **sahip:** Gemini 3.5 Flash (Antigravity) · **durum:** done · **bağımlı:** T-009 · **branch:** `docs/changelog-triage`
 - **iş:** README/changelog rötuş, `TASKS.md` özet, `HANDOFF.md` temizlik, **Dalga 2 (hatalar)** triyaj backlog'u taslağı (bu panoya `## Dalga 2` bölümü).
 - **verify:** dokümanlar güncel; Dalga 2 bölümü taslak hâlinde
 
@@ -92,10 +95,24 @@
 
 ---
 
-## Dalga 2 — Hatalar (taslak, T-010'da detaylandırılır)
-- exit-code 53 / `offline.txt`, siyah ekran, minimap şeffaflığı, yanlış pencere durumu için launcher-tarafı otomasyon.
-- Akış: Gemini Pro teşhis → Sonnet uygula → Opus review.
+## Dalga 2 — Hatalar (T-010'da detaylandırıldı)
+
+### T-012 · Siyah Ekran & Exit-53 Otomasyonu
+- **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-011 · **branch:** `fix/blackscreen-exit53`
+- **iş:** `steam_settings/offline.txt` veya `steam_appid.txt` kontrolü. Eğer `offline.txt` varsa sil/devre dışı bırak. Hata kodu 53 alındığında kullanıcıya çözüm öneren bir UI uyarısı sun.
+- **verify:** `swift test` yeşil · exit-code 53 durumları için mock testleri başarılı.
+
+### T-013 · Minimap Şeffaflık & Shader Yama İyileştirmesi
+- **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-012 · **branch:** `fix/minimap-shaders`
+- **iş:** Cossacks 3 minimap şeffaflık hatası için Swift servisleri seviyesinde shader yama logic'ini iyileştir. Cavalry/unit render sorunlarına yol açmadığını doğrula.
+- **verify:** `ShaderPatchServiceTests` yeşil.
+
+### T-014 · Yanlış Pencere & Çalışma Dizini Fix
+- **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-013 · **branch:** `fix/workdir-window`
+- **iş:** Oyunun yanlış pencere modunda veya yanlış çalışma dizininde açılması sorununu çözmek için `GameLaunchPlanner` içindeki working directory çözümlemesini ve pencere argümanlarını normalize et.
+- **verify:** `GameLaunchPlannerTests` yeşil.
 
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.
 - Akış: Opus tasarım → Codex/Sonnet uygula → Opus review.
+
