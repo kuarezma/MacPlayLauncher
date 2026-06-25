@@ -37,6 +37,22 @@ Hiçbir şey kurmadan/derlemeden önce şunları tespit et ve raporla:
 
 **KARAR KAPISI:** 1+5 olumsuzsa (oyunu çalıştıran x11'li Wine yoksa) → Strategy-1 (XQuartz/Mesa) **bloklu**; Faz 1'e geçme, Opus'a "şu engelle tıkandı + alternatif" diye devret. 5 olumlu/üretilebilirse → Faz 1.
 
+### ✅ Faz 0 SONUCU (2026-06-25, Codex) — ⛔ Strategy-1 mevcut varlıklarla bloklu
+WineCX 23.7 yalnız `winemac.drv` (winex11.drv YOK); yerelde x11-capable Wine adayı yok; Mesa/Zink + XQuartz kurulu değil (brew'de mevcut). MoltenVK/Vulkan hazır (M3 görülüyor). Karar kapısı doğru tetiklendi → Faz 1'e geçilmedi. Rapor: `~/Cossacks3_Mac_Port/ZINK_DENEME_NOTU.md`. **Sonraki: ağır build'e atlamadan Faz 0B (ucuz prob).**
+
+---
+
+## Faz 0B — Ucuz ayrıştırılmış prob (ağır build'den ÖNCE)
+
+Zink yolu artık "x11-capable Wine üret/bul" istiyor — ağır. Ama ağıra girmeden **iki ucuz prob iki büyük bilinmeyeni** çözer:
+
+- **Prob-1 — Zink zinciri bu Mac'te çalışıyor mu? (~10dk, oyun yok):** `brew install mesa xquartz` → `MESA_LOADER_DRIVER_OVERRIDE=zink glxinfo | grep -iE 'renderer|zink|moltenvk'` + `glxgears`. Beklenen: renderer **"zink (MoltenVK)"**. Bu, GL→Vulkan→Metal zincirinin prensipte çalıştığını kanıtlar.
+- **Prob-2 — Ücretsiz prebuilt x11 Wine Cossacks'ı açıyor mu?:** Gcenx winehq-staging (macOS, `winex11.drv`'li) indir → **prefix KOPYASIYLA** oyunu aç (mac-driver'la bile). Açılıyor mu, yoksa WineHQ-11 gibi SEH/GL fırtınası mı? (Oyunu açan bir x11 Wine var mı sorusunu yanıtlar.)
+- **KARAR KAPISI:** İkisi de **yeşil** → ağır iş (Faz 0C) mantıklı. **Biri kırmızı** → Zink yolu ücretsiz/pratik değil; dur, Opus'a getir, bilinçli karar (CX26 paralı vs mevcut hâli kabul).
+
+## Faz 0C — (YALNIZ 0B ikisi de yeşilse) x11'li çalışan Wine üret
+Gcenx oyunu açıyorsa onu kullan; açmıyorsa **wine-crossover 23.7 kaynağını `./configure --with-x` ile derle** (CrossOver patch'leri = oyun çalışır + winex11.drv = Zink yolu). Ağır (Apple Silicon wine32on64 + x11 bağımlılıkları). Ancak 0B kanıtladıysa.
+
 ---
 
 ## Faz 1 — İzole Zink probu (oyun YOK)
