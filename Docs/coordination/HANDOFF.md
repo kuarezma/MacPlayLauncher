@@ -1,4 +1,4 @@
-NEXT: 🏁 Dalga 2 tamamlandı (T-012 ✅ T-013 ⛔ T-014 ✅) — kullanıcı kararı: T-016 render-yolu teşhisi (opsiyonel) veya başka hedef.
+NEXT: Codex (GPT 5.5, ekstra yüksek) → T-017 YENİDEN AÇILDI: KosmicKrisp ucuz testi (Zink'i kurulu KosmicKrisp ICD'sine yönlendir + glxgears, BUILD YOK ~10dk). Yeşilse x11-Wine'a; kırmızıysa patch'li Mesa. `ZINK-EXPERIMENT.md`. (Launcher T-012/T-014 bitti & main'de; T-016 opsiyonel.)
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: 🏁 Dalga 2 tamamlandı (T-012 ✅ T-013 ⛔ T-014 ✅) — kullanıcı k
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-26 · Opus (Claude Code) · T-017 YENİDEN AÇILDI — KosmicKrisp (Codex planı + Opus rafine)** — Codex doğru yakaladı: MoltenVK tek Vulkan-on-Metal değil; **KosmicKrisp** (Mesa macOS 26+ sürücüsü) alternatif. Doğrulandı: macOS **26.5.1** ✅ + KosmicKrisp **zaten kurulu** (mesa 26.1.3 ile: `libvulkan_kosmickrisp.dylib` + ICD). Codex'in 0C.1 testi default ICD=MoltenVK'ya düştü → KosmicKrisp ICD'si **hiç denenmedi.** Opus rafine: patch'li Mesa build'den ÖNCE kurulu KosmicKrisp ICD'sine Zink yönlendir + glxgears (~10dk make-or-break). Yeşilse build gereksiz. (Opus "Zink öldü" sonucunu fazla erken vermişti — Codex düzeltti.) NEXT → Codex KosmicKrisp ucuz testi.
 - **2026-06-26 · Sonnet (Claude Code) · T-014 done** — `GameLaunchPlanner.makeWineLaunchPlan`: `workingDirectoryBookmarkData` nil olduğunda `profile.workingDirectory` string'e düşüş (CrossOver ile aynı pattern), ikinci fallback executable parent dizini. `launchArguments` içindeki duplicate executable path filtrelendi. 3 yeni test (238 toplam), swiftlint 0. 🏁 Dalga 2 tamamlandı.
 - **2026-06-25 · Sonnet (Claude Code) · T-012 done** — `steam_settings/offline.txt` tespiti yeni setup step olarak eklendi; `SetupAutomationTarget.offlineTxt` → `FileManager.moveItem` ile `offline.txt.disabled` rename (erişim yoksa terminale yönlendirme). `ProcessGameLaunchExecutor.start()` terminationHandler → `NotificationCenter.gameProcessDidTerminate` post; `AppState` observer exit-53 için `launchExitAlertMessage` set ediyor. `GameProcessMonitor` `ProcessCommandRunner.swift`'ten ayrı dosyaya taşındı (file_length). 9 yeni test, 235 yeşil, swiftlint 0. Devir → Sonnet (T-014).
 

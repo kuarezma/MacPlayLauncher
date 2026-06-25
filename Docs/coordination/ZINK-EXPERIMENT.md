@@ -54,7 +54,27 @@ Zink yolu artık "x11-capable Wine üret/bul" istiyor — ağır. Ama ağıra gi
 
 **Zink-on-MoltenVK çalışmıyor:** `MESA: error: Zink requires the nullDescriptor feature of KHR/EXT robustness2`. MoltenVK 1.4.1 `nullDescriptor=false` veriyor → Mesa Zink GLX context açamıyor. Bu, Wine/x11/build'den **bağımsız, en alt Vulkan katmanında** bir özellik eksiği — bizim düzeltebileceğimiz bir şey değil (MoltenVK/Metal sınırı). **0C.1 sanity kapısı bunu kaynaktan-build'den ÖNCE yakaladı → saatlerce boşa derleme önlendi.**
 
-**Karar:** T-017/Yol Z **kapandı.** Tek teorik gelecek-çıkış: MoltenVK'nın ileride nullDescriptor desteklemesi (şu an yok, aksiyon değil).
+**Karar:** ~~T-017/Yol Z kapandı~~ → **YENİDEN AÇILDI** (aşağı, KosmicKrisp).
+
+---
+
+## 🔄 YENİDEN AÇILDI (Codex planı + Opus rafine): KosmicKrisp yolu
+
+**Codex doğru yakaladı:** MoltenVK tek Vulkan-on-Metal sürücüsü değil. **KosmicKrisp** (Mesa'nın macOS 26+ Vulkan-on-Metal sürücüsü) alternatif. Doğrulandı: **macOS 26.5.1 ✅** + KosmicKrisp **zaten kurulu** (`/opt/homebrew/lib/libvulkan_kosmickrisp.dylib`, mesa 26.1.3 ile). Codex'in 0C.1 testi **default ICD=MoltenVK**'ya düştüğü için nullDescriptor'a takıldı — **KosmicKrisp ICD'si hiç denenmedi.**
+
+### ⚡ Opus rafine — ÖNCE ucuz KosmicKrisp testi (build YOK, ~10dk)
+Patch'li Mesa derlemeden önce, zaten kurulu KosmicKrisp ICD'sine Zink'i yönlendir:
+```sh
+export VK_ICD_FILENAMES=/opt/homebrew/share/vulkan/icd.d/kosmickrisp_mesa_icd.aarch64.json
+export MESA_LOADER_DRIVER_OVERRIDE=zink
+vulkaninfo | grep -iE 'driverName|nullDescriptor'   # KosmicKrisp nullDescriptor=true mu?
+glxinfo | grep -iE 'renderer|zink|kosmic'           # beklenen: "zink ... KosmicKrisp"
+glxgears                                             # 2dk çökmeden
+```
+- **YEŞİL** (renderer zink+KosmicKrisp) → **patch'li Mesa build GEREKMEZ**, zincir hazır → doğrudan x11-Wine adımına (Faz 0C.2 Gcenx).
+- **KIRMIZI** (hâlâ nullDescriptor/llvmpipe) → o zaman Codex'in patch'li-Mesa planı (nullDescriptor MR + `vulkan-drivers=kosmickrisp` build).
+
+Make-or-break testi artık çok-saatlik Mesa build değil, **~10 dk.** KosmicKrisp robustness2 nullDescriptor'ı sağlıyorsa stock Mesa Zink muhtemelen yeter.
 
 ---
 
