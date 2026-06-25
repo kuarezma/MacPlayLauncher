@@ -133,10 +133,18 @@
 ## Runtime Deneyleri (repo-DIŞI: `~/Cossacks3_Mac_Port`)
 
 ### T-017 · [RUNTIME] Zink GL→Vulkan→MoltenVK deneyi
-- **sahip:** Codex (GPT 5.5, runtime bağlamı) · **zeka:** 🔴 Maksimum · **durum:** 🔄 YENİDEN AÇILDI (KosmicKrisp) — MoltenVK yerine KosmicKrisp ICD (zaten kurulu, macOS 26.5.1) ile Zink ucuz testi bekliyor; build'den ÖNCE · **kapsam:** `~/Cossacks3_Mac_Port` (bu repo DIŞI)
+- **sahip:** Codex (GPT 5.5, runtime bağlamı) · **zeka:** 🔴 Maksimum · **durum:** ⛔ PARK — KosmicKrisp de `nullDescriptor` sağlamıyor (MoltenVK gibi) + XQuartz(x86_64)/Mesa(arm64) mimari uyumsuzluğu. patch'li Mesa yolu DERİN/düşük-odds → önce **T-018 (CX26 diff)**. · **kapsam:** `~/Cossacks3_Mac_Port` (bu repo DIŞI)
 - **iş:** [`ZINK-EXPERIMENT.md`](ZINK-EXPERIMENT.md)'i uygula — **Faz 0 fizikbilite** (winex11.drv + Mesa Zink + MoltenVK + oyunu çalıştıran x11-capable Wine var mı?) → **karar kapısı** → Faz 1 (izole Zink probu) → Faz 2 (Cossacks Zink üzerinde). **Orijinal prefix/script'e dokunma** (kopya üzerinde). Her faz sonunda rapor + Opus'a devret.
 - **⚠️ Can alıcı kapı:** WineCX 23.7 mac-driver-only olabilir → oyunu çalıştıran x11'li Wine bulmak/üretmek deneyin make-or-break'i.
 - **verify:** Faz 0 raporu (`~/Cossacks3_Mac_Port/ZINK_DENEME_NOTU.md`); kapı geçilirse Faz 1/2 gözlemleri (cavalry eyerde mi, kalabalık FPS).
+
+### T-018 · [RUNTIME] CX26 ↔ WineCX 23.7 fark analizi (Codex planı + Opus onayı)
+- **sahip:** Codex (GPT 5.5, runtime) · **zeka:** 🔴 Maksimum (ekstra yüksek) · **durum:** todo · **bağımlı:** ⚠️ kullanıcı CX26 trial kurmalı · **kapsam:** `~/Cossacks3_Mac_Port` (bu repo DIŞI)
+- **Neden (Opus onayı):** Zink/patch'li-Mesa derinleşti (nullDescriptor×2 + arch mismatch) → brute-force yerine **bilgi-önce**. CX26 cavalry'yi düzeltiyorsa NEDEN, ve o fark ÜCRETSİZ tarafa taşınabilir mi? En iyi senaryo: fark sadece ayar/registry/DLL/env → **build YOK, ücretsiz win.**
+- **ÖN KOŞUL:** Kullanıcı CrossOver 26 **trial** kurar + Cossacks'ı CX26 bottle'da açar (cavalry düzeliyor mu $0 doğrula). Opus rehberlik eder.
+- **iş:** CX26 (çalışan) vs WineCX 23.7 farkı: engine sürümü · winemac/winex11/GL/Metal yolu · registry · DLL override · bottle/prefix · GL/WGL log · shader/GLSL compile · launch arg/env. **Trial/lisans atlatma YOK**; kopya prefix/script. Çıktı: `Docs/coordination/CX26-DIFF.md` (+ `~/Cossacks3_Mac_Port/CX26_FARK_NOTU.md`).
+- **çıktı/karar:** (1) CX26 kesin launch komutu/env, (2) fark tablosu, (3) **taşınabilirlik kararı:** ayar/DLL/registry=ücretsiz taşınır · engine-patch=ücretsiz-build gerek · kapalı-CX-patch=lisans dışı pratik değil, (4) sonraki uygulanabilir adım.
+- **verify:** `CX26-DIFF.md` mevcut; taşınabilirlik kararı net.
 
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.
