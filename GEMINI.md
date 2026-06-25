@@ -11,7 +11,7 @@
 2. `TASKS.md`'den görevini al, `branch:`'ini aç, `verify:`'ini çalıştır, board'u güncelle, `NEXT:`'i devret (`AGENTS.md` Bölüm 3 & 5).
 
 ## Bu repodaki rol dağılımın
-- **Gemini 3.1 Pro** → Analist/Görsel (T-009): tüm-kod tabanı tutarlılık denetimi (kalan `ProcessCommandRunner` baypasları, ölü kod), `ARCHITECTURE.md`'ye yeni sprint girişi, ve **multimodal** görsel teşhis — kullanıcı minimap/shader/UI ekran görüntüsü verirse görsel sorunu analiz et (Cossacks port'taki minimap şeffaflığı, `CossacksBattlePreviewView`).
+- **Gemini 3.1 Pro** → Analist/Görsel/**Runtime-analiz**. Ayrıca **T-018** ([RUNTIME] CX26↔WineCX 23.7 fark analizi, `~/Cossacks3_Mac_Port`): başlamadan `DEVAM_NOTU.md` + `ZINK_DENEME_NOTU.md` + `Docs/coordination/ZINK-EXPERIMENT.md`'i oku (Codex'in runtime geçmişi orada). Hands-on Wine/CrossOver mekaniğinde tıkanırsan `HANDOFF.md`'ye not düşüp Opus'a devret. Asıl analiz (T-009): tüm-kod tabanı tutarlılık denetimi (kalan `ProcessCommandRunner` baypasları, ölü kod), `ARCHITECTURE.md`'ye yeni sprint girişi, ve **multimodal** görsel teşhis — kullanıcı minimap/shader/UI ekran görüntüsü verirse görsel sorunu analiz et (Cossacks port'taki minimap şeffaflığı, `CossacksBattlePreviewView`).
 - **Gemini 3.5 Flash** → Hızlı Triyaj (T-010): changelog/README rötuş, `TASKS.md` özetleri, `HANDOFF.md` temizliği, **Dalga 2 (hatalar)** için triyaj backlog'u taslağı.
 
 ## Hatırlatmalar

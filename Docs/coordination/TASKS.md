@@ -139,7 +139,8 @@
 - **verify:** Faz 0 raporu (`~/Cossacks3_Mac_Port/ZINK_DENEME_NOTU.md`); kapı geçilirse Faz 1/2 gözlemleri (cavalry eyerde mi, kalabalık FPS).
 
 ### T-018 · [RUNTIME] CX26 ↔ WineCX 23.7 fark analizi (Codex planı + Opus onayı)
-- **sahip:** Codex (GPT 5.5, runtime) · **zeka:** 🔴 Maksimum (ekstra yüksek) · **durum:** todo · **bağımlı:** ⚠️ kullanıcı CX26 trial kurmalı · **kapsam:** `~/Cossacks3_Mac_Port` (bu repo DIŞI)
+- **sahip:** **Gemini 3.1 Pro (Antigravity)** — analiz işi, kullanıcının Gemini bütçesi fazla · **zeka:** 🔴 Maksimum (üst düzey thinking) · **durum:** todo · **bağımlı:** ⚠️ kullanıcı CX26 trial kurmalı · **kapsam:** `~/Cossacks3_Mac_Port` (bu repo DIŞI)
+- **📚 Bağlam (BAŞLAMADAN OKU — Codex'in runtime geçmişi burada):** `~/Cossacks3_Mac_Port/DEVAM_NOTU.md` (tüm geçmiş denemeler, shader/engine), `~/Cossacks3_Mac_Port/ZINK_DENEME_NOTU.md` (Zink/KosmicKrisp sonuçları), `Docs/coordination/ZINK-EXPERIMENT.md`. Aktif ücretsiz hat: WineCX 23.7 + builtin WineD3D/OpenGL + Goldberg (`oyna_ucretsiz.sh`).
 - **Neden (Opus onayı):** Zink/patch'li-Mesa derinleşti (nullDescriptor×2 + arch mismatch) → brute-force yerine **bilgi-önce**. CX26 cavalry'yi düzeltiyorsa NEDEN, ve o fark ÜCRETSİZ tarafa taşınabilir mi? En iyi senaryo: fark sadece ayar/registry/DLL/env → **build YOK, ücretsiz win.**
 - **ÖN KOŞUL:** Kullanıcı CrossOver 26 **trial** kurar + Cossacks'ı CX26 bottle'da açar (cavalry düzeliyor mu $0 doğrula). Opus rehberlik eder.
 - **iş:** CX26 (çalışan) vs WineCX 23.7 farkı: engine sürümü · winemac/winex11/GL/Metal yolu · registry · DLL override · bottle/prefix · GL/WGL log · shader/GLSL compile · launch arg/env. **Trial/lisans atlatma YOK**; kopya prefix/script. Çıktı: `Docs/coordination/CX26-DIFF.md` (+ `~/Cossacks3_Mac_Port/CX26_FARK_NOTU.md`).
