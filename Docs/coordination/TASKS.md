@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**Dalga 1: 12/12 ✅ TAMAM** · `▰▰▰▰▰▰▰▰▰▰▰▰` · (Dalga 2: 0/3 — T-012…T-014 backlog hazır)
+**Dalga 1: 12/12 ✅ TAMAM** · `▰▰▰▰▰▰▰▰▰▰▰▰` · **Dalga 2: 1/3** `▰▱▱` (T-012 ✅, T-013 ⛔, T-014 todo)
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -23,7 +23,7 @@
 | T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ✅ done |
 | T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ✅ done |
 | T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
-| T-012 | Siyah ekran & Exit-53 otomasyonu | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-012 | Siyah ekran & Exit-53 otomasyonu | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-013 | Minimap şeffaflık & shader yama | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
 | T-014 | Yanlış pencere & çalışma dizini fix | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
 
@@ -100,10 +100,10 @@
 > **Opus notu (Dalga 1 dersi):** Bunlar **gerçek oyun-runtime hataları** — Dalga 1'in test-kanıtlanabilir işlerinden farklı; nihai doğrulama gerçek oyunla/ekran görüntüsüyle olur. Akış: **görsel/runtime olanlarda önce teşhis (Gemini Pro / Opus)** → Sonnet uygula → Opus review. Dosya mutasyonları **geri-alınabilir** + `SecurityScopedAccessManager` erişimiyle yapılır; erişim yoksa UI rehberliğine düşülür.
 
 ### T-012 · Siyah Ekran & Exit-53 Otomasyonu
-- **sahip:** Sonnet (Claude Code) · **zeka:** 🟠 Yüksek · **durum:** todo · **bağımlı:** T-011 · **branch:** `fix/blackscreen-exit53`
+- **sahip:** Sonnet (Claude Code) · **zeka:** 🟠 Yüksek · **durum:** done · **bağımlı:** T-011 · **branch:** `fix/blackscreen-exit53`
 - **iş:** Oyun klasöründe `steam_settings/offline.txt` **tespiti** + exit-53 yakalanınca aksiyon-önerili UI uyarısı.
 - **⚠️ Opus kapsam notu:** **SİLME yok.** Geri-alınabilir şekilde `offline.txt → offline.txt.disabled` yeniden adlandır. Oyun klasörüne erişim **yalnız** `SecurityScopedAccessManager`/bookmark deseniyle (mevcut allowlist mimarisi); erişim yoksa UI rehber-uyarısına düş. `CossacksSetupService` tespit desenini yeniden kullan — yeni `Process()`/mutasyon yolu açma.
-- **verify:** `swift test` yeşil · offline.txt tespiti + rename + exit-53 için fake/mock testleri.
+- **verify:** ✅ `swift test` yeşil (235 test) · ✅ offline.txt tespiti + rename + exit-53 için 9 yeni test · ✅ swiftlint 0
 
 ### T-013 · Atlı Birim (Binici) Render Hatası
 - **sahip:** Codex (GPT 5.5) · **zeka:** 🔴 Maksimum · **durum:** ⛔ blocked — WineCX 23.7 engine sınırı (launcher-scope KAPANDI) · **bağımlı:** — · **branch:** —

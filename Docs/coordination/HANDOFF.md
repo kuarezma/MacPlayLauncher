@@ -1,4 +1,4 @@
-NEXT: ⚠️ Karar kullanıcıda — Zink ⛔ temelden kapandı (MoltenVK nullDescriptor yok). FREE engine yolları tükendi (3 bağımsız duvar). Önerilen: launcher cilası → Sonnet T-012 · cavalry/FPS için CX26 ÜCRETSİZ TRIAL ile $0 doğrulama (ayrı seçenek).
+NEXT: Sonnet (Claude Code) → T-014 (pencere/workdir fix, 🟡 Orta) · branch: `fix/workdir-window`
 
 ---
 
@@ -8,6 +8,8 @@ NEXT: ⚠️ Karar kullanıcıda — Zink ⛔ temelden kapandı (MoltenVK nullDe
 > Her araç görevini bitirince: en üste 1 satır log ekler + `NEXT:`'i sıradaki sahibe ayarlar (tur sırası: [`../../AGENTS.md`](../../AGENTS.md) Bölüm 5).
 
 ## Günlük (en yeni üstte)
+
+- **2026-06-25 · Sonnet (Claude Code) · T-012 done** — `steam_settings/offline.txt` tespiti yeni setup step olarak eklendi; `SetupAutomationTarget.offlineTxt` → `FileManager.moveItem` ile `offline.txt.disabled` rename (erişim yoksa terminale yönlendirme). `ProcessGameLaunchExecutor.start()` terminationHandler → `NotificationCenter.gameProcessDidTerminate` post; `AppState` observer exit-53 için `launchExitAlertMessage` set ediyor. `GameProcessMonitor` `ProcessCommandRunner.swift`'ten ayrı dosyaya taşındı (file_length). 9 yeni test, 235 yeşil, swiftlint 0. Devir → Sonnet (T-014).
 
 - **2026-06-25 · Opus (Claude Code) · Yol Z kapandı — FREE yollar tükendi (dürüst sentez)** — Zink-on-MoltenVK temelden çalışmıyor: Mesa Zink `nullDescriptor` (robustness2) ister, MoltenVK vermiyor → bizim düzeltemeyeceğimiz Vulkan-katmanı eksiği. **Checkpoint (0C.1 sanity) bunu kaynaktan-build'den ÖNCE yakaladı → boşa saatler önlendi.** Artık 3 bağımsız duvar denendi ve doğrulandı: (1) DXVK=yanlış katman, (2) newer-engine=GL'i kırıyor, (3) Zink=MoltenVK feature-gap. Bu **erken pes etmek değil, kanıtlı tükenme.** Kalan: CX26 (paralı — ama **14-gün ücretsiz TRIAL ile $0 doğrulanabilir**) veya mevcut hâli kabul. Öneri: verimli işe dön (launcher cilası T-012/T-014) + ayrıca CX26 trial ile cavalry/FPS'i $0 test et. NEXT → kullanıcı kararı.
 - **2026-06-25 · Codex (GPT 5.5) · T-017 Faz 0C.1 tekrar ⛔ Zink/MoltenVK kapısı kırmızı** — Kullanıcı XQuartz'ı yerel Terminal'de kurdu; Codex tekrar denedi. XQuartz `2.8.5` mevcut, `glxinfo/glxgears` var; `enable_iglx` açıldı ve XQuartz `+iglx +extension GLX` ile başlatıldı. Homebrew Mesa GLX probe varsayılan renderer olarak `llvmpipe` verdi. Zink + MoltenVK denemesi önce `libvulkan.1.dylib` arama yoluna takıldı; loader yolu verilince asıl engel netleşti: `ZINK: requires the nullDescriptor feature of KHR/EXT robustness2`. `vulkaninfo`: MoltenVK `VK_EXT/KHR_robustness2` listeliyor ama `nullDescriptor = false`. Bu yüzden 2 dk Zink `glxgears` koşulmadı ve 0C.2 Gcenx'e geçilmedi. Rapor: `~/Cossacks3_Mac_Port/ZINK_DENEME_NOTU.md`. NEXT → Opus karar.
