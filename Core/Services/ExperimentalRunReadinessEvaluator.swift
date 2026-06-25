@@ -53,47 +53,9 @@ struct ExperimentalRunReadinessEvaluator: RunReadinessEvaluating {
             )
         }
 
-        var blockers = base.blockers.filter { $0.source != .runtimeDependency || isExperimentalRelevant($0.id) }
-
-        if let prefixBlocker = makePrefixBlocker(for: profile) {
-            blockers.append(prefixBlocker)
-        }
-
-        if profile.runtime != .crossOver {
-            if dependency(diagnosticSummary, kind: .wine)?.status != .ready {
-                blockers.append(
-                    experimentalBlocker(
-                        id: "experimental.wine.notReady",
-                        title: String(localized: "readiness.experimental.wineMissing.title"),
-                        message: String(localized: "readiness.experimental.wineMissing.message"),
-                        suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
-                    )
-                )
-            } else if wineResolver.resolve() == nil {
-                blockers.append(
-                    experimentalBlocker(
-                        id: "experimental.wine.missing",
-                        title: String(localized: "readiness.experimental.wineMissing.title"),
-                        message: String(localized: "readiness.experimental.wineMissing.message"),
-                        suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
-                    )
-                )
-            }
-        }
-
-        if let rosetta = dependency(diagnosticSummary, kind: .rosetta),
-           rosetta.status == .missing || rosetta.status == .unsupported {
-            blockers.append(
-                experimentalBlocker(
-                    id: "experimental.rosetta.blocked",
-                    title: "\(String(localized: "readiness.missingRuntimeDependency.title")): Rosetta",
-                    message: rosetta.userFacingDescription,
-                    suggestedAction: rosetta.suggestedAction ?? String(localized: "readiness.fixMissingBeforeLaunch")
-                )
-            )
-        }
-
+        let blockers = collectBlockers(profile: profile, base: base, diagnosticSummary: diagnosticSummary)
         let blocking = blockers.filter { $0.severity == .blocking }
+
         guard blocking.isEmpty else {
             return RunReadinessResult(
                 status: .blocked,
@@ -110,6 +72,61 @@ struct ExperimentalRunReadinessEvaluator: RunReadinessEvaluating {
             message: String(localized: "readiness.experimental.ready.message"),
             blockers: blockers,
             canLaunch: true
+        )
+    }
+
+    private func collectBlockers(
+        profile: GameProfile,
+        base: RunReadinessResult,
+        diagnosticSummary: RuntimeDiagnosticSummary
+    ) -> [RunReadinessBlocker] {
+        var blockers = base.blockers.filter { $0.source != .runtimeDependency || isExperimentalRelevant($0.id) }
+
+        if let prefixBlocker = makePrefixBlocker(for: profile) {
+            blockers.append(prefixBlocker)
+        }
+
+        if profile.runtime != .crossOver {
+            blockers += wineBlockers(diagnosticSummary: diagnosticSummary)
+        }
+
+        if let rosettaBlocker = rosettaBlocker(diagnosticSummary: diagnosticSummary) {
+            blockers.append(rosettaBlocker)
+        }
+
+        return blockers
+    }
+
+    private func wineBlockers(diagnosticSummary: RuntimeDiagnosticSummary) -> [RunReadinessBlocker] {
+        if dependency(diagnosticSummary, kind: .wine)?.status != .ready {
+            return [experimentalBlocker(
+                id: "experimental.wine.notReady",
+                title: String(localized: "readiness.experimental.wineMissing.title"),
+                message: String(localized: "readiness.experimental.wineMissing.message"),
+                suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
+            )]
+        } else if wineResolver.resolve() == nil {
+            return [experimentalBlocker(
+                id: "experimental.wine.missing",
+                title: String(localized: "readiness.experimental.wineMissing.title"),
+                message: String(localized: "readiness.experimental.wineMissing.message"),
+                suggestedAction: String(localized: "readiness.experimental.wineMissing.action")
+            )]
+        }
+        return []
+    }
+
+    private func rosettaBlocker(diagnosticSummary: RuntimeDiagnosticSummary) -> RunReadinessBlocker? {
+        guard let rosetta = dependency(diagnosticSummary, kind: .rosetta),
+              rosetta.status == .missing || rosetta.status == .unsupported else {
+            return nil
+        }
+
+        return experimentalBlocker(
+            id: "experimental.rosetta.blocked",
+            title: "\(String(localized: "readiness.missingRuntimeDependency.title")): Rosetta",
+            message: rosetta.userFacingDescription,
+            suggestedAction: rosetta.suggestedAction ?? String(localized: "readiness.fixMissingBeforeLaunch")
         )
     }
 

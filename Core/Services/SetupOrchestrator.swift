@@ -84,6 +84,8 @@ final class SetupOrchestrator {
 
     // MARK: - Orchestration Loop
 
+    private enum OrchestrationControl { case keepGoing, stop }
+
     private func runOrchestration(
         currentSteps: [SetupStep],
         onStepUpdate: @escaping @MainActor ([SetupStep]) -> Void
@@ -91,72 +93,79 @@ final class SetupOrchestrator {
         var steps = currentSteps
 
         while !Task.isCancelled {
-            // Her iterasyonda tüm adımları yenile
             let fresh = await setupService.detectSteps()
             await MainActor.run { onStepUpdate(fresh) }
             steps = fresh
 
             guard let target = steps.first(where: { !$0.status.isOK }) else {
-                // Tüm adımlar tamam
                 await log("orchestrator", "Tüm kurulum adımları tamamlandı.", .info)
                 isRunning = false
                 return
             }
 
-            switch target.status {
-            case .ok:
-                continue
-
-            case .blocked:
-                // Önceki bir adım çözülmeden bu adıma geçilemez; yukarıda zaten yakalandı
-                await log(target.id, "Engellendi: önceki adım bekleniyor.", .warning)
+            let control = await process(target: target, onStepUpdate: onStepUpdate)
+            if case .stop = control {
                 isRunning = false
                 return
+            }
+        }
+    }
+
+    private func process(
+        target: SetupStep,
+        onStepUpdate: @escaping @MainActor ([SetupStep]) -> Void
+    ) async -> OrchestrationControl {
+        switch target.status {
+        case .ok:
+            return .keepGoing
+
+        case .blocked:
+            await log(target.id, "Engellendi: önceki adım bekleniyor.", .warning)
+            return .stop
+
+        case .waitingForUser(let message):
+            await log(target.id, "Kullanıcı bekleniyor: \(message)", .info)
+            await pollUntilComplete(stepID: target.id, onStepUpdate: onStepUpdate)
+            if Task.isCancelled { return .stop }
+            return .keepGoing
+
+        case .failed(let message):
+            await log(target.id, "Hata: \(message)", .error)
+            return .stop
+
+        case .needsAction, .checking, .installing:
+            return await runAutomation(target: target, onStepUpdate: onStepUpdate)
+        }
+    }
+
+    private func runAutomation(
+        target: SetupStep,
+        onStepUpdate: @escaping @MainActor ([SetupStep]) -> Void
+    ) async -> OrchestrationControl {
+        guard target.canAutoFix, let automationTarget = target.automationTarget else {
+            await log(target.id, "Manuel müdahale gerekiyor.", .warning)
+            return .stop
+        }
+
+        await log(target.id, "Başlatılıyor: \(target.title)", .info)
+
+        do {
+            let result = try await installerService.install(target: automationTarget)
+            switch result {
+            case .completed(let message):
+                await log(target.id, "Tamamlandı: \(message)", .info)
 
             case .waitingForUser(let message):
                 await log(target.id, "Kullanıcı bekleniyor: \(message)", .info)
-                await pollUntilComplete(
-                    stepID: target.id,
-                    onStepUpdate: onStepUpdate
-                )
-                if Task.isCancelled { return }
-                // Polling bitince döngü başa döner ve tekrar detect eder
-
-            case .failed(let message):
-                await log(target.id, "Hata: \(message)", .error)
-                isRunning = false
-                return
-
-            case .needsAction, .checking, .installing:
-                guard target.canAutoFix, let automationTarget = target.automationTarget else {
-                    await log(target.id, "Manuel müdahale gerekiyor.", .warning)
-                    isRunning = false
-                    return
-                }
-
-                await log(target.id, "Başlatılıyor: \(target.title)", .info)
-
-                do {
-                    let result = try await installerService.install(target: automationTarget)
-                    switch result {
-                    case .completed(let message):
-                        await log(target.id, "Tamamlandı: \(message)", .info)
-
-                    case .waitingForUser(let message):
-                        await log(target.id, "Kullanıcı bekleniyor: \(message)", .info)
-                        await pollUntilComplete(
-                            stepID: target.id,
-                            onStepUpdate: onStepUpdate
-                        )
-                        if Task.isCancelled { return }
-                    }
-                } catch {
-                    await log(target.id, "Hata: \(error.localizedDescription)", .error)
-                    isRunning = false
-                    return
-                }
+                await pollUntilComplete(stepID: target.id, onStepUpdate: onStepUpdate)
+                if Task.isCancelled { return .stop }
             }
+        } catch {
+            await log(target.id, "Hata: \(error.localizedDescription)", .error)
+            return .stop
         }
+
+        return .keepGoing
     }
 
     // MARK: - Polling
