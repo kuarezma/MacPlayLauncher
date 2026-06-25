@@ -1,4 +1,4 @@
-NEXT: Sonnet (Claude Code) → T-005 (refactor uygulaması, 🟠 Yüksek) · branch: refactor/appstate-diagnostics
+NEXT: Haiku (Claude Code) → T-006 (yapısal lint, 🟡 Orta) · branch: chore/lint-structural
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Sonnet (Claude Code) → T-005 (refactor uygulaması, 🟠 Yüksek) · bra
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Sonnet (Claude Code) · T-005 done** — AppState → +AddGame/+Diagnostics/+Launch; DiagnosticsViewModel → +NextStep/+Experimental/+Prefix/+Source/+Badges; SetupOrchestrator.runOrchestration → process+runAutomation+OrchestrationControl; ExperimentalRunReadinessEvaluator.evaluate → collectBlockers+wineBlockers+rosettaBlocker. Davranış/API/string'ler değişmedi. 226 test yeşil, swiftlint 0 (hedef dosyalarda). Devir → Haiku (T-006).
 - **2026-06-25 · Opus (Claude Code) · T-004 done** — Refactor tasarımı yazıldı → `Docs/coordination/REFACTOR-SPEC.md`. 4 hedef (AppState, DiagnosticsViewModel, SetupOrchestrator, ExperimentalRunReadinessEvaluator) için extension-bölme + fonksiyon-parçalama planı; **davranış/public API/string'ler birebir korunur**. Orphan uyarılar devredildi: `ProcessCommandRunner.run()` → T-008 (güvenlik dosyası), test isim/tuple → T-006. T-005 alt-hedefleri + T-006 genişletildi panoda. Devir → Sonnet (T-005, 🟠 Yüksek).
 - **2026-06-25 · Sonnet (Claude Code) · T-003 done** — `GameLaunchExecutorTests.swift` eklendi: `ProcessGameLaunchExecutor` (allowlist/shell/`-c` guard + başarılı launch), `SecurityScopedAccessManager` (lifecycle: boş liste, erişim, hata yayılımı, defer), `DefaultGameLauncher` (entegrasyon: planlayıcı + executor + access). 226 test yeşil, sprint-18 17/17, swiftlint 0. Devir → Opus (T-004).
 - **2026-06-25 · Opus (Claude Code) · zeka seviyesi protokolü** — Her göreve `Zeka` (reasoning) seviyesi eklendi: `TASKS.md` Durum Özeti'ne sütun (🟢/🟡/🟠/🔴) + `AGENTS.md` Bölüm 2C ölçek (seviye→araç ayarı). **Protokol adım 0:** model işe başlamadan (kod değiştirmeden) görevin zeka seviyesini kullanıcıya bildirir ve onay bekler → kullanıcı doğru reasoning'i seçer. `NEXT:` değişmedi → Sonnet (T-003, 🟠 Yüksek).

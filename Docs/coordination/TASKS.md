@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 5/12 (~%42)** · `▰▰▰▰▰▱▱▱▱▱▱▱`
+**İlerleme: 6/12 (~%50)** · `▰▰▰▰▰▰▱▱▱▱▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -16,7 +16,7 @@
 | T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | 🟡 Orta | ✅ done |
 | T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
-| T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ⬜ todo |
 | T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
 | T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ⬜ todo |
