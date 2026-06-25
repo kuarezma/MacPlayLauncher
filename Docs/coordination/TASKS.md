@@ -7,12 +7,12 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 1/12 (~%8)** · `▰▱▱▱▱▱▱▱▱▱▱▱`
+**İlerleme: 2/12 (~%17)** · `▰▰▱▱▱▱▱▱▱▱▱▱`
 
 | # | Görev | Model (araç) | Durum |
 |---|---|---|---|
 | T-000 | Koordinasyon sistemi kurulumu | Opus (Claude Code) | ✅ done |
-| T-001 | Mekanik lint temizliği | Haiku (Claude Code) | 🟡 sırada |
+| T-001 | Mekanik lint temizliği | Haiku (Claude Code) | ✅ done |
 | T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | ⬜ todo |
 | T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | ⬜ todo |
 | T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | ⬜ todo |
@@ -34,9 +34,9 @@
 - **verify:** dosyalar mevcut; `HANDOFF.md` `NEXT:` satırı T-001'i gösteriyor.
 
 ### T-001 · Mekanik lint temizliği
-- **sahip:** Haiku (Claude Code) · **durum:** todo · **bağımlı:** T-000 · **branch:** `chore/lint-mechanical`
+- **sahip:** Haiku (Claude Code) · **durum:** done · **bağımlı:** T-000 · **branch:** `chore/lint-mechanical`
 - **iş:** SwiftLint mekanik uyarıları gider: ~29 sorted-imports, ~25 trailing-newline, ~22 line-length (120+ satırları sar/böl), 1 trailing-whitespace, kısa değişken adları `t`/`v`/`p` (`ProcessCommandRunner.swift`), 1 unneeded-synthesized-init (`FakeCommandRunner`), 1 implicit-optional-init. **Sadece format/isim**, mantık değiştirme.
-- **verify:** `swiftlint lint --quiet` → bu kategorilerde 0 · `swift test --build-path /tmp/mpl_ci_build` yeşil
+- **verify:** ✅ `swiftlint lint --quiet` → bu kategorilerde 0 · ✅ `swift test --build-path /tmp/mpl_ci_build` yeşil
 
 ### T-002 · Eksik servis testleri (otonom TDD)
 - **sahip:** Codex (GPT 5.5) · **durum:** todo · **bağımlı:** T-001 · **branch:** `test/command-services`
