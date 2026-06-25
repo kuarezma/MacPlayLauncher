@@ -50,7 +50,15 @@ Zink yolu artık "x11-capable Wine üret/bul" istiyor — ağır. Ama ağıra gi
 - **Prob-2 — Ücretsiz prebuilt x11 Wine Cossacks'ı açıyor mu?:** Gcenx winehq-staging (macOS, `winex11.drv`'li) indir → **prefix KOPYASIYLA** oyunu aç (mac-driver'la bile). Açılıyor mu, yoksa WineHQ-11 gibi SEH/GL fırtınası mı? (Oyunu açan bir x11 Wine var mı sorusunu yanıtlar.)
 - **KARAR KAPISI:** İkisi de **yeşil** → ağır iş (Faz 0C) mantıklı. **Biri kırmızı** → Zink yolu ücretsiz/pratik değil; dur, Opus'a getir, bilinçli karar (CX26 paralı vs mevcut hâli kabul).
 
-## Faz 0C — x11'li çalışan Wine (KULLANICI KARARI: doğrudan bu yol, prob fallback)
+## ⛔ NİHAİ SONUÇ (2026-06-25) — Yol Z temelden bloklu
+
+**Zink-on-MoltenVK çalışmıyor:** `MESA: error: Zink requires the nullDescriptor feature of KHR/EXT robustness2`. MoltenVK 1.4.1 `nullDescriptor=false` veriyor → Mesa Zink GLX context açamıyor. Bu, Wine/x11/build'den **bağımsız, en alt Vulkan katmanında** bir özellik eksiği — bizim düzeltebileceğimiz bir şey değil (MoltenVK/Metal sınırı). **0C.1 sanity kapısı bunu kaynaktan-build'den ÖNCE yakaladı → saatlerce boşa derleme önlendi.**
+
+**Karar:** T-017/Yol Z **kapandı.** Tek teorik gelecek-çıkış: MoltenVK'nın ileride nullDescriptor desteklemesi (şu an yok, aksiyon değil).
+
+---
+
+## Faz 0C — x11'li çalışan Wine (uygulanmadı — 0C.1'de bloklandı)
 
 > **Akıllı sıra:** kaynaktan derlemeden önce prereq'ler zaten gerekli + prebuilt oyunu açabilir (build'i gereksiz kılar). Kör saatlerce derleme yapmamak için:
 
