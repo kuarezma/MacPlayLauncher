@@ -9,10 +9,15 @@ enum CommandPurpose: Equatable, Hashable, Sendable {
     case rosettaInstall
     case homebrewInstallPrompt
     case displayplacerInstall
+    case displayResolutionList
+    case displayResolutionSet
     case crossOverInstall
     case crossOverOpen
     case bottleCreate
     case steamSetup
+    case wineSteamLaunch
+    case processLookup
+    case processKill
 }
 
 struct CommandRequest: Equatable, Hashable, Sendable {

@@ -1,4 +1,4 @@
-NEXT: Codex (GPT 5.5) → T-002 (servis testleri) · branch: test/command-services
+NEXT: Sonnet (Claude Code) → T-003 (launch & bookmark testleri) · branch: test/launch-bookmark
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Codex (GPT 5.5) → T-002 (servis testleri) · branch: test/command-servic
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Codex (GPT 5.5) · T-002 done** — `DisplayResolutionService`, `WineSteamService`, `GameProcessMonitor` komutları `CommandRunning` üzerinden test edilebilir hale getirildi; `FakeCommandRunner` çağrı kaydı tutuyor. 7 yeni servis testi eklendi, gerçek Process spawn edilmedi. `swift test --build-path /tmp/mpl_ci_build` yeşil (211 geçti, 1 skip), `swiftlint lint --quiet` exit 0 (kalan uyarılar yapısal backlog), `./scripts/verify-sprint-18.sh` yeşil. NEXT → Sonnet (T-003).
 - **2026-06-25 · Opus (Claude Code) · T-001 doğrulandı + merge** — Kapı kontrolü: 204/204 test geçti (1 skip), mekanik lint kategorileri 0 (kalan 11 uyarı yapısal → T-005/T-006). `chore/lint-mechanical` → `main` (ff, `8c3f8f4`), branch silindi. Repo `main`'de; **Codex T-002'yi güncel main'den dallanacak**. NEXT → Codex (T-002).
 - **2026-06-25 · Haiku (Claude Code) · T-001 done** — SwiftLint mekanik temizliği: sorted_imports, trailing_newline, trailing_whitespace, unneeded_synthesized_initializer, implicit_optional_initialization (auto-fix), line_length (19 satır) ve identifier_name (t→trimmedLine, v→value, p→process) uyarıları giderildi. `swift test` yeşil, sprint-18 doğrulaması geçti. Devir → Codex (T-002).
 - **2026-06-25 · Opus (Claude Code) · iskele commit + tek-komut protokolü** — `TASKS.md`'ye Durum Özeti tablosu eklendi (modeller de tüm listeyi görür). `AGENTS.md` Bölüm 3 + rol dosyalarına "**T-XXX yap** demek yeterli" notu eklendi. Tüm koordinasyon iskelesi main'e commit'lendi. `NEXT:` değişmedi → Haiku (T-001).

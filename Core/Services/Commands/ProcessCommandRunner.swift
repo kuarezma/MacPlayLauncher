@@ -244,7 +244,20 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
     private static let gameWidth = 1280
     private static let gameHeight = 800
 
+    private let commandRunner: any CommandRunning
+    private let displayplacerURL: URL
+    private let fileExists: @Sendable (String) -> Bool
     private var savedConfig: String?
+
+    init(
+        commandRunner: (any CommandRunning)? = nil,
+        displayplacerURL: URL = URL(fileURLWithPath: displayplacerPath),
+        fileExists: @escaping @Sendable (String) -> Bool = { FileManager.default.fileExists(atPath: $0) }
+    ) {
+        self.displayplacerURL = displayplacerURL
+        self.commandRunner = commandRunner ?? ProcessCommandRunner(allowedExecutableURLs: [displayplacerURL])
+        self.fileExists = fileExists
+    }
 
     func setGameResolution() {
         guard let (id, currentMode) = mainDisplayConfig() else { return }
@@ -289,27 +302,27 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
     }
 
     private func runAndCapture(_ args: [String]) -> String? {
-        guard FileManager.default.fileExists(atPath: Self.displayplacerPath) else { return nil }
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: Self.displayplacerPath)
-        process.arguments = args
-        let pipe = Pipe()
-        process.standardOutput = pipe
-        process.standardError = FileHandle.nullDevice
-        try? process.run()
-        process.waitUntilExit()
-        return String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)
+        guard fileExists(displayplacerURL.path) else { return nil }
+        let request = CommandRequest(
+            executableURL: displayplacerURL,
+            arguments: args,
+            environment: [:],
+            timeoutSeconds: 5,
+            purpose: .displayResolutionList
+        )
+        return try? BlockingCommandRunner.run(commandRunner, request: request).stdout
     }
 
     private func runDisplayplacer(_ config: String) {
-        guard FileManager.default.fileExists(atPath: Self.displayplacerPath) else { return }
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: Self.displayplacerPath)
-        process.arguments = [config]
-        process.standardOutput = FileHandle.nullDevice
-        process.standardError = FileHandle.nullDevice
-        try? process.run()
-        process.waitUntilExit()
+        guard fileExists(displayplacerURL.path) else { return }
+        let request = CommandRequest(
+            executableURL: displayplacerURL,
+            arguments: [config],
+            environment: [:],
+            timeoutSeconds: 5,
+            purpose: .displayResolutionSet
+        )
+        _ = try? BlockingCommandRunner.run(commandRunner, request: request)
     }
 }
 
@@ -329,13 +342,44 @@ struct WineSteamService: WineSteamServicing {
     private static let steamExeArg = "C:\\Program Files (x86)\\Steam\\steam.exe"
     private static let checkInterval: TimeInterval = 0.5
 
+    private let commandRunner: (any CommandRunning)?
+    private let wineURL: URL
+    private let environmentProvider: @Sendable () -> [String: String]
+    private let readinessBufferNanoseconds: UInt64
+    private let sleep: @Sendable (UInt64) async throws -> Void
+
+    init(
+        commandRunner: (any CommandRunning)? = nil,
+        wineURL: URL = URL(fileURLWithPath: winePath),
+        environmentProvider: @escaping @Sendable () -> [String: String] = { ProcessInfo.processInfo.environment },
+        readinessBufferNanoseconds: UInt64 = 2_000_000_000,
+        sleep: @escaping @Sendable (UInt64) async throws -> Void = { try await Task.sleep(nanoseconds: $0) }
+    ) {
+        self.wineURL = wineURL
+        self.commandRunner = commandRunner
+        self.environmentProvider = environmentProvider
+        self.readinessBufferNanoseconds = readinessBufferNanoseconds
+        self.sleep = sleep
+    }
+
     func launch(bottleName: String) throws {
-        let wineURL = URL(fileURLWithPath: Self.winePath)
+        var env = environmentProvider()
+        env["WINEDEBUG"] = "-all"
+        if let commandRunner {
+            let request = CommandRequest(
+                executableURL: wineURL,
+                arguments: ["--bottle", bottleName, Self.steamExeArg],
+                environment: env,
+                timeoutSeconds: 5,
+                purpose: .wineSteamLaunch
+            )
+            _ = try BlockingCommandRunner.run(commandRunner, request: request)
+            return
+        }
+
         let process = Process()
         process.executableURL = wineURL
         process.arguments = ["--bottle", bottleName, Self.steamExeArg]
-        var env = ProcessInfo.processInfo.environment
-        env["WINEDEBUG"] = "-all"
         process.environment = env
         process.standardOutput = FileHandle.nullDevice
         process.standardError = FileHandle.nullDevice
@@ -345,53 +389,103 @@ struct WineSteamService: WineSteamServicing {
     func waitForReadiness(timeout: TimeInterval) async throws {
         let deadline = Date().addingTimeInterval(timeout)
         while Date() < deadline {
-            let running = await Task.detached {
-                // Wine processes appear in the OS process table but not in NSWorkspace.
-                // Use pgrep with full command-line match to detect steam.exe running under CrossOver.
-                GameProcessMonitor.isProcessRunning(name: "steam.exe")
-            }.value
+            // Wine processes appear in the OS process table but not in NSWorkspace.
+            let running = isSteamProcessRunning()
             if running {
-                try await Task.sleep(nanoseconds: 2_000_000_000)
+                try await sleep(readinessBufferNanoseconds)
                 return
             }
-            try await Task.sleep(nanoseconds: UInt64(Self.checkInterval * 1_000_000_000))
+            try await sleep(UInt64(Self.checkInterval * 1_000_000_000))
         }
         throw WineSteamError.readinessTimeout
+    }
+
+    private func isSteamProcessRunning() -> Bool {
+        guard let commandRunner else {
+            return GameProcessMonitor.isProcessRunning(name: "steam.exe")
+        }
+
+        return GameProcessMonitor.isProcessRunning(
+            name: "steam.exe",
+            commandRunner: commandRunner
+        )
     }
 }
 
 // MARK: - Game Process Monitor
 
 struct GameProcessMonitor {
-    static func isProcessRunning(name: String) -> Bool {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
-        process.arguments = ["-x", name]
-        process.standardOutput = FileHandle.nullDevice
-        process.standardError = FileHandle.nullDevice
-        do {
-            try process.run()
-            process.waitUntilExit()
-            return process.terminationStatus == 0
-        } catch {
-            return false
-        }
+    static let pgrepURL = URL(fileURLWithPath: "/usr/bin/pgrep")
+    static let pkillURL = URL(fileURLWithPath: "/usr/bin/pkill")
+
+    static func isProcessRunning(
+        name: String,
+        commandRunner: any CommandRunning = ProcessCommandRunner(allowedExecutableURLs: [pgrepURL])
+    ) -> Bool {
+        let request = CommandRequest(
+            executableURL: pgrepURL,
+            arguments: ["-x", name],
+            environment: [:],
+            timeoutSeconds: 2,
+            purpose: .processLookup
+        )
+        return (try? BlockingCommandRunner.run(commandRunner, request: request)) != nil
     }
 
-    static func killWineProcesses() {
+    static func killWineProcesses(
+        commandRunner: any CommandRunning = ProcessCommandRunner(allowedExecutableURLs: [pkillURL])
+    ) {
         let targets = [
             "steam.exe", "steamwebhelper.exe", "steamservice.exe",
             "steamclient_loader", "winedevice.exe", "winewrapper.exe",
             "services.exe", "plugplay.exe", "svchost.exe"
         ]
         for name in targets {
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/pkill")
-            process.arguments = ["-f", name]
-            process.standardOutput = FileHandle.nullDevice
-            process.standardError = FileHandle.nullDevice
-            try? process.run()
-            process.waitUntilExit()
+            let request = CommandRequest(
+                executableURL: pkillURL,
+                arguments: ["-f", name],
+                environment: [:],
+                timeoutSeconds: 2,
+                purpose: .processKill
+            )
+            _ = try? BlockingCommandRunner.run(commandRunner, request: request)
+        }
+    }
+}
+
+private enum BlockingCommandRunner {
+    static func run(_ commandRunner: any CommandRunning, request: CommandRequest) throws -> CommandResult {
+        let semaphore = DispatchSemaphore(value: 0)
+        let resultBox = BlockingCommandResultBox()
+
+        Task {
+            do {
+                let result = try await commandRunner.run(request)
+                resultBox.store(.success(result))
+            } catch {
+                resultBox.store(.failure(error))
+            }
+            semaphore.signal()
+        }
+
+        semaphore.wait()
+        return try resultBox.result.get()
+    }
+}
+
+private final class BlockingCommandResultBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storedResult: Result<CommandResult, Error>?
+
+    var result: Result<CommandResult, Error> {
+        lock.withLock {
+            storedResult ?? .failure(CommandError.launchFailed("Command runner did not return a result."))
+        }
+    }
+
+    func store(_ result: Result<CommandResult, Error>) {
+        lock.withLock {
+            storedResult = result
         }
     }
 }

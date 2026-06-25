@@ -7,13 +7,13 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 2/12 (~%17)** · `▰▰▱▱▱▱▱▱▱▱▱▱`
+**İlerleme: 3/12 (%25)** · `▰▰▰▱▱▱▱▱▱▱▱▱`
 
 | # | Görev | Model (araç) | Durum |
 |---|---|---|---|
 | T-000 | Koordinasyon sistemi kurulumu | Opus (Claude Code) | ✅ done |
 | T-001 | Mekanik lint temizliği | Haiku (Claude Code) | ✅ done |
-| T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | ⬜ todo |
+| T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | ✅ done |
 | T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | ⬜ todo |
 | T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | ⬜ todo |
 | T-005 | Refactor uygulaması | Sonnet (Claude Code) | ⬜ todo |
@@ -39,7 +39,7 @@
 - **verify:** ✅ `swiftlint lint --quiet` → bu kategorilerde 0 · ✅ `swift test --build-path /tmp/mpl_ci_build` yeşil
 
 ### T-002 · Eksik servis testleri (otonom TDD)
-- **sahip:** Codex (GPT 5.5) · **durum:** todo · **bağımlı:** T-001 · **branch:** `test/command-services`
+- **sahip:** Codex (GPT 5.5) · **durum:** done · **bağımlı:** T-001 · **branch:** `test/command-services`
 - **iş:** `DisplayResolutionService`, `WineSteamService`, `GameProcessMonitor` için birim testleri yaz (`FakeCommandRunner` test double'ı ile; gerçek Process spawn etme). Dosyalar `Core/Services/Commands/` altında.
 - **verify:** `swift test --build-path /tmp/mpl_ci_build` yeşil; yeni testler koşuyor
 
