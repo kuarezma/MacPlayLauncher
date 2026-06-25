@@ -1,4 +1,4 @@
-NEXT: Sonnet (Claude Code) → T-012 (exit-53/siyah ekran tespiti, 🟠 Yüksek) · branch: fix/blackscreen-exit53 · (sonra T-014 pencere/workdir). Karar: minör launcher cilası; T-013/T-015 ⛔ engine (atlandı).
+NEXT: Codex (GPT 5.5) → T-017 [RUNTIME] Zink deneyi Faz 0 fizibilite (`ZINK-EXPERIMENT.md`, `~/Cossacks3_Mac_Port`) 🔴 · (T-012/T-014 Sonnet launcher cilası bağımsız & hazır)
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Sonnet (Claude Code) → T-012 (exit-53/siyah ekran tespiti, 🟠 Yüksek)
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · Zink deneyi tasarımı (Yol Z)** — Kullanıcı "ücretsiz bir yol üretelim" dedi; "engine değiştir" tükendi ama **render katmanı değiştir** denenmedi. İçgörü: DXVK yanlış katmandı, oyun OpenGL → **Zink (GL→Vulkan)→winevulkan→MoltenVK→Metal** doğru katman; altyapı prefix'te zaten var. Spec yazıldı → `ZINK-EXPERIMENT.md` (fazlı, karar kapılı). Can alıcı kapı: oyunu çalıştıran x11-capable Wine (CX23.7 mac-only olabilir). T-017 açıldı (runtime, repo-dışı). NEXT → Codex Faz 0 fizibilite. (Launcher cilası T-012/T-014 hâlâ bağımsız & hazır.)
 - **2026-06-25 · Opus (Claude Code) · Karar: minör launcher cilası** — Kullanıcı kararı: cavalry/FPS engine-bloklu olduğu için onları bırak, **repo-içi gerçekten yapılabilir** işleri bitir: **T-012** (exit-53/offline.txt tespiti + UI uyarısı) → **T-014** (pencere/workdir normalizasyonu). T-013/T-015 ⛔ blocked kalır, T-016 opsiyonel. T-014 bağımlılığı T-013→T-012 güncellendi. NEXT → Sonnet (T-012).
 - **2026-06-25 · Codex (GPT 5.5) · T-015 runtime teşhisi — FPS de engine sınırı** — Kanıt: Cossacks 3 ana 3D'yi **D3D9 değil OpenGL/GLSL** ile çiziyor (`DEVAM_NOTU.md:72`); aktif yol WineCX 23.7 + builtin WineD3D. DXVK **yanlış katman**, MoltenVK var ama render yolunda değil → DXVK fayda düşük ihtimal. **Opus'un DXVK→MoltenVK ~2-5× hipotezi düzeltildi** (Codex runtime bağlamı kazandı). Gerçek darboğaz: OpenGL→Apple çeviri + CPU. Free engine alternatifleri çalışmıyor; iyileşme CX26 (paralı). T-015 ⛔ blocked; T-016 (render-teşhis, opsiyonel) açıldı. **Launcher'ın oyun-içi sorunlara katkısı tükendi** — kalan repo-içi iş minör.
 - **2026-06-25 · Codex (GPT 5.5) · T-013 verdikti — engine sınırı** — `DEVAM_NOTU.md` kanıtı: cavalry binici hatası shader-side tükenmiş; dinamik `boneMatrices[index]` Apple/Wine GL'de bozuluyor → **WineCX 23.7 engine sınırı**, CrossOver 26 gerektirir (ücretsiz build yok). `ShaderPatchService` artık yalnız geri-yükleme/fragment/teşhis. **T-013 launcher-scope KAPANDI** (⛔ blocked). Odak FPS'e (T-015) kaydı.

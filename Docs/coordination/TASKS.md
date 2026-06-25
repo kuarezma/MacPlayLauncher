@@ -130,6 +130,14 @@
 - **iş:** Launcher diagnostics'e "aktif render yolu" tespiti ekle: builtin WineD3D mi / DXVK DLL mi (dosya boyutu/strings ile ayırt et), MoltenVK sadece mevcut mu yoksa aktif mi, oyun OpenGL log özeti. **FPS'i ARTIRMAZ** — yalnız şeffaf teşhis/bilgilendirme (launcher'ın mevcut diagnostics rolüne uyar).
 - **verify:** diagnostics aktif render yolunu doğru raporluyor (mevcut durum = builtin WineD3D + OpenGL).
 
+## Runtime Deneyleri (repo-DIŞI: `~/Cossacks3_Mac_Port`)
+
+### T-017 · [RUNTIME] Zink GL→Vulkan→MoltenVK deneyi
+- **sahip:** Codex (GPT 5.5, runtime bağlamı) · **zeka:** 🔴 Maksimum · **durum:** todo · **bağımlı:** — · **kapsam:** `~/Cossacks3_Mac_Port` (bu repo DIŞI)
+- **iş:** [`ZINK-EXPERIMENT.md`](ZINK-EXPERIMENT.md)'i uygula — **Faz 0 fizikbilite** (winex11.drv + Mesa Zink + MoltenVK + oyunu çalıştıran x11-capable Wine var mı?) → **karar kapısı** → Faz 1 (izole Zink probu) → Faz 2 (Cossacks Zink üzerinde). **Orijinal prefix/script'e dokunma** (kopya üzerinde). Her faz sonunda rapor + Opus'a devret.
+- **⚠️ Can alıcı kapı:** WineCX 23.7 mac-driver-only olabilir → oyunu çalıştıran x11'li Wine bulmak/üretmek deneyin make-or-break'i.
+- **verify:** Faz 0 raporu (`~/Cossacks3_Mac_Port/ZINK_DENEME_NOTU.md`); kapı geçilirse Faz 1/2 gözlemleri (cavalry eyerde mi, kalabalık FPS).
+
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.
 - Akış: Opus tasarım → Codex/Sonnet uygula → Opus review.
