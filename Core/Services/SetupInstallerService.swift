@@ -29,15 +29,18 @@ struct SetupInstallerService: SetupInstallerServicing {
     private let commandRunner: any CommandRunning
     private let fileChecker: any FileChecking
     private let steamExecutableURL: URL
+    let offlineTxtURL: URL
 
     init(
         commandRunner: any CommandRunning = ProcessCommandRunner(),
         fileChecker: any FileChecking = FileManagerFileChecker(),
-        steamExecutableURL: URL? = nil
+        steamExecutableURL: URL? = nil,
+        offlineTxtURL: URL? = nil
     ) {
         self.commandRunner = commandRunner
         self.fileChecker = fileChecker
         self.steamExecutableURL = steamExecutableURL ?? Self.defaultSteamExecutableURL()
+        self.offlineTxtURL = offlineTxtURL ?? Self.defaultOfflineTxtURL()
     }
 
     func install(target: SetupAutomationTarget) async throws -> SetupInstallResult {
@@ -55,6 +58,8 @@ struct SetupInstallerService: SetupInstallerServicing {
             return try await installDisplayplacer()
         case .shaderPatch:
             throw SetupInstallerError.unsupportedTarget("Grafik yaması ayrı servisle uygulanır.")
+        case .offlineTxt:
+            return try await disableOfflineTxt()
         }
 
         return .completed("Kurulum tamamlandı.")
@@ -196,6 +201,34 @@ struct SetupInstallerService: SetupInstallerServicing {
             try data.write(to: targetURL, options: .atomic)
             return targetURL
         }.value
+    }
+
+    private func disableOfflineTxt() async throws -> SetupInstallResult {
+        guard fileChecker.fileExists(at: offlineTxtURL) else {
+            return .completed("Çevrimdışı kısıtlaması zaten yok.")
+        }
+        let disabledURL = offlineTxtURL.deletingLastPathComponent()
+            .appending(path: "offline.txt.disabled", directoryHint: .notDirectory)
+        do {
+            if fileChecker.fileExists(at: disabledURL) {
+                try FileManager.default.removeItem(at: disabledURL)
+            }
+            try FileManager.default.moveItem(at: offlineTxtURL, to: disabledURL)
+            return .completed("Çevrimdışı kısıtlaması devre dışı bırakıldı.")
+        } catch {
+            let manualCmd = "mv '\(offlineTxtURL.path)' '\(disabledURL.path)'"
+            return .waitingForUser(
+                "Dosya yeniden adlandırılamadı. Terminalde şu komutu çalıştırın: \(manualCmd)"
+            )
+        }
+    }
+
+    private static func defaultOfflineTxtURL() -> URL {
+        FileManager.default.homeDirectoryForCurrentUser
+            .appending(
+                path: "Cossacks3_Mac_Port/oyun_dosyalari/steam_settings/offline.txt",
+                directoryHint: .notDirectory
+            )
     }
 
     private func makeHomebrewInstallerScript() throws -> URL {

@@ -12,13 +12,13 @@ final class CossacksSetupServiceTests: XCTestCase {
         let ids = steps.map(\.id)
         XCTAssertEqual(
             ids,
-            ["rosetta", "gameInstall", "shaderPatch", "minimapFix", "displayplacer"]
+            ["rosetta", "gameInstall", "offlineTxt", "shaderPatch", "minimapFix", "displayplacer"]
         )
     }
 
-    func testDetectStepsReturnsFiveSteps() async {
+    func testDetectStepsReturnsSixSteps() async {
         let steps = await service.detectSteps()
-        XCTAssertEqual(steps.count, 5)
+        XCTAssertEqual(steps.count, 6)
     }
 
     // MARK: - shaderPatch step

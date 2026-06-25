@@ -2232,6 +2232,23 @@
         }
       }
     },
+    "error.exit53.offlineTxt": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The game exited with code 53. The file 'steam_settings/offline.txt' may be causing this. Rename it to 'offline.txt.disabled' in the Setup tab to resolve the issue."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oyun çıkış kodu 53 ile kapandı. 'steam_settings/offline.txt' dosyası bu soruna yol açıyor olabilir. Sorunu çözmek için Kurulum sekmesinden 'offline.txt.disabled' olarak yeniden adlandırın."
+          }
+        }
+      }
+    },
     "error.bookmarkStale": {
       "extractionState": "stale",
       "localizations": {

@@ -137,6 +137,8 @@ extension AppState {
             return "displayplacer kuruluyor…"
         case .shaderPatch:
             return "Grafik yamaları uygulanıyor…"
+        case .offlineTxt:
+            return "Çevrimdışı kısıtlaması devre dışı bırakılıyor…"
         }
     }
 

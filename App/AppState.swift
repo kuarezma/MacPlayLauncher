@@ -43,6 +43,8 @@ final class AppState {
     var setupPatchErrorMessage: String?
     var setupStatusOverrides: [String: SetupStepStatus] = [:]
     private(set) var setupOrchestrator: SetupOrchestrator?
+    var launchExitAlertMessage: String?
+    var gameTerminationObserver: (any NSObjectProtocol)?
 
     let environment: AppEnvironment
 
@@ -52,6 +54,7 @@ final class AppState {
             setupService: environment.cossacksSetupService,
             installerService: environment.setupInstallerService
         )
+        setupGameTerminationObserver()
     }
 
     func loadInitialProfiles() async {

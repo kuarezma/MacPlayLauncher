@@ -1,5 +1,9 @@
 import Foundation
 
+extension Notification.Name {
+    static let gameProcessDidTerminate = Notification.Name("MacPlayGameProcessDidTerminate")
+}
+
 @MainActor
 extension AppState {
     var isExperimentalLaunchEnabled: Bool {
@@ -54,6 +58,20 @@ extension AppState {
         } catch {
             launchErrorMessage = ErrorPresenter.message(for: error)
             launchingProfileID = nil
+        }
+    }
+
+    func setupGameTerminationObserver() {
+        gameTerminationObserver = NotificationCenter.default.addObserver(
+            forName: .gameProcessDidTerminate,
+            object: nil,
+            queue: nil
+        ) { [weak self] notification in
+            guard let exitCode = notification.userInfo?["exitCode"] as? Int32,
+                  exitCode == 53 else { return }
+            Task { @MainActor [weak self] in
+                self?.launchExitAlertMessage = String(localized: "error.exit53.offlineTxt")
+            }
         }
     }
 

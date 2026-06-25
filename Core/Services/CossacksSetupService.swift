@@ -24,6 +24,7 @@ enum SetupAutomationTarget: String, Equatable, Sendable {
     case steam
     case displayplacer
     case shaderPatch
+    case offlineTxt
 }
 
 struct SetupStep: Identifiable, Equatable, Sendable {
@@ -85,6 +86,7 @@ struct CossacksSetupService: CossacksSetupServicing {
         return [
             detectRosetta(),
             detectGameInstall(),
+            detectOfflineTxt(),
             detectShaderPatch(),
             detectMinimapFix(),
             detectDisplayPlacer()
@@ -175,6 +177,32 @@ struct CossacksSetupService: CossacksSetupServicing {
             canAutoFix: !localGameFound,
             automationTarget: localGameFound ? nil : .steam,
             actionLabel: localGameFound ? nil : "Steam'i Hazırla",
+            externalURL: nil,
+            copyCommand: nil
+        )
+    }
+
+    private func detectOfflineTxt() -> SetupStep {
+        let offlineTxtURL = localPortGameDirectory.appending(
+            path: "steam_settings/offline.txt",
+            directoryHint: .notDirectory
+        )
+        let offlineExists = FileManager.default.fileExists(atPath: offlineTxtURL.path)
+        let explanation = "steam_settings/offline.txt dosyası çevrimdışı Steam emülasyonunu zorunlu kılar."
+            + " Bu dosya varsa oyun exit kodu 53 ile kapanarak siyah ekran sorununa yol açabilir."
+            + " 'offline.txt.disabled' olarak yeniden adlandırılırsa kısıtlama devre dışı kalır."
+        return SetupStep(
+            id: "offlineTxt",
+            title: "Çevrimdışı kısıtlaması",
+            explanation: explanation,
+            status: offlineExists
+                ? .needsAction(
+                    message: "steam_settings/offline.txt mevcut — siyah ekrana yol açabilir, devre dışı bırakılabilir"
+                )
+                : .ok(detail: "Çevrimdışı kısıtlaması yok"),
+            canAutoFix: offlineExists,
+            automationTarget: offlineExists ? .offlineTxt : nil,
+            actionLabel: offlineExists ? "Devre Dışı Bırak" : nil,
             externalURL: nil,
             copyCommand: nil
         )

@@ -191,10 +191,15 @@ struct ProcessCommandRunner: CommandRunning {
 
 struct ProcessGameLaunchExecutor: GameLaunchExecuting {
     private let allowedLauncherURLs: Set<URL>
+    private let notificationCenter: NotificationCenter
 
-    init(allowedLauncherURLs: Set<URL> = ProcessCommandRunner.defaultAllowedWineURLs
-            .union(ProcessCommandRunner.defaultAllowedCrossOverURLs)) {
+    init(
+        allowedLauncherURLs: Set<URL> = ProcessCommandRunner.defaultAllowedWineURLs
+            .union(ProcessCommandRunner.defaultAllowedCrossOverURLs),
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.allowedLauncherURLs = Set(allowedLauncherURLs.map { ProcessCommandRunner.normalizedURL($0) })
+        self.notificationCenter = notificationCenter
     }
 
     func start(plan: GameLaunchPlan) throws -> GameLaunchResult {
@@ -212,6 +217,11 @@ struct ProcessGameLaunchExecutor: GameLaunchExecuting {
         process.arguments = plan.arguments
         process.currentDirectoryURL = plan.workingDirectoryURL
         process.environment = plan.environment
+
+        process.terminationHandler = { [center = notificationCenter, id = plan.profileID] proc in
+            center.post(name: .gameProcessDidTerminate, object: nil,
+                        userInfo: ["profileID": id, "exitCode": proc.terminationStatus])
+        }
 
         do {
             try process.run()
@@ -453,46 +463,5 @@ struct WineSteamService: WineSteamServicing {
 
     private static var defaultCrossOverURL: URL {
         CrossOverExecutableResolver().resolve() ?? CrossOverExecutableResolver.defaultAllowedURLs[0]
-    }
-}
-
-// MARK: - Game Process Monitor
-
-struct GameProcessMonitor {
-    static let pgrepURL = URL(fileURLWithPath: "/usr/bin/pgrep")
-    static let pkillURL = URL(fileURLWithPath: "/usr/bin/pkill")
-
-    static func isProcessRunning(
-        name: String,
-        commandRunner: any CommandRunning = ProcessCommandRunner(allowedExecutableURLs: [pgrepURL])
-    ) async -> Bool {
-        let request = CommandRequest(
-            executableURL: pgrepURL,
-            arguments: ["-x", name],
-            environment: [:],
-            timeoutSeconds: 2,
-            purpose: .processLookup
-        )
-        return (try? await commandRunner.run(request)) != nil
-    }
-
-    static func killWineProcesses(
-        commandRunner: any CommandRunning = ProcessCommandRunner(allowedExecutableURLs: [pkillURL])
-    ) async {
-        let targets = [
-            "steam.exe", "steamwebhelper.exe", "steamservice.exe",
-            "steamclient_loader", "winedevice.exe", "winewrapper.exe",
-            "services.exe", "plugplay.exe", "svchost.exe"
-        ]
-        for name in targets {
-            let request = CommandRequest(
-                executableURL: pkillURL,
-                arguments: ["-f", name],
-                environment: [:],
-                timeoutSeconds: 2,
-                purpose: .processKill
-            )
-            _ = try? await commandRunner.run(request)
-        }
     }
 }
