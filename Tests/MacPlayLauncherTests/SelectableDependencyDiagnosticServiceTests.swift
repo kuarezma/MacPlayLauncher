@@ -1,7 +1,7 @@
 @testable import MacPlayLauncher
 import XCTest
 
-final class SelectableDependencyDiagnosticServiceTests: XCTestCase {
+final class SelectableDiagnosticServiceTests: XCTestCase {
     func testStaticModeReturnsStaticSummaryWithSourceLabel() async {
         let staticDependency = makeDependency(kind: .wine, status: .missing)
         let service = SelectableDependencyDiagnosticService(

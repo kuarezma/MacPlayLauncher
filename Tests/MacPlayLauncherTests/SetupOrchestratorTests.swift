@@ -1,6 +1,12 @@
 @testable import MacPlayLauncher
 import XCTest
 
+private struct OrchestratorTestContext {
+    let orchestrator: SetupOrchestrator
+    let service: StubSetupService
+    let installer: StubInstaller
+}
+
 @MainActor
 final class SetupOrchestratorTests: XCTestCase {
 
@@ -10,7 +16,7 @@ final class SetupOrchestratorTests: XCTestCase {
         steps: [SetupStep],
         installerResults: [SetupAutomationTarget: SetupInstallResult] = [:],
         installerError: Error? = nil
-    ) -> (orchestrator: SetupOrchestrator, service: StubSetupService, installer: StubInstaller) {
+    ) -> OrchestratorTestContext {
         let service = StubSetupService(steps: steps)
         let installer = StubInstaller(results: installerResults, error: installerError)
         let orchestrator = SetupOrchestrator(
@@ -18,7 +24,7 @@ final class SetupOrchestratorTests: XCTestCase {
             installerService: installer,
             pollingInterval: .milliseconds(10)
         )
-        return (orchestrator, service, installer)
+        return OrchestratorTestContext(orchestrator: orchestrator, service: service, installer: installer)
     }
 
     private func runUntilStopped(
@@ -44,12 +50,12 @@ final class SetupOrchestratorTests: XCTestCase {
             makeStep(id: "rosetta", status: .ok(detail: "ok")),
             makeStep(id: "crossover", status: .ok(detail: "ok"))
         ]
-        let (orchestrator, _, installer) = makeOrchestrator(steps: steps)
+        let ctx = makeOrchestrator(steps: steps)
 
-        _ = await runUntilStopped(orchestrator, steps: steps)
+        _ = await runUntilStopped(ctx.orchestrator, steps: steps)
 
-        XCTAssertFalse(orchestrator.isRunning)
-        XCTAssertTrue(installer.calledTargets.isEmpty, "Tüm adımlar tamam — installer çağrılmamalı")
+        XCTAssertFalse(ctx.orchestrator.isRunning)
+        XCTAssertTrue(ctx.installer.calledTargets.isEmpty, "Tüm adımlar tamam — installer çağrılmamalı")
     }
 
     // MARK: - Tek adım needsAction → installer çağrılır, sonra durur
@@ -62,17 +68,17 @@ final class SetupOrchestratorTests: XCTestCase {
             automationTarget: .displayplacer
         )
         let okStep = makeStep(id: "displayplacer", status: .ok(detail: "ok"))
-        let (orchestrator, service, installer) = makeOrchestrator(
+        let ctx = makeOrchestrator(
             steps: [step],
             installerResults: [.displayplacer: .completed("kuruldu")]
         )
         // İlk detect → needsAction; installer çağrılır; ikinci detect → ok
-        service.detectCallResponses = [[step], [okStep]]
+        ctx.service.detectCallResponses = [[step], [okStep]]
 
-        _ = await runUntilStopped(orchestrator, steps: [step])
+        _ = await runUntilStopped(ctx.orchestrator, steps: [step])
 
-        XCTAssertFalse(orchestrator.isRunning)
-        XCTAssertEqual(installer.calledTargets, [.displayplacer])
+        XCTAssertFalse(ctx.orchestrator.isRunning)
+        XCTAssertEqual(ctx.installer.calledTargets, [.displayplacer])
     }
 
     // MARK: - waitingForUser adımı → otomatik geçiş olmaz, polling başlar
@@ -84,19 +90,19 @@ final class SetupOrchestratorTests: XCTestCase {
             canAutoFix: false
         )
         let okStep = makeStep(id: "crossover", status: .ok(detail: "ok"))
-        let (orchestrator, service, installer) = makeOrchestrator(steps: [waitingStep])
+        let ctx = makeOrchestrator(steps: [waitingStep])
 
         // Polling sırasında 2. detect çağrısında ok dönecek
-        service.detectCallResponses = [
+        ctx.service.detectCallResponses = [
             [waitingStep],      // ilk detect (orchestration başlangıcı)
             [waitingStep],      // polling 1. tur → hâlâ bekliyor
             [okStep]            // polling 2. tur → tamamlandı
         ]
 
-        _ = await runUntilStopped(orchestrator, steps: [waitingStep], timeout: .seconds(3))
+        _ = await runUntilStopped(ctx.orchestrator, steps: [waitingStep], timeout: .seconds(3))
 
-        XCTAssertFalse(orchestrator.isRunning, "Polling tamamlanınca orchestrator durmalı")
-        XCTAssertTrue(installer.calledTargets.isEmpty, "waitingForUser adımı installer çağırmamalı")
+        XCTAssertFalse(ctx.orchestrator.isRunning, "Polling tamamlanınca orchestrator durmalı")
+        XCTAssertTrue(ctx.installer.calledTargets.isEmpty, "waitingForUser adımı installer çağırmamalı")
     }
 
     // MARK: - failed adım → orchestrator durur
@@ -108,16 +114,16 @@ final class SetupOrchestratorTests: XCTestCase {
             canAutoFix: true,
             automationTarget: .bottle
         )
-        let (orchestrator, service, installer) = makeOrchestrator(
+        let ctx = makeOrchestrator(
             steps: [failedStep],
             installerError: SetupInstallerError.missingCrossOver
         )
-        service.nextDetectResult = [failedStep]
+        ctx.service.nextDetectResult = [failedStep]
 
-        _ = await runUntilStopped(orchestrator, steps: [failedStep])
+        _ = await runUntilStopped(ctx.orchestrator, steps: [failedStep])
 
-        XCTAssertFalse(orchestrator.isRunning, "Hata sonrası orchestrator durmalı")
-        XCTAssertEqual(installer.calledTargets, [.bottle], "Hata almadan önce install çağrılmalı")
+        XCTAssertFalse(ctx.orchestrator.isRunning, "Hata sonrası orchestrator durmalı")
+        XCTAssertEqual(ctx.installer.calledTargets, [.bottle], "Hata almadan önce install çağrılmalı")
     }
 
     // MARK: - Duraklatma çalışır
@@ -128,13 +134,13 @@ final class SetupOrchestratorTests: XCTestCase {
             status: .waitingForUser(message: "giriş bekleniyor"),
             canAutoFix: false
         )
-        let (orchestrator, _, _) = makeOrchestrator(steps: [waitingStep])
+        let ctx = makeOrchestrator(steps: [waitingStep])
 
-        orchestrator.startOrResume(steps: [waitingStep]) { _ in }
+        ctx.orchestrator.startOrResume(steps: [waitingStep]) { _ in }
         try? await Task.sleep(for: .milliseconds(30))
-        orchestrator.pause()
+        ctx.orchestrator.pause()
 
-        XCTAssertFalse(orchestrator.isRunning)
+        XCTAssertFalse(ctx.orchestrator.isRunning)
     }
 
     // MARK: - Steam/CrossOver kimlik bilgisi bypass yapılmıyor
@@ -148,13 +154,13 @@ final class SetupOrchestratorTests: XCTestCase {
             canAutoFix: true,
             automationTarget: .steam
         )
-        let (orchestrator, service, _) = makeOrchestrator(
+        let ctx = makeOrchestrator(
             steps: [steamStep],
             installerResults: [.steam: .waitingForUser("Steam açıldı")]
         )
-        service.nextDetectResult = [steamStep]
+        ctx.service.nextDetectResult = [steamStep]
 
-        _ = await runUntilStopped(orchestrator, steps: [steamStep])
+        _ = await runUntilStopped(ctx.orchestrator, steps: [steamStep])
 
         let credentialPath = FileManager.default.homeDirectoryForCurrentUser
             .appending(
@@ -179,15 +185,15 @@ final class SetupOrchestratorTests: XCTestCase {
             canAutoFix: true,
             automationTarget: .rosetta
         )
-        let (orchestrator, service, _) = makeOrchestrator(
+        let ctx = makeOrchestrator(
             steps: [step],
             installerResults: [.rosetta: .completed("Rosetta kuruldu")]
         )
-        service.nextDetectResult = [makeStep(id: "rosetta", status: .ok(detail: "ok"))]
+        ctx.service.nextDetectResult = [makeStep(id: "rosetta", status: .ok(detail: "ok"))]
 
-        _ = await runUntilStopped(orchestrator, steps: [step])
+        _ = await runUntilStopped(ctx.orchestrator, steps: [step])
 
-        XCTAssertFalse(orchestrator.lastLogText.isEmpty, "Tamamlanan adım log bırakmalı")
+        XCTAssertFalse(ctx.orchestrator.lastLogText.isEmpty, "Tamamlanan adım log bırakmalı")
     }
 
     // MARK: - blocked adım → orchestrator önceki adımı bekler
@@ -198,12 +204,12 @@ final class SetupOrchestratorTests: XCTestCase {
             status: .blocked(reason: "Önce bottle oluşturulmalı"),
             canAutoFix: false
         )
-        let (orchestrator, _, installer) = makeOrchestrator(steps: [blockedStep])
+        let ctx = makeOrchestrator(steps: [blockedStep])
 
-        _ = await runUntilStopped(orchestrator, steps: [blockedStep])
+        _ = await runUntilStopped(ctx.orchestrator, steps: [blockedStep])
 
-        XCTAssertFalse(orchestrator.isRunning)
-        XCTAssertTrue(installer.calledTargets.isEmpty, "Blocked adımda installer çağrılmamalı")
+        XCTAssertFalse(ctx.orchestrator.isRunning)
+        XCTAssertTrue(ctx.installer.calledTargets.isEmpty, "Blocked adımda installer çağrılmamalı")
     }
 
     // MARK: - Adım sırası doğru (rosetta önce, displayplacer sonra)
@@ -221,7 +227,7 @@ final class SetupOrchestratorTests: XCTestCase {
             canAutoFix: true,
             automationTarget: .displayplacer
         )
-        let (orchestrator, service, installer) = makeOrchestrator(
+        let ctx = makeOrchestrator(
             steps: [rosetta, displayplacer],
             installerResults: [
                 .rosetta: .completed("ok"),
@@ -230,19 +236,19 @@ final class SetupOrchestratorTests: XCTestCase {
         )
         // İlk detect → rosetta ok, displayplacer needsAction
         // İkinci detect → her ikisi de ok
-        service.detectCallResponses = [
+        ctx.service.detectCallResponses = [
             [rosetta, displayplacer],
             [makeStep(id: "rosetta", status: .ok(detail: "ok")), displayplacer],
             [makeStep(id: "rosetta", status: .ok(detail: "ok")),
              makeStep(id: "displayplacer", status: .ok(detail: "ok"))]
         ]
 
-        _ = await runUntilStopped(orchestrator, steps: [rosetta, displayplacer])
+        _ = await runUntilStopped(ctx.orchestrator, steps: [rosetta, displayplacer])
 
-        XCTAssertFalse(orchestrator.isRunning)
+        XCTAssertFalse(ctx.orchestrator.isRunning)
         // rosetta önce, displayplacer sonra çağrılmış olmalı
-        XCTAssertEqual(installer.calledTargets.first, .rosetta)
-        XCTAssertTrue(installer.calledTargets.contains(.displayplacer))
+        XCTAssertEqual(ctx.installer.calledTargets.first, .rosetta)
+        XCTAssertTrue(ctx.installer.calledTargets.contains(.displayplacer))
     }
 }
 

@@ -1,5 +1,14 @@
 import Foundation
 
+private struct WineDependencyParams {
+    let status: RuntimeDependencyStatus
+    let version: String?
+    let installPath: String?
+    let description: String
+    let missingReason: String?
+    let suggestedAction: String?
+}
+
 struct WineDiagnosticProvider: RuntimeDiagnosticProviding {
     private let commandRunner: any CommandRunning
     private let fileChecker: any FileChecking
@@ -20,21 +29,21 @@ struct WineDiagnosticProvider: RuntimeDiagnosticProviding {
 
     func diagnose() async -> RuntimeDependency {
         guard let wineURL = allowedWineURLs.first(where: isUsableWineExecutable) else {
-            return dependency(
+            return dependency(WineDependencyParams(
                 status: .missing,
                 version: nil,
                 installPath: nil,
                 description: "Wine bulunamadı.",
                 missingReason: "Wine bulunamadı.",
                 suggestedAction: "Wine’ı desteklenen konumlardan birine manuel olarak kurmanız gerekir."
-            )
+            ))
         }
 
         do {
             let result = try await commandRunner.run(commandRequest(for: wineURL))
             let version = Self.parseVersion(from: result.stdout)
                 ?? Self.parseVersion(from: result.stderr)
-            return dependency(
+            return dependency(WineDependencyParams(
                 status: .ready,
                 version: version,
                 installPath: wineURL.path,
@@ -43,16 +52,16 @@ struct WineDiagnosticProvider: RuntimeDiagnosticProviding {
                     : "Wine bulundu ve sürüm bilgisi okunabildi.",
                 missingReason: nil,
                 suggestedAction: nil
-            )
+            ))
         } catch {
-            return dependency(
+            return dependency(WineDependencyParams(
                 status: .unknown,
                 version: nil,
                 installPath: wineURL.path,
                 description: "Wine durumu doğrulanamadı.",
                 missingReason: "Wine durumu doğrulanamadı.",
                 suggestedAction: "Wine kurulumunu ve çalıştırılabilir dosya izinlerini kontrol edin."
-            )
+            ))
         }
     }
 
@@ -80,23 +89,16 @@ struct WineDiagnosticProvider: RuntimeDiagnosticProviding {
         )
     }
 
-    private func dependency(
-        status: RuntimeDependencyStatus,
-        version: String?,
-        installPath: String?,
-        description: String,
-        missingReason: String?,
-        suggestedAction: String?
-    ) -> RuntimeDependency {
+    private func dependency(_ params: WineDependencyParams) -> RuntimeDependency {
         RuntimeDependency(
             displayName: "Wine",
             kind: .wine,
-            status: status,
-            version: version,
-            installPath: installPath,
-            userFacingDescription: description,
-            missingReason: missingReason,
-            suggestedAction: suggestedAction,
+            status: params.status,
+            version: params.version,
+            installPath: params.installPath,
+            userFacingDescription: params.description,
+            missingReason: params.missingReason,
+            suggestedAction: params.suggestedAction,
             setupGuide: nil
         )
     }
