@@ -119,12 +119,16 @@
 - **iş:** `GameLaunchPlanner` working directory çözümlemesi + pencere argümanlarını normalize et (oyun doğru dizinde/pencere modunda açılsın).
 - **verify:** `GameLaunchPlannerTests` yeşil.
 
-### T-015 · Performans — kalabalıkta FPS 0-10 (DXVK/MoltenVK render yolu)
-- **sahip:** Codex (GPT 5.5 — runtime bağlamı) · **zeka:** 🔴 Maksimum · **durum:** todo · **bağımlı:** — · **branch:** (büyük ihtimalle runtime/repo-dışı)
-- **✅ Opus teşhisi (kullanıcı: kalabalıkta 0-10 FPS, idle ~17):** Muhtemel kök neden: (a) **render yolu** — oyun WineD3D→OpenGL'de koşuyor olabilir (`WINEDLLOVERRIDES=…=b` builtin/software D3D); hızlı yol **DXVK→MoltenVK** (D3D→Vulkan→Metal), ~2-5× kazanç; (b) **CPU** — Wine+Rosetta+binlerce birim, daha az düzeltilebilir.
-- **⚠️ Scope:** FPS launcher Swift kodunda **doğrudan çözülmez** — render yolu WineCX/prefix config'inde. Launcher rolü: **DXVK/MoltenVK tespit + etkinleştirme rehberliği** (mevcut passive diagnostics → aksiyon-önerili). Asıl fix runtime tarafında (Dalga 3 "DXVK/MoltenVK" ile örtüşür).
-- **iş — Codex'e danış:** Cossacks3 prefix'inde DXVK+MoltenVK kurulu/aktif mi? Değilse etkinleştirme adımları → FPS kazancı; launcher diagnostics'ini buna göre aksiyon-önerili yap.
-- **verify:** gerçek oyunda kalabalık-sahne FPS ölçümü iyileşti.
+### T-015 · Performans — kalabalıkta FPS 0-10
+- **sahip:** — · **zeka:** 🔴 · **durum:** ⛔ blocked — engine/OpenGL sınırı (FPS fix repo-DIŞI) · **bağımlı:** —
+- **✅ Codex runtime teşhisi (kanıtlı):** Opus'un DXVK hipotezi **YANLIŞ çıktı.** Cossacks 3 ana 3D'yi **D3D9'dan değil, doğrudan OpenGL+GLSL** ile çiziyor (`DEVAM_NOTU.md:72`). Aktif yol: WineCX 23.7 + builtin WineD3D (`d3d9.dll` ~200KB builtin) + oyunun kendi GLSL'i. MoltenVK **var ama render yolunda değil**; DXVK **yanlış katman** (D3D→Vulkan), aktif edilse bile bu oyunda fayda düşük ihtimal.
+- **Gerçek darboğaz:** OpenGL/GLSL + WineCX 23.7 + Apple GL→Metal çeviri + CPU birim/animasyon yükü. Free engine alternatifleri çalışmıyor (WineHQ 11 SEH fırtınası, CX24 "Need OpenGL 1.1"); stabil tek motor WineCX 23.7. İyileşme = yeni engine (CX26, paralı) → repo-DIŞI.
+- **KARAR:** FPS *fix* launcher-scope DIŞI (engine sınırı, cavalry ile aynı kök). Tek in-scope iş → **T-016** (render-yolu teşhisi).
+
+### T-016 · Render-yolu teşhisi (launcher, opsiyonel/düşük öncelik)
+- **sahip:** Sonnet (Codex runtime spec'iyle) · **zeka:** 🟠 Yüksek · **durum:** todo (opsiyonel) · **bağımlı:** —
+- **iş:** Launcher diagnostics'e "aktif render yolu" tespiti ekle: builtin WineD3D mi / DXVK DLL mi (dosya boyutu/strings ile ayırt et), MoltenVK sadece mevcut mu yoksa aktif mi, oyun OpenGL log özeti. **FPS'i ARTIRMAZ** — yalnız şeffaf teşhis/bilgilendirme (launcher'ın mevcut diagnostics rolüne uyar).
+- **verify:** diagnostics aktif render yolunu doğru raporluyor (mevcut durum = builtin WineD3D + OpenGL).
 
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.
