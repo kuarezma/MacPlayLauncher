@@ -50,8 +50,16 @@ Zink yolu artık "x11-capable Wine üret/bul" istiyor — ağır. Ama ağıra gi
 - **Prob-2 — Ücretsiz prebuilt x11 Wine Cossacks'ı açıyor mu?:** Gcenx winehq-staging (macOS, `winex11.drv`'li) indir → **prefix KOPYASIYLA** oyunu aç (mac-driver'la bile). Açılıyor mu, yoksa WineHQ-11 gibi SEH/GL fırtınası mı? (Oyunu açan bir x11 Wine var mı sorusunu yanıtlar.)
 - **KARAR KAPISI:** İkisi de **yeşil** → ağır iş (Faz 0C) mantıklı. **Biri kırmızı** → Zink yolu ücretsiz/pratik değil; dur, Opus'a getir, bilinçli karar (CX26 paralı vs mevcut hâli kabul).
 
-## Faz 0C — (YALNIZ 0B ikisi de yeşilse) x11'li çalışan Wine üret
-Gcenx oyunu açıyorsa onu kullan; açmıyorsa **wine-crossover 23.7 kaynağını `./configure --with-x` ile derle** (CrossOver patch'leri = oyun çalışır + winex11.drv = Zink yolu). Ağır (Apple Silicon wine32on64 + x11 bağımlılıkları). Ancak 0B kanıtladıysa.
+## Faz 0C — x11'li çalışan Wine (KULLANICI KARARI: doğrudan bu yol, prob fallback)
+
+> **Akıllı sıra:** kaynaktan derlemeden önce prereq'ler zaten gerekli + prebuilt oyunu açabilir (build'i gereksiz kılar). Kör saatlerce derleme yapmamak için:
+
+- **0C.1 — Prereq + 2dk sanity (zorunlu; build de bunu ister):** `brew install --cask xquartz` + `brew install mesa`. Sonra `MESA_LOADER_DRIVER_OVERRIDE=zink glxgears` / `glxinfo | grep -i render` → renderer **"zink (MoltenVK)"** mi? Zincir prensipte çalışmıyorsa **build'e girme**, Opus'a getir.
+- **0C.2 — Prebuilt x11 Wine kısa yolu:** Gcenx winehq-staging (macOS, `winex11.drv`'li) indir → oyunu **KOPYA** prefix'le aç (önce mac-driver, sonra x11). **Açarsa → JACKPOT, build YOK** → 0C.4'e. Açmazsa (SEH/GL fırtınası) → 0C.3.
+- **0C.3 — Kaynaktan build (YALNIZ 0C.2 başarısızsa):** wine-crossover 23.7 kaynağı + `./configure --with-x` (Apple Silicon wine32on64 + XQuartz header'ları). **Checkpoint'ler:** kaynak indi → configure x11 gördü → derleme bitti → `wine --version` çalışıyor. Her checkpoint'te dur+raporla; **1-2 ciddi build hatasında Opus'a getir** (kör iterasyon yok).
+- **0C.4 — Cossacks'ı x11+Zink üzerinde aç (KOPYA prefix):** built/Gcenx Wine + `winex11.drv` + `MESA_LOADER_DRIVER_OVERRIDE=zink` + MoltenVK ICD. Gözle: **(a)** açılıyor mu, **(b)** cavalry eyerde mi, **(c)** kalabalık FPS ne. Rapor → Opus.
+
+> **Dürüst:** Apple Silicon'da wine32on64 + x11 kaynaktan build ciddi zor (~%40-60 build başarısı tek başına). Uzun iterasyon olabilir; checkpoint'ler tavşan deliğini önler. Orijinal `wine_cx`/`oyna_ucretsiz.sh`'e DOKUNMA — her şey kopya/yeni dosya.
 
 ---
 

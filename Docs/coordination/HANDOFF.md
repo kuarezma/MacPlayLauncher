@@ -1,4 +1,4 @@
-NEXT: ⚠️ Karar kullanıcıda — Zink Faz 0 ⛔ bloklu (winex11.drv yok). Seçenek: Faz 0B ucuz prob (mesa+xquartz Zink testi + Gcenx Wine oyun testi, ağır build'den ÖNCE) — Codex çalıştırır · (T-012/T-014 launcher cilası bağımsız)
+NEXT: Codex (GPT 5.5) → T-017 Faz 0C [RUNTIME] x11 Wine (prereq+glxgears sanity → Gcenx kısa yol → gerekirse kaynaktan wine-crossover build → Zink'te oyun), checkpoint'li, `ZINK-EXPERIMENT.md` 🔴 · (T-012/T-014 launcher bağımsız)
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: ⚠️ Karar kullanıcıda — Zink Faz 0 ⛔ bloklu (winex11.drv yok). Se
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · Karar: doğrudan ağır build (Faz 0C)** — Kullanıcı: "doğrudan build, olmazsa prob." Teknik incelik: build zaten XQuartz+mesa ister + ücretsiz prebuilt (Gcenx) oyunu açarsa build gereksiz. Faz 0C **checkpoint'li akıllı sıraya** çevrildi: 0C.1 prereq+glxgears sanity → 0C.2 Gcenx kısa yol (build'i atlayabilir) → 0C.3 yalnız gerekirse kaynaktan wine-crossover-23.7 `--with-x` → 0C.4 Zink'te oyun. Kör build yok, her checkpoint'te dur+rapor. NEXT → Codex Faz 0C.
 - **2026-06-25 · Codex (GPT 5.5) · T-017 Faz 0 — ⛔ Strategy-1 bloklu** — Rapor `ZINK_DENEME_NOTU.md`: WineCX 23.7 yalnız `winemac.drv` (winex11.drv yok), yerelde x11 Wine yok, Mesa/Zink/XQuartz kurulu değil; MoltenVK hazır. **Karar kapısı doğru çalıştı** — oyun açılmadı, orijinal prefix/script korundu. Opus: ağır build'den önce **Faz 0B (ucuz ayrıştırılmış prob)** tasarladı — Prob-1 (mesa+xquartz+glxgears Zink zinciri çalışıyor mu) + Prob-2 (Gcenx prebuilt x11 Wine Cossacks'ı açıyor mu). Karar kullanıcıda: 0B prob / dur / ağır build.
 - **2026-06-25 · Opus (Claude Code) · Zink deneyi tasarımı (Yol Z)** — Kullanıcı "ücretsiz bir yol üretelim" dedi; "engine değiştir" tükendi ama **render katmanı değiştir** denenmedi. İçgörü: DXVK yanlış katmandı, oyun OpenGL → **Zink (GL→Vulkan)→winevulkan→MoltenVK→Metal** doğru katman; altyapı prefix'te zaten var. Spec yazıldı → `ZINK-EXPERIMENT.md` (fazlı, karar kapılı). Can alıcı kapı: oyunu çalıştıran x11-capable Wine (CX23.7 mac-only olabilir). T-017 açıldı (runtime, repo-dışı). NEXT → Codex Faz 0 fizibilite. (Launcher cilası T-012/T-014 hâlâ bağımsız & hazır.)
 - **2026-06-25 · Opus (Claude Code) · Karar: minör launcher cilası** — Kullanıcı kararı: cavalry/FPS engine-bloklu olduğu için onları bırak, **repo-içi gerçekten yapılabilir** işleri bitir: **T-012** (exit-53/offline.txt tespiti + UI uyarısı) → **T-014** (pencere/workdir normalizasyonu). T-013/T-015 ⛔ blocked kalır, T-016 opsiyonel. T-014 bağımlılığı T-013→T-012 güncellendi. NEXT → Sonnet (T-012).
