@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 6/12 (~%50)** · `▰▰▰▰▰▰▱▱▱▱▱▱`
+**İlerleme: 7/12 (~%58)** · `▰▰▰▰▰▰▰▱▱▱▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -17,7 +17,7 @@
 | T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
-| T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ⬜ todo |
+| T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ✅ done |
 | T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
 | T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ⬜ todo |
 | T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ⬜ todo |
@@ -60,9 +60,9 @@
 - **verify:** `swift test --build-path /tmp/mpl_ci_build` yeşil · `swiftlint lint --quiet` → bu 4 dosyada type_body_length / file_length / function_body_length / cyclomatic_complexity 0
 
 ### T-006 · Kalan küçük yapısal lint
-- **sahip:** Haiku (Claude Code) · **durum:** todo · **bağımlı:** T-005 · **branch:** `chore/lint-structural`
+- **sahip:** Haiku (Claude Code) · **durum:** done · **bağımlı:** T-005 · **branch:** `chore/lint-structural`
 - **iş:** `WineDiagnosticProvider` 6 param → parametre struct'ına sar (≤5); `SetupOrchestratorTests` large-tuple → adlandırılmış tip; `SelectableDependencyDiagnosticServiceTests` tip adını (>40 karakter) kısalt.
-- **verify:** `swiftlint lint --quiet` → function_parameter_count / large_tuple / type_name 0 · `swift test` yeşil
+- **verify:** ✅ `swiftlint lint --quiet` → function_parameter_count / large_tuple / type_name 0 · ✅ `swift test` yeşil (226 test)
 
 ### T-007 · Sertleştirme tasarımı (spec)
 - **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-006 · **branch:** `docs/hardening-spec`
