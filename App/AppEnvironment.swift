@@ -51,7 +51,9 @@ struct AppEnvironment: Sendable {
         self.runReadinessEvaluator = runReadinessEvaluator
         self.prefixManager = prefixManager
         self.steamInstallService = steamInstallService
-        self.wineSteamService = wineSteamService ?? WineSteamService()
+        self.wineSteamService = wineSteamService ?? WineSteamService(
+            wineURL: Self.defaultCrossOverExecutableURL()
+        )
         self.displayResolutionService = displayResolutionService ?? DisplayResolutionService()
         self.experimentalLaunchPolicy = experimentalLaunchPolicy
         self.experimentalRunReadinessEvaluator = experimentalRunReadinessEvaluator ?? runReadinessEvaluator
@@ -59,6 +61,10 @@ struct AppEnvironment: Sendable {
         self.cossacksSetupService = cossacksSetupService ?? CossacksSetupService()
         self.setupInstallerService = setupInstallerService ?? SetupInstallerService()
         self.appSupportURL = appSupportURL
+    }
+
+    private static func defaultCrossOverExecutableURL() -> URL {
+        CrossOverExecutableResolver().resolve() ?? CrossOverExecutableResolver.defaultAllowedURLs[0]
     }
 
     @MainActor

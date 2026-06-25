@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 8/12 (~%67)** · `▰▰▰▰▰▰▰▰▱▱▱▱`
+**İlerleme: 9/12 (%75)** · `▰▰▰▰▰▰▰▰▰▱▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -19,7 +19,7 @@
 | T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ✅ done |
 | T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
-| T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ⬜ todo |
+| T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ✅ done |
 | T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ⬜ todo |
 | T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ⬜ todo |
 | T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
@@ -71,7 +71,7 @@
 - **verify:** ✅ [`HARDENING-SPEC.md`](HARDENING-SPEC.md) mevcut (A: async sınır + `BlockingCommandRunner` kaldır, B: çağıran sadeleştir, C: resolver, D: son lint → 0)
 
 ### T-008 · Sertleştirme uygulaması
-- **sahip:** Codex (GPT 5.5) · **durum:** todo · **bağımlı:** T-007 · **branch:** `refactor/command-boundary`
+- **sahip:** Codex (GPT 5.5) · **durum:** done · **bağımlı:** T-007 · **branch:** `refactor/command-boundary`
 - **iş:** [`HARDENING-SPEC.md`](HARDENING-SPEC.md)'i uygula: `BlockingCommandRunner`+çağırandaki `Task.detached` köprülerini kaldır (servis metotları `async`, `DisplayResolutionService`→`actor`), `AppState+Steam.swift`'i `await`'e geçir, `WineSteamService` çift-yol + sabit CrossOver yolunu kaldır (resolver), `runProcess`'i böl (son lint → 0). **Davranış korunur**, `CommandServiceTests` `await`'e uyarlanır.
 - **verify:** `swift test` yeşil · `./scripts/verify-sprint-18.sh` yeşil (`Process()` yalnız `ProcessCommandRunner.swift` kriteri) · `BlockingCommandRunner` kaldırıldı
 

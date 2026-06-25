@@ -36,10 +36,10 @@ extension AppState {
         }
 
         do {
-            try environment.wineSteamService.launch(bottleName: bottleName)
+            try await environment.wineSteamService.launch(bottleName: bottleName)
             try await environment.wineSteamService.waitForReadiness(timeout: 30)
             let displayService = environment.displayResolutionService
-            await Task.detached { displayService.setGameResolution() }.value
+            await displayService.setGameResolution()
             launchGame(profileID: profileID)
             Task.detached {
                 await AppState.monitorGameExitAndRestoreDisplay(service: displayService)
@@ -81,12 +81,10 @@ extension AppState {
     private static func monitorGameExitAndRestoreDisplay(service: any DisplayResolutionServicing) async {
         while true {
             try? await Task.sleep(nanoseconds: 3_000_000_000)
-            let isRunning = await Task.detached {
-                GameProcessMonitor.isProcessRunning(name: "cossacks.exe")
-            }.value
+            let isRunning = await GameProcessMonitor.isProcessRunning(name: "cossacks.exe")
             if !isRunning {
-                service.restoreResolution()
-                GameProcessMonitor.killWineProcesses()
+                await service.restoreResolution()
+                await GameProcessMonitor.killWineProcesses()
                 return
             }
         }

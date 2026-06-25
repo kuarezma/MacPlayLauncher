@@ -38,6 +38,28 @@ struct ProcessCommandRunner: CommandRunning {
 
     private static func runProcess(_ request: CommandRequest, outputLimitBytes: Int) throws -> CommandResult {
         let startedAt = Date()
+        let context = makeProcessContext(request, outputLimitBytes: outputLimitBytes)
+        defer { context.detachReaders() }
+
+        do {
+            try context.process.run()
+        } catch {
+            throw CommandError.launchFailed(error.localizedDescription)
+        }
+
+        try waitForProcess(context.process, completion: context.completion, timeout: request.timeoutSeconds)
+        try validateOutput(context.outputBuffer)
+        let exitCode = try validatedExitCode(context.process)
+
+        return CommandResult(
+            exitCode: exitCode,
+            stdout: context.outputBuffer.stdoutString,
+            stderr: context.outputBuffer.stderrString,
+            duration: Date().timeIntervalSince(startedAt)
+        )
+    }
+
+    private static func makeProcessContext(_ request: CommandRequest, outputLimitBytes: Int) -> CommandProcessContext {
         let process = Process()
         let stdoutPipe = Pipe()
         let stderrPipe = Pipe()
@@ -55,60 +77,75 @@ struct ProcessCommandRunner: CommandRunning {
             completion.signal()
         }
 
+        attachReaders(
+            process: process,
+            stdoutPipe: stdoutPipe,
+            stderrPipe: stderrPipe,
+            outputBuffer: outputBuffer
+        )
+        return CommandProcessContext(
+            process: process,
+            stdoutPipe: stdoutPipe,
+            stderrPipe: stderrPipe,
+            outputBuffer: outputBuffer,
+            completion: completion
+        )
+    }
+
+    private static func attachReaders(
+        process: Process,
+        stdoutPipe: Pipe,
+        stderrPipe: Pipe,
+        outputBuffer: CommandOutputBuffer
+    ) {
         stdoutPipe.fileHandleForReading.readabilityHandler = { handle in
-            let data = handle.availableData
-            guard !data.isEmpty else {
-                return
-            }
-            if !outputBuffer.appendStdout(data) {
-                process.terminate()
-            }
+            appendAvailableData(from: handle, to: outputBuffer.appendStdout, process: process)
         }
-
         stderrPipe.fileHandleForReading.readabilityHandler = { handle in
-            let data = handle.availableData
-            guard !data.isEmpty else {
-                return
-            }
-            if !outputBuffer.appendStderr(data) {
-                process.terminate()
-            }
+            appendAvailableData(from: handle, to: outputBuffer.appendStderr, process: process)
         }
+    }
 
-        do {
-            try process.run()
-        } catch {
-            stdoutPipe.fileHandleForReading.readabilityHandler = nil
-            stderrPipe.fileHandleForReading.readabilityHandler = nil
-            throw CommandError.launchFailed(error.localizedDescription)
+    private static func appendAvailableData(
+        from handle: FileHandle,
+        to append: (Data) -> Bool,
+        process: Process
+    ) {
+        let data = handle.availableData
+        guard !data.isEmpty else {
+            return
         }
+        if !append(data) {
+            process.terminate()
+        }
+    }
 
-        let timeoutResult = completion.wait(timeout: .now() + request.timeoutSeconds)
-        stdoutPipe.fileHandleForReading.readabilityHandler = nil
-        stderrPipe.fileHandleForReading.readabilityHandler = nil
-
+    private static func waitForProcess(
+        _ process: Process,
+        completion: DispatchSemaphore,
+        timeout: TimeInterval
+    ) throws {
+        let timeoutResult = completion.wait(timeout: .now() + timeout)
         if timeoutResult == .timedOut {
             if process.isRunning {
                 process.terminate()
             }
             throw CommandError.timedOut
         }
+    }
 
+    private static func validateOutput(_ outputBuffer: CommandOutputBuffer) throws {
         if outputBuffer.isOverLimit {
             throw CommandError.outputTooLarge
         }
+    }
 
+    private static func validatedExitCode(_ process: Process) throws -> Int32 {
         let exitCode = process.terminationStatus
         if exitCode != 0 {
             throw CommandError.nonZeroExit(exitCode)
         }
-
-        return CommandResult(
-            exitCode: exitCode,
-            stdout: outputBuffer.stdoutString,
-            stderr: outputBuffer.stderrString,
-            duration: Date().timeIntervalSince(startedAt)
-        )
+        return exitCode
     }
 
     fileprivate static func normalizedURL(_ url: URL) -> URL {
@@ -232,14 +269,27 @@ private final class CommandOutputBuffer: @unchecked Sendable {
     }
 }
 
+private struct CommandProcessContext {
+    let process: Process
+    let stdoutPipe: Pipe
+    let stderrPipe: Pipe
+    let outputBuffer: CommandOutputBuffer
+    let completion: DispatchSemaphore
+
+    func detachReaders() {
+        stdoutPipe.fileHandleForReading.readabilityHandler = nil
+        stderrPipe.fileHandleForReading.readabilityHandler = nil
+    }
+}
+
 // MARK: - Display Resolution Service
 
 protocol DisplayResolutionServicing: Sendable {
-    func setGameResolution()
-    func restoreResolution()
+    func setGameResolution() async
+    func restoreResolution() async
 }
 
-final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sendable {
+actor DisplayResolutionService: DisplayResolutionServicing {
     private static let displayplacerPath = "/opt/homebrew/bin/displayplacer"
     private static let gameWidth = 1280
     private static let gameHeight = 800
@@ -259,16 +309,16 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
         self.fileExists = fileExists
     }
 
-    func setGameResolution() {
-        guard let (id, currentMode) = mainDisplayConfig() else { return }
+    func setGameResolution() async {
+        guard let (id, currentMode) = await mainDisplayConfig() else { return }
         savedConfig = "id:\(id) \(currentMode)"
         let gameMode = replaceResolution(in: currentMode, width: Self.gameWidth, height: Self.gameHeight)
-        runDisplayplacer("id:\(id) \(gameMode)")
+        await runDisplayplacer("id:\(id) \(gameMode)")
     }
 
-    func restoreResolution() {
+    func restoreResolution() async {
         guard let config = savedConfig else { return }
-        runDisplayplacer(config)
+        await runDisplayplacer(config)
         savedConfig = nil
     }
 
@@ -278,8 +328,8 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
         return mode.replacingCharacters(in: range, with: "res:\(width)x\(height)")
     }
 
-    private func mainDisplayConfig() -> (id: String, mode: String)? {
-        guard let output = runAndCapture(["list"]) else { return nil }
+    private func mainDisplayConfig() async -> (id: String, mode: String)? {
+        guard let output = await runAndCapture(["list"]) else { return nil }
         var id: String?
         var mode: String?
         for line in output.components(separatedBy: "\n") {
@@ -301,7 +351,7 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
         return (displayId, currentMode)
     }
 
-    private func runAndCapture(_ args: [String]) -> String? {
+    private func runAndCapture(_ args: [String]) async -> String? {
         guard fileExists(displayplacerURL.path) else { return nil }
         let request = CommandRequest(
             executableURL: displayplacerURL,
@@ -310,10 +360,11 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
             timeoutSeconds: 5,
             purpose: .displayResolutionList
         )
-        return try? BlockingCommandRunner.run(commandRunner, request: request).stdout
+        guard let result = try? await commandRunner.run(request) else { return nil }
+        return result.stdout
     }
 
-    private func runDisplayplacer(_ config: String) {
+    private func runDisplayplacer(_ config: String) async {
         guard fileExists(displayplacerURL.path) else { return }
         let request = CommandRequest(
             executableURL: displayplacerURL,
@@ -322,7 +373,7 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
             timeoutSeconds: 5,
             purpose: .displayResolutionSet
         )
-        _ = try? BlockingCommandRunner.run(commandRunner, request: request)
+        _ = try? await commandRunner.run(request)
     }
 }
 
@@ -333,16 +384,15 @@ enum WineSteamError: Error {
 }
 
 protocol WineSteamServicing: Sendable {
-    func launch(bottleName: String) throws
+    func launch(bottleName: String) async throws
     func waitForReadiness(timeout: TimeInterval) async throws
 }
 
 struct WineSteamService: WineSteamServicing {
-    private static let winePath = "/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/wine"
     private static let steamExeArg = "C:\\Program Files (x86)\\Steam\\steam.exe"
     private static let checkInterval: TimeInterval = 0.5
 
-    private let commandRunner: (any CommandRunning)?
+    private let commandRunner: any CommandRunning
     private let wineURL: URL
     private let environmentProvider: @Sendable () -> [String: String]
     private let readinessBufferNanoseconds: UInt64
@@ -350,47 +400,41 @@ struct WineSteamService: WineSteamServicing {
 
     init(
         commandRunner: (any CommandRunning)? = nil,
-        wineURL: URL = URL(fileURLWithPath: winePath),
+        wineURL: URL = Self.defaultCrossOverURL,
         environmentProvider: @escaping @Sendable () -> [String: String] = { ProcessInfo.processInfo.environment },
         readinessBufferNanoseconds: UInt64 = 2_000_000_000,
         sleep: @escaping @Sendable (UInt64) async throws -> Void = { try await Task.sleep(nanoseconds: $0) }
     ) {
         self.wineURL = wineURL
-        self.commandRunner = commandRunner
+        self.commandRunner = commandRunner ?? ProcessCommandRunner(
+            allowedExecutableURLs: [
+                wineURL,
+                GameProcessMonitor.pgrepURL
+            ]
+        )
         self.environmentProvider = environmentProvider
         self.readinessBufferNanoseconds = readinessBufferNanoseconds
         self.sleep = sleep
     }
 
-    func launch(bottleName: String) throws {
+    func launch(bottleName: String) async throws {
         var env = environmentProvider()
         env["WINEDEBUG"] = "-all"
-        if let commandRunner {
-            let request = CommandRequest(
-                executableURL: wineURL,
-                arguments: ["--bottle", bottleName, Self.steamExeArg],
-                environment: env,
-                timeoutSeconds: 5,
-                purpose: .wineSteamLaunch
-            )
-            _ = try BlockingCommandRunner.run(commandRunner, request: request)
-            return
-        }
-
-        let process = Process()
-        process.executableURL = wineURL
-        process.arguments = ["--bottle", bottleName, Self.steamExeArg]
-        process.environment = env
-        process.standardOutput = FileHandle.nullDevice
-        process.standardError = FileHandle.nullDevice
-        try process.run()
+        let request = CommandRequest(
+            executableURL: wineURL,
+            arguments: ["--bottle", bottleName, Self.steamExeArg],
+            environment: env,
+            timeoutSeconds: 5,
+            purpose: .wineSteamLaunch
+        )
+        _ = try await commandRunner.run(request)
     }
 
     func waitForReadiness(timeout: TimeInterval) async throws {
         let deadline = Date().addingTimeInterval(timeout)
         while Date() < deadline {
             // Wine processes appear in the OS process table but not in NSWorkspace.
-            let running = isSteamProcessRunning()
+            let running = await isSteamProcessRunning()
             if running {
                 try await sleep(readinessBufferNanoseconds)
                 return
@@ -400,15 +444,15 @@ struct WineSteamService: WineSteamServicing {
         throw WineSteamError.readinessTimeout
     }
 
-    private func isSteamProcessRunning() -> Bool {
-        guard let commandRunner else {
-            return GameProcessMonitor.isProcessRunning(name: "steam.exe")
-        }
-
-        return GameProcessMonitor.isProcessRunning(
+    private func isSteamProcessRunning() async -> Bool {
+        await GameProcessMonitor.isProcessRunning(
             name: "steam.exe",
             commandRunner: commandRunner
         )
+    }
+
+    private static var defaultCrossOverURL: URL {
+        CrossOverExecutableResolver().resolve() ?? CrossOverExecutableResolver.defaultAllowedURLs[0]
     }
 }
 
@@ -421,7 +465,7 @@ struct GameProcessMonitor {
     static func isProcessRunning(
         name: String,
         commandRunner: any CommandRunning = ProcessCommandRunner(allowedExecutableURLs: [pgrepURL])
-    ) -> Bool {
+    ) async -> Bool {
         let request = CommandRequest(
             executableURL: pgrepURL,
             arguments: ["-x", name],
@@ -429,12 +473,12 @@ struct GameProcessMonitor {
             timeoutSeconds: 2,
             purpose: .processLookup
         )
-        return (try? BlockingCommandRunner.run(commandRunner, request: request)) != nil
+        return (try? await commandRunner.run(request)) != nil
     }
 
     static func killWineProcesses(
         commandRunner: any CommandRunning = ProcessCommandRunner(allowedExecutableURLs: [pkillURL])
-    ) {
+    ) async {
         let targets = [
             "steam.exe", "steamwebhelper.exe", "steamservice.exe",
             "steamclient_loader", "winedevice.exe", "winewrapper.exe",
@@ -448,50 +492,7 @@ struct GameProcessMonitor {
                 timeoutSeconds: 2,
                 purpose: .processKill
             )
-            _ = try? BlockingCommandRunner.run(commandRunner, request: request)
-        }
-    }
-}
-
-private enum BlockingCommandRunner {
-    static func run(_ commandRunner: any CommandRunning, request: CommandRequest) throws -> CommandResult {
-        let semaphore = DispatchSemaphore(value: 0)
-        let resultBox = BlockingCommandResultBox()
-
-        // Geçici köprü (T-007/T-008'de async-güvenli sınırla kaldırılacak):
-        // `Task.detached` zorunlu — düz `Task {}` çağıranın actor'ını (örn. @MainActor)
-        // miras alır; ardından `semaphore.wait()` o thread'i bloklayınca görev hiç
-        // koşamaz ve kilitlenir. Detached görev cooperative pool'da koştuğu için bu
-        // self-deadlock olmaz; bloklama semantiği refactor öncesi senkron Process
-        // davranışıyla aynıdır. Yalnızca kısa, deneysel-launch yolundaki komutlarda kullanılır.
-        Task.detached {
-            do {
-                let result = try await commandRunner.run(request)
-                resultBox.store(.success(result))
-            } catch {
-                resultBox.store(.failure(error))
-            }
-            semaphore.signal()
-        }
-
-        semaphore.wait()
-        return try resultBox.result.get()
-    }
-}
-
-private final class BlockingCommandResultBox: @unchecked Sendable {
-    private let lock = NSLock()
-    private var storedResult: Result<CommandResult, Error>?
-
-    var result: Result<CommandResult, Error> {
-        lock.withLock {
-            storedResult ?? .failure(CommandError.launchFailed("Command runner did not return a result."))
-        }
-    }
-
-    func store(_ result: Result<CommandResult, Error>) {
-        lock.withLock {
-            storedResult = result
+            _ = try? await commandRunner.run(request)
         }
     }
 }

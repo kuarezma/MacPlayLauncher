@@ -3,7 +3,7 @@ import Foundation
 import XCTest
 
 final class CommandServiceTests: XCTestCase {
-    func testDisplayResolutionSetAndRestoreUseFakeCommandRunner() {
+    func testDisplayResolutionSetAndRestoreUseFakeCommandRunner() async {
         let displayplacerURL = URL(fileURLWithPath: "/tmp/displayplacer")
         let listRequest = commandRequest(
             executableURL: displayplacerURL,
@@ -34,13 +34,13 @@ final class CommandServiceTests: XCTestCase {
             fileExists: { _ in true }
         )
 
-        service.setGameResolution()
-        service.restoreResolution()
+        await service.setGameResolution()
+        await service.restoreResolution()
 
         XCTAssertEqual(runner.requests, [listRequest, setRequest, restoreRequest])
     }
 
-    func testDisplayResolutionSkipsCommandsWhenDisplayplacerIsMissing() {
+    func testDisplayResolutionSkipsCommandsWhenDisplayplacerIsMissing() async {
         let runner = FakeCommandRunner(results: [:])
         let service = DisplayResolutionService(
             commandRunner: runner,
@@ -48,13 +48,13 @@ final class CommandServiceTests: XCTestCase {
             fileExists: { _ in false }
         )
 
-        service.setGameResolution()
-        service.restoreResolution()
+        await service.setGameResolution()
+        await service.restoreResolution()
 
         XCTAssertTrue(runner.requests.isEmpty)
     }
 
-    func testWineSteamLaunchUsesBottleAndWineDebugEnvironment() throws {
+    func testWineSteamLaunchUsesBottleAndWineDebugEnvironment() async throws {
         let wineURL = URL(fileURLWithPath: "/tmp/wine")
         let launchRequest = commandRequest(
             executableURL: wineURL,
@@ -74,7 +74,7 @@ final class CommandServiceTests: XCTestCase {
             sleep: { _ in }
         )
 
-        try service.launch(bottleName: "CossacksBottle")
+        try await service.launch(bottleName: "CossacksBottle")
 
         XCTAssertEqual(runner.requests, [launchRequest])
     }
@@ -95,13 +95,13 @@ final class CommandServiceTests: XCTestCase {
         XCTAssertEqual(runner.requests, [lookupRequest])
     }
 
-    func testGameProcessMonitorReportsRunningProcess() {
+    func testGameProcessMonitorReportsRunningProcess() async {
         let lookupRequest = processLookupRequest(name: "steam.exe")
         let runner = FakeCommandRunner(results: [
             lookupRequest: .success(success())
         ])
 
-        let isRunning = GameProcessMonitor.isProcessRunning(
+        let isRunning = await GameProcessMonitor.isProcessRunning(
             name: "steam.exe",
             commandRunner: runner
         )
@@ -110,13 +110,13 @@ final class CommandServiceTests: XCTestCase {
         XCTAssertEqual(runner.requests, [lookupRequest])
     }
 
-    func testGameProcessMonitorReportsMissingProcessOnCommandFailure() {
+    func testGameProcessMonitorReportsMissingProcessOnCommandFailure() async {
         let lookupRequest = processLookupRequest(name: "steam.exe")
         let runner = FakeCommandRunner(results: [
             lookupRequest: .failure(.nonZeroExit(1))
         ])
 
-        let isRunning = GameProcessMonitor.isProcessRunning(
+        let isRunning = await GameProcessMonitor.isProcessRunning(
             name: "steam.exe",
             commandRunner: runner
         )
@@ -125,7 +125,7 @@ final class CommandServiceTests: XCTestCase {
         XCTAssertEqual(runner.requests, [lookupRequest])
     }
 
-    func testGameProcessMonitorKillsKnownWineProcessesThroughFakeCommandRunner() {
+    func testGameProcessMonitorKillsKnownWineProcessesThroughFakeCommandRunner() async {
         let targets = [
             "steam.exe", "steamwebhelper.exe", "steamservice.exe",
             "steamclient_loader", "winedevice.exe", "winewrapper.exe",
@@ -136,7 +136,7 @@ final class CommandServiceTests: XCTestCase {
             results: Dictionary(uniqueKeysWithValues: killRequests.map { ($0, .success(success())) })
         )
 
-        GameProcessMonitor.killWineProcesses(commandRunner: runner)
+        await GameProcessMonitor.killWineProcesses(commandRunner: runner)
 
         XCTAssertEqual(runner.requests, killRequests)
     }
