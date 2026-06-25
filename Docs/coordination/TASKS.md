@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 7/12 (~%58)** · `▰▰▰▰▰▰▰▱▱▱▱▱`
+**İlerleme: 8/12 (~%67)** · `▰▰▰▰▰▰▰▰▱▱▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -18,7 +18,7 @@
 | T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
 | T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ✅ done |
-| T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
+| T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ⬜ todo |
 | T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ⬜ todo |
 | T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ⬜ todo |
@@ -65,14 +65,14 @@
 - **verify:** ✅ `swiftlint lint --quiet` → function_parameter_count / large_tuple / type_name 0 · ✅ `swift test` yeşil (226 test)
 
 ### T-007 · Sertleştirme tasarımı (spec)
-- **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-006 · **branch:** `docs/hardening-spec`
+- **sahip:** Opus (Claude Code) · **durum:** done · **bağımlı:** T-006 · **branch:** main
 - **NOT (T-002 devri):** `DisplayResolutionService` + `GameProcessMonitor` allowlist yönlendirmesi T-002'de Codex tarafından **erken yapıldı**; geçici olarak `BlockingCommandRunner` (semaphore köprüsü, `Task.detached`) ile çalışıyor. Asıl tasarım işi artık: **async-güvenli sınırı tasarla → `BlockingCommandRunner` semaphore köprüsünü tamamen kaldır** (launch akışını async yap, çağıranları `await`'e geçir).
 - **iş:** Yukarıdaki async-güvenli boundary tasarımı + `WineSteamService` çift-yol (nil → bare `Process()`) tutarsızlığını gider + sabit CrossOver yolunu resolver'a taşı. Güvenlik gerekçesi + allowlist yolları.
-- **verify:** spec dosyası (`Docs/coordination/HARDENING-SPEC.md`) mevcut
+- **verify:** ✅ [`HARDENING-SPEC.md`](HARDENING-SPEC.md) mevcut (A: async sınır + `BlockingCommandRunner` kaldır, B: çağıran sadeleştir, C: resolver, D: son lint → 0)
 
 ### T-008 · Sertleştirme uygulaması
 - **sahip:** Codex (GPT 5.5) · **durum:** todo · **bağımlı:** T-007 · **branch:** `refactor/command-boundary`
-- **iş:** T-007 spec'ini uygula: `BlockingCommandRunner` köprüsünü kaldır, çağrı yerlerini async-güvenli yap, `WineSteamService` çift-yolunu tek yola indir, tüm `Process()` çağrılarının `ProcessCommandRunner` üzerinden gittiğini garanti et.
+- **iş:** [`HARDENING-SPEC.md`](HARDENING-SPEC.md)'i uygula: `BlockingCommandRunner`+çağırandaki `Task.detached` köprülerini kaldır (servis metotları `async`, `DisplayResolutionService`→`actor`), `AppState+Steam.swift`'i `await`'e geçir, `WineSteamService` çift-yol + sabit CrossOver yolunu kaldır (resolver), `runProcess`'i böl (son lint → 0). **Davranış korunur**, `CommandServiceTests` `await`'e uyarlanır.
 - **verify:** `swift test` yeşil · `./scripts/verify-sprint-18.sh` yeşil (`Process()` yalnız `ProcessCommandRunner.swift` kriteri) · `BlockingCommandRunner` kaldırıldı
 
 ### T-009 · Tüm-kod denetimi + doküman + görsel teşhis

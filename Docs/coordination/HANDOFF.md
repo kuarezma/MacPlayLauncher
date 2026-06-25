@@ -1,4 +1,4 @@
-NEXT: Opus (Claude Code) → T-007 (sertleştirme tasarımı, 🔴 Maksimum) · branch: docs/hardening-spec
+NEXT: Codex (GPT 5.5) → T-008 (sertleştirme uygulaması, 🟠 Yüksek) · branch: refactor/command-boundary
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Opus (Claude Code) → T-007 (sertleştirme tasarımı, 🔴 Maksimum) · 
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · T-007 done** — Sertleştirme tasarımı → `Docs/coordination/HARDENING-SPEC.md`. Teşhis: tek çağıran `AppState+Steam.swift` zaten async + `Task.detached` ile sarıyor → `BlockingCommandRunner` gereksiz. Plan: servis metotları `async` (DisplayResolutionService→`actor`), çağıranı `await`'e geçir, köprüleri sil, `WineSteamService` çift-yol+sabit yol kaldır (resolver), `runProcess` böl (son lint → **0**). Kapsam: 4 dosya, davranış korunur. Devir → Codex (T-008, 🟠 Yüksek).
 - **2026-06-25 · Haiku (Claude Code) · T-006 done** — `WineDiagnosticProvider` 6 param → `WineDependencyParams` struct; `SetupOrchestratorTests` 3-tuple → `OrchestratorTestContext` (tüm destructuring güncellendi); `SelectableDependencyDiagnosticServiceTests` 46→33 char. 226 test, swiftlint 0 (3 kategori), sprint-18 17/17. Devir → Opus (T-007).
 - **2026-06-25 · Sonnet (Claude Code) · T-005 done** — AppState → +AddGame/+Diagnostics/+Launch; DiagnosticsViewModel → +NextStep/+Experimental/+Prefix/+Source/+Badges; SetupOrchestrator.runOrchestration → process+runAutomation+OrchestrationControl; ExperimentalRunReadinessEvaluator.evaluate → collectBlockers+wineBlockers+rosettaBlocker. Davranış/API/string'ler değişmedi. 226 test yeşil, swiftlint 0 (hedef dosyalarda). Devir → Haiku (T-006).
 - **2026-06-25 · Opus (Claude Code) · T-004 done** — Refactor tasarımı yazıldı → `Docs/coordination/REFACTOR-SPEC.md`. 4 hedef (AppState, DiagnosticsViewModel, SetupOrchestrator, ExperimentalRunReadinessEvaluator) için extension-bölme + fonksiyon-parçalama planı; **davranış/public API/string'ler birebir korunur**. Orphan uyarılar devredildi: `ProcessCommandRunner.run()` → T-008 (güvenlik dosyası), test isim/tuple → T-006. T-005 alt-hedefleri + T-006 genişletildi panoda. Devir → Sonnet (T-005, 🟠 Yüksek).
