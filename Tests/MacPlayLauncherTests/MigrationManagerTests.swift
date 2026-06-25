@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class MigrationManagerTests: XCTestCase {
     func testSchemaVersionOneNoOpMigration() throws {
@@ -9,4 +9,3 @@ final class MigrationManagerTests: XCTestCase {
         XCTAssertEqual(migrated, profile)
     }
 }
-

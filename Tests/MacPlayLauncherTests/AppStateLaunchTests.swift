@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class FakeGameLauncher: GameLaunching, @unchecked Sendable {
     var launchedProfileID: String?

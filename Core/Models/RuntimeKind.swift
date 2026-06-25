@@ -5,4 +5,3 @@ enum RuntimeKind: String, Codable, CaseIterable, Sendable {
     case systemWineFallback
     case crossOver
 }
-

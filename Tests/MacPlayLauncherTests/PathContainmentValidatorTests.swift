@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class PathContainmentValidatorTests: XCTestCase {
     func testExecutableInsideSelectedFolderIsAccepted() throws {
@@ -13,7 +13,9 @@ final class PathContainmentValidatorTests: XCTestCase {
         let folderURL = URL(fileURLWithPath: "/Games/Cossacks")
         let executableURL = URL(fileURLWithPath: "/Games/CossacksFake/game.exe")
 
-        XCTAssertThrowsError(try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)) { error in
+        XCTAssertThrowsError(
+            try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)
+        ) { error in
             XCTAssertEqual(error as? MacPlayError, .executableOutsideGameFolder)
         }
     }
@@ -22,7 +24,9 @@ final class PathContainmentValidatorTests: XCTestCase {
         let folderURL = URL(fileURLWithPath: "/Games/Cossacks")
         let executableURL = URL(fileURLWithPath: "/Games/Cossacks/../Other/game.exe")
 
-        XCTAssertThrowsError(try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)) { error in
+        XCTAssertThrowsError(
+            try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)
+        ) { error in
             XCTAssertEqual(error as? MacPlayError, .executableOutsideGameFolder)
         }
     }
@@ -31,7 +35,9 @@ final class PathContainmentValidatorTests: XCTestCase {
         let folderURL = URL(fileURLWithPath: "/Games/Cossacks")
         let executableURL = URL(fileURLWithPath: "/Games/Cossacks/game.txt")
 
-        XCTAssertThrowsError(try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)) { error in
+        XCTAssertThrowsError(
+            try PathContainmentValidator.validateExecutable(executableURL, isInside: folderURL)
+        ) { error in
             XCTAssertEqual(error as? MacPlayError, .invalidPath)
         }
     }

@@ -161,13 +161,19 @@ final class RunReadinessEvaluatorTests: XCTestCase {
     }
 
     func test_canLaunch_isFalse_whenStatusIsUnknown() {
-        let result = evaluate(profiles: [configuredProfile()], dependencies: [dependency(kind: .rosetta, status: .unknown)])
+        let result = evaluate(
+            profiles: [configuredProfile()],
+            dependencies: [dependency(kind: .rosetta, status: .unknown)]
+        )
         XCTAssertEqual(result.status, .unknown)
         XCTAssertFalse(result.canLaunch)
     }
 
     func test_canLaunch_isFalse_whenStatusIsUnsupported() {
-        let result = evaluate(profiles: [configuredProfile()], dependencies: [dependency(kind: .wine, status: .unsupported)])
+        let result = evaluate(
+            profiles: [configuredProfile()],
+            dependencies: [dependency(kind: .wine, status: .unsupported)]
+        )
         XCTAssertEqual(result.status, .unsupported)
         XCTAssertFalse(result.canLaunch)
     }

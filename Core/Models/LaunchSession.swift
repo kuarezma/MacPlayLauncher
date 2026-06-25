@@ -17,4 +17,3 @@ struct LaunchSession: Codable, Equatable, Identifiable, Sendable {
         summary: nil
     )
 }
-

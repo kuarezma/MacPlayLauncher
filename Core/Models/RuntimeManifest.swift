@@ -53,4 +53,3 @@ struct RuntimeManifest: Codable, Equatable, Identifiable, Sendable {
         codesignRequired: true
     )
 }
-

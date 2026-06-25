@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class PerformanceModeTests: XCTestCase {
     func testRecommendationUsesCoolModeOnBattery() {
@@ -23,4 +23,3 @@ final class PerformanceModeTests: XCTestCase {
         )
     }
 }
-

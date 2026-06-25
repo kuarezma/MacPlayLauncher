@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class WineDiagnosticProviderTests: XCTestCase {
     func testHomebrewWineVersionSuccessReturnsReadyWithVersion() async {
@@ -9,7 +9,9 @@ final class WineDiagnosticProviderTests: XCTestCase {
             existingURLs: [wineURL],
             executableURLs: [wineURL],
             commandResults: [
-                wineRequest(wineURL): .success(CommandResult(exitCode: 0, stdout: "wine-9.0\n", stderr: "", duration: 0.01))
+                wineRequest(wineURL): .success(
+                    CommandResult(exitCode: 0, stdout: "wine-9.0\n", stderr: "", duration: 0.01)
+                )
             ]
         )
 
@@ -27,7 +29,9 @@ final class WineDiagnosticProviderTests: XCTestCase {
             existingURLs: [wineURL],
             executableURLs: [wineURL],
             commandResults: [
-                wineRequest(wineURL): .success(CommandResult(exitCode: 0, stdout: "wine-8.0.2\n", stderr: "", duration: 0.01))
+                wineRequest(wineURL): .success(
+                    CommandResult(exitCode: 0, stdout: "wine-8.0.2\n", stderr: "", duration: 0.01)
+                )
             ]
         )
 
@@ -45,8 +49,12 @@ final class WineDiagnosticProviderTests: XCTestCase {
             existingURLs: [homebrewURL, usrLocalURL],
             executableURLs: [homebrewURL, usrLocalURL],
             commandResults: [
-                wineRequest(homebrewURL): .success(CommandResult(exitCode: 0, stdout: "wine-10.0\n", stderr: "", duration: 0.01)),
-                wineRequest(usrLocalURL): .success(CommandResult(exitCode: 0, stdout: "wine-8.0\n", stderr: "", duration: 0.01))
+                wineRequest(homebrewURL): .success(
+                    CommandResult(exitCode: 0, stdout: "wine-10.0\n", stderr: "", duration: 0.01)
+                ),
+                wineRequest(usrLocalURL): .success(
+                    CommandResult(exitCode: 0, stdout: "wine-8.0\n", stderr: "", duration: 0.01)
+                )
             ]
         )
 
@@ -63,7 +71,10 @@ final class WineDiagnosticProviderTests: XCTestCase {
 
         XCTAssertEqual(dependency.status, .missing)
         XCTAssertEqual(dependency.missingReason, "Wine bulunamadı.")
-        XCTAssertEqual(dependency.suggestedAction, "Wine’ı desteklenen konumlardan birine manuel olarak kurmanız gerekir.")
+        XCTAssertEqual(
+            dependency.suggestedAction,
+            "Wine’ı desteklenen konumlardan birine manuel olarak kurmanız gerekir."
+        )
     }
 
     func testExistingButNotExecutablePathReturnsMissing() async {
@@ -130,7 +141,9 @@ final class WineDiagnosticProviderTests: XCTestCase {
             existingURLs: [wineURL],
             executableURLs: [wineURL],
             commandResults: [
-                wineRequest(wineURL): .success(CommandResult(exitCode: 0, stdout: "unexpected\n", stderr: "", duration: 0.01))
+                wineRequest(wineURL): .success(
+                    CommandResult(exitCode: 0, stdout: "unexpected\n", stderr: "", duration: 0.01)
+                )
             ]
         )
 

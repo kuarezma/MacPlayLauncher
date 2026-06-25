@@ -270,14 +270,15 @@ final class DisplayResolutionService: DisplayResolutionServicing, @unchecked Sen
         var id: String?
         var mode: String?
         for line in output.components(separatedBy: "\n") {
-            let t = line.trimmingCharacters(in: .whitespaces)
-            if t.hasPrefix("Persistent screen id:"), let v = t.components(separatedBy: ": ").last {
-                id = v.trimmingCharacters(in: .whitespaces)
+            let trimmedLine = line.trimmingCharacters(in: .whitespaces)
+            if trimmedLine.hasPrefix("Persistent screen id:"),
+               let value = trimmedLine.components(separatedBy: ": ").last {
+                id = value.trimmingCharacters(in: .whitespaces)
             }
-            if t.contains("<-- current mode") {
-                if let colon = t.firstIndex(of: ":"),
-                   let start = t.index(colon, offsetBy: 2, limitedBy: t.endIndex) {
-                    mode = String(t[start...])
+            if trimmedLine.contains("<-- current mode") {
+                if let colon = trimmedLine.firstIndex(of: ":"),
+                   let start = trimmedLine.index(colon, offsetBy: 2, limitedBy: trimmedLine.endIndex) {
+                    mode = String(trimmedLine[start...])
                         .replacingOccurrences(of: "<-- current mode", with: "")
                         .trimmingCharacters(in: .whitespaces)
                 }
@@ -384,13 +385,13 @@ struct GameProcessMonitor {
             "services.exe", "plugplay.exe", "svchost.exe"
         ]
         for name in targets {
-            let p = Process()
-            p.executableURL = URL(fileURLWithPath: "/usr/bin/pkill")
-            p.arguments = ["-f", name]
-            p.standardOutput = FileHandle.nullDevice
-            p.standardError = FileHandle.nullDevice
-            try? p.run()
-            p.waitUntilExit()
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/usr/bin/pkill")
+            process.arguments = ["-f", name]
+            process.standardOutput = FileHandle.nullDevice
+            process.standardError = FileHandle.nullDevice
+            try? process.run()
+            process.waitUntilExit()
         }
     }
 }

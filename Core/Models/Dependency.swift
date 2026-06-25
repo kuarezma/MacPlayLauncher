@@ -6,4 +6,3 @@ struct Dependency: Codable, Equatable, Identifiable, Sendable {
     var installOrder: Int
     var dependsOn: [String]
 }
-

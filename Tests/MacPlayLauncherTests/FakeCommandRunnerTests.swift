@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class FakeCommandRunnerTests: XCTestCase {
     func testReturnsDeterministicSuccessResult() async throws {

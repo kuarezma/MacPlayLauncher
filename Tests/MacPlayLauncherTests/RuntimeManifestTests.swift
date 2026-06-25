@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class RuntimeManifestTests: XCTestCase {
     func testRuntimeManifestEncodeDecode() throws {
@@ -16,4 +16,3 @@ final class RuntimeManifestTests: XCTestCase {
         }
     }
 }
-

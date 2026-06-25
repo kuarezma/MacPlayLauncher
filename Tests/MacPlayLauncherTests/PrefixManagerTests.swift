@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class PrefixManagerTests: XCTestCase {
     func testDirectoryStateReportsMissingPrefix() throws {

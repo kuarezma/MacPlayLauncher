@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 @MainActor
 final class AppStateDiagnosticsTests: XCTestCase {

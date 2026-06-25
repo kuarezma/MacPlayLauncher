@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class SelectableDependencyDiagnosticServiceTests: XCTestCase {
     func testStaticModeReturnsStaticSummaryWithSourceLabel() async {
@@ -93,10 +93,18 @@ final class SelectableDependencyDiagnosticServiceTests: XCTestCase {
             policy: .internalRealReadOnly,
             staticService: FakeDependencyDiagnosticService(summary: RuntimeDiagnosticSummary(dependencies: [])),
             realService: RealDependencyDiagnosticService(
-                rosettaProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .rosetta, status: .ready)),
-                wineProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .wine, status: .ready)),
-                dxvkProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .dxvk, status: .missing)),
-                moltenVKProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .moltenVK, status: .missing))
+                rosettaProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .rosetta, status: .ready)
+                ),
+                wineProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .wine, status: .ready)
+                ),
+                dxvkProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .dxvk, status: .missing)
+                ),
+                moltenVKProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .moltenVK, status: .missing)
+                )
             )
         )
 
@@ -112,10 +120,18 @@ final class SelectableDependencyDiagnosticServiceTests: XCTestCase {
             policy: .internalRealReadOnly,
             staticService: FakeDependencyDiagnosticService(summary: RuntimeDiagnosticSummary(dependencies: [])),
             realService: RealDependencyDiagnosticService(
-                rosettaProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .rosetta, status: .unknown)),
-                wineProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .wine, status: .ready)),
-                dxvkProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .dxvk, status: .notRequired)),
-                moltenVKProvider: FakeRuntimeDiagnosticProvider(dependency: makeDependency(kind: .moltenVK, status: .notRequired))
+                rosettaProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .rosetta, status: .unknown)
+                ),
+                wineProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .wine, status: .ready)
+                ),
+                dxvkProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .dxvk, status: .notRequired)
+                ),
+                moltenVKProvider: FakeRuntimeDiagnosticProvider(
+                    dependency: makeDependency(kind: .moltenVK, status: .notRequired)
+                )
             )
         )
 

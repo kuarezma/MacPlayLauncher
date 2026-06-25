@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class DependencyTests: XCTestCase {
     func testDependencyEncodeDecode() throws {
@@ -18,4 +18,3 @@ final class DependencyTests: XCTestCase {
         XCTAssertEqual(decoded, dependency)
     }
 }
-

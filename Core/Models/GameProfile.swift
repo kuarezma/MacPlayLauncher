@@ -12,7 +12,7 @@ struct GameProfile: Codable, Equatable, Identifiable, Sendable {
     var executableBookmarkData: Data?
     var workingDirectoryBookmarkData: Data?
     var runtime: RuntimeKind
-    var crossOverBottleName: String? = nil
+    var crossOverBottleName: String?
     var performanceMode: PerformanceMode
     var wineArch: WineArchitecture
     var windowsVersion: WindowsVersion

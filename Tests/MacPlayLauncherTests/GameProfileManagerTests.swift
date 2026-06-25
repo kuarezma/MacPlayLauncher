@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class GameProfileManagerTests: XCTestCase {
     func testSaveLoadDeleteProfile() throws {
@@ -17,4 +17,3 @@ final class GameProfileManagerTests: XCTestCase {
         XCTAssertTrue(try manager.loadProfiles().isEmpty)
     }
 }
-

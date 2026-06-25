@@ -21,4 +21,3 @@ struct EmptyLibraryView: View {
         .accessibilityLabel(String(localized: "accessibility.emptyLibrary"))
     }
 }
-

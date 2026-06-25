@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class JSONStoreTests: XCTestCase {
     func testReadWriteDelete() throws {
@@ -17,4 +17,3 @@ final class JSONStoreTests: XCTestCase {
         XCTAssertTrue(try store.loadAll().isEmpty)
     }
 }
-

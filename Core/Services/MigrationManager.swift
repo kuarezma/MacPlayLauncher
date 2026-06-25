@@ -7,4 +7,3 @@ struct MigrationManager: Sendable {
         return profile
     }
 }
-

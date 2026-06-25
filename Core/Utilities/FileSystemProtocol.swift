@@ -8,4 +8,3 @@ protocol FileSystemProtocol: Sendable {
     func writeData(_ data: Data, to url: URL) throws
     func removeItem(at url: URL) throws
 }
-

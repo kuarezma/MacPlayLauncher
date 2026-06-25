@@ -22,9 +22,10 @@ struct GameFolderDetector: GameFolderDetecting {
         ]
     ) {
         self.fileSystem = fileSystem
-        self.executableCandidates = executableCandidates.map { $0.lowercased() }.reduce(into: Set<String>()) { result, value in
-            result.insert(value)
-        }
+        self.executableCandidates = executableCandidates.map { $0.lowercased() }
+            .reduce(into: Set<String>()) { result, value in
+                result.insert(value)
+            }
     }
 
     func detectCossacks3(in folderURL: URL) throws -> DetectedGameFolder? {

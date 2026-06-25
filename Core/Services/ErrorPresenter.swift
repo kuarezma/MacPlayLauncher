@@ -10,4 +10,3 @@ enum ErrorPresenter {
         return String(localized: "error.generic")
     }
 }
-

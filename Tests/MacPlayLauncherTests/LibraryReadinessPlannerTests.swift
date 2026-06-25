@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class LibraryReadinessPlannerTests: XCTestCase {
     func testPlannerBuildsStepsInExpectedOrder() {

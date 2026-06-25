@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class PrefixPathValidatorTests: XCTestCase {
     func testValidProfilePrefixPathPasses() throws {
@@ -17,7 +17,9 @@ final class PrefixPathValidatorTests: XCTestCase {
 
     func testRejectsNestedPrefixPath() {
         XCTAssertThrowsError(
-            try PrefixPathValidator.validate(profile: makeProfile(prefixPath: "Prefixes/cossacks3/nested", id: "cossacks3"))
+            try PrefixPathValidator.validate(
+                profile: makeProfile(prefixPath: "Prefixes/cossacks3/nested", id: "cossacks3")
+            )
         ) { error in
             XCTAssertEqual(error as? MacPlayError, .invalidPrefixPath)
         }

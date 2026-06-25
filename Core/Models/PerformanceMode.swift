@@ -15,4 +15,3 @@ enum PerformanceMode: String, Codable, CaseIterable, Sendable {
         return .performance
     }
 }
-

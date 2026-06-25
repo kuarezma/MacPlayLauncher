@@ -15,4 +15,3 @@ struct DiagnosticReport: Codable, Equatable, Identifiable, Sendable {
         notes: ["Sprint 1 placeholder diagnostics only."]
     )
 }
-

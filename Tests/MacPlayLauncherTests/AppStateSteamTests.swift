@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class FakeSteamInstallService: SteamInstallServicing, @unchecked Sendable {
     var didCallOpenInstallPage = false

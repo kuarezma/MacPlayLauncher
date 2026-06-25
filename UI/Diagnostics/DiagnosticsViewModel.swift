@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Observation
+import SwiftUI
 
 enum DiagnosticsNextAction: Equatable, Sendable {
     case realSystemCheck

@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class GameFolderDetectorTests: XCTestCase {
     func testDetectsCossacks3Executable() throws {

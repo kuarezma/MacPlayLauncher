@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class LaunchSessionTests: XCTestCase {
     func testLaunchSessionEncodeDecode() throws {
@@ -10,4 +10,3 @@ final class LaunchSessionTests: XCTestCase {
         XCTAssertEqual(decoded, session)
     }
 }
-

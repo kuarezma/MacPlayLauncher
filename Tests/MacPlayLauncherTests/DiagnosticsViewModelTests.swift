@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 @MainActor
 final class DiagnosticsViewModelTests: XCTestCase {
@@ -29,7 +29,10 @@ final class DiagnosticsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.readinessBadgeText(for: .ready), String(localized: "readiness.ready.title"))
         XCTAssertEqual(viewModel.readinessBadgeText(for: .blocked), String(localized: "readiness.blocked.title"))
         XCTAssertEqual(viewModel.readinessBadgeText(for: .unknown), String(localized: "readiness.unknown.title"))
-        XCTAssertEqual(viewModel.readinessBadgeText(for: .unsupported), String(localized: "readiness.unsupported.title"))
+        XCTAssertEqual(
+            viewModel.readinessBadgeText(for: .unsupported),
+            String(localized: "readiness.unsupported.title")
+        )
     }
 
     func testViewModelMapsReadinessSeverityLabels() {

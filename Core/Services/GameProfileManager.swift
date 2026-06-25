@@ -14,7 +14,8 @@ struct GameProfileManager: GameProfileManaging {
     }
 
     func loadProfiles() throws -> [GameProfile] {
-        try store.loadAll().sorted { $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }
+        try store.loadAll()
+            .sorted { $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }
     }
 
     func saveProfile(_ profile: GameProfile) throws {
@@ -25,4 +26,3 @@ struct GameProfileManager: GameProfileManaging {
         try store.delete(named: id)
     }
 }
-

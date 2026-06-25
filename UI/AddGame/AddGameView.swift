@@ -52,7 +52,7 @@ struct AddGameView: View {
                 Text(String(localized: "addGame.steam.help"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
+
                 if let steamInstallMessage = appState.steamInstallMessage {
                     Label(steamInstallMessage, systemImage: "checkmark.circle")
                         .font(.caption)

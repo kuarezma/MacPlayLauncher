@@ -24,4 +24,3 @@ func temporaryDirectory() throws -> URL {
     try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     return url
 }
-

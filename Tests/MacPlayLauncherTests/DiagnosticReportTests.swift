@@ -1,5 +1,5 @@
-import XCTest
 @testable import MacPlayLauncher
+import XCTest
 
 final class DiagnosticReportTests: XCTestCase {
     func testDiagnosticReportEncodeDecode() throws {
@@ -10,4 +10,3 @@ final class DiagnosticReportTests: XCTestCase {
         XCTAssertEqual(decoded, report)
     }
 }
-
