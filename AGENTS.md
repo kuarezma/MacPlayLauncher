@@ -81,6 +81,8 @@ KULLANICI ──(yeni istek)──► OPUS ──(görev+atama)──► HANDOFF
    - `HANDOFF.md`: en üste 1 satır log ekle + `NEXT:`'i DAG'a göre **sıradaki sahibe** ayarla (Bölüm 5'teki tur sırası).
 6. **Commit.** `tür(scope): özet` formatı + ilgili modelin `Co-Authored-By` satırı. Mümkünse CI yeşilini bekle.
 
+> **Şerit (lane) disiplini:** Yalnız görevinin kapsamındaki dosya/işe dokun. Güvenlik-sınırı veya üretim-kodu refactor'u görevinde açıkça yoksa **yapma** — gerekiyorsa `HANDOFF.md`'ye not düşüp `NEXT:`'i Opus'a bırak. (Örn. *test yazma* görevinde `ProcessCommandRunner` refactor'u = kapsam aşımı.)
+>
 > Görev tıkanırsa: 1-2 denemeden sonra dur, `HANDOFF.md`'ye teşhis + en az 2 somut alternatif yaz, `NEXT:`'i **Opus**'a devret.
 
 ---

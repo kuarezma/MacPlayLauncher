@@ -7,13 +7,13 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 2/12 (~%17)** · `▰▰▱▱▱▱▱▱▱▱▱▱`
+**İlerleme: 3/12 (%25)** · `▰▰▰▱▱▱▱▱▱▱▱▱`
 
 | # | Görev | Model (araç) | Durum |
 |---|---|---|---|
 | T-000 | Koordinasyon sistemi kurulumu | Opus (Claude Code) | ✅ done |
 | T-001 | Mekanik lint temizliği | Haiku (Claude Code) | ✅ done |
-| T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | ⬜ todo |
+| T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | ✅ done |
 | T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | ⬜ todo |
 | T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | ⬜ todo |
 | T-005 | Refactor uygulaması | Sonnet (Claude Code) | ⬜ todo |
@@ -39,7 +39,7 @@
 - **verify:** ✅ `swiftlint lint --quiet` → bu kategorilerde 0 · ✅ `swift test --build-path /tmp/mpl_ci_build` yeşil
 
 ### T-002 · Eksik servis testleri (otonom TDD)
-- **sahip:** Codex (GPT 5.5) · **durum:** todo · **bağımlı:** T-001 · **branch:** `test/command-services`
+- **sahip:** Codex (GPT 5.5) · **durum:** done · **bağımlı:** T-001 · **branch:** `test/command-services`
 - **iş:** `DisplayResolutionService`, `WineSteamService`, `GameProcessMonitor` için birim testleri yaz (`FakeCommandRunner` test double'ı ile; gerçek Process spawn etme). Dosyalar `Core/Services/Commands/` altında.
 - **verify:** `swift test --build-path /tmp/mpl_ci_build` yeşil; yeni testler koşuyor
 
@@ -65,13 +65,14 @@
 
 ### T-007 · Sertleştirme tasarımı (spec)
 - **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-006 · **branch:** `docs/hardening-spec`
-- **iş:** `DisplayResolutionService` + `GameProcessMonitor`'u `ProcessCommandRunner` allowlist sınırından geçirme tasarımı; `WineSteamService` sabit CrossOver yolunu resolver'a taşıma. Güvenlik gerekçesi + allowlist'e eklenecek yollar.
+- **NOT (T-002 devri):** `DisplayResolutionService` + `GameProcessMonitor` allowlist yönlendirmesi T-002'de Codex tarafından **erken yapıldı**; geçici olarak `BlockingCommandRunner` (semaphore köprüsü, `Task.detached`) ile çalışıyor. Asıl tasarım işi artık: **async-güvenli sınırı tasarla → `BlockingCommandRunner` semaphore köprüsünü tamamen kaldır** (launch akışını async yap, çağıranları `await`'e geçir).
+- **iş:** Yukarıdaki async-güvenli boundary tasarımı + `WineSteamService` çift-yol (nil → bare `Process()`) tutarsızlığını gider + sabit CrossOver yolunu resolver'a taşı. Güvenlik gerekçesi + allowlist yolları.
 - **verify:** spec dosyası (`Docs/coordination/HARDENING-SPEC.md`) mevcut
 
 ### T-008 · Sertleştirme uygulaması
 - **sahip:** Codex (GPT 5.5) · **durum:** todo · **bağımlı:** T-007 · **branch:** `refactor/command-boundary`
-- **iş:** T-007 spec'ini uygula. Tüm `Process()` çağrılarının `ProcessCommandRunner` üzerinden gittiğini garanti et.
-- **verify:** `swift test` yeşil · `./scripts/verify-sprint-18.sh` yeşil (`Process()` yalnız `ProcessCommandRunner.swift` kriteri)
+- **iş:** T-007 spec'ini uygula: `BlockingCommandRunner` köprüsünü kaldır, çağrı yerlerini async-güvenli yap, `WineSteamService` çift-yolunu tek yola indir, tüm `Process()` çağrılarının `ProcessCommandRunner` üzerinden gittiğini garanti et.
+- **verify:** `swift test` yeşil · `./scripts/verify-sprint-18.sh` yeşil (`Process()` yalnız `ProcessCommandRunner.swift` kriteri) · `BlockingCommandRunner` kaldırıldı
 
 ### T-009 · Tüm-kod denetimi + doküman + görsel teşhis
 - **sahip:** Gemini 3.1 Pro (Antigravity) · **durum:** todo · **bağımlı:** T-008 · **branch:** `docs/audit-architecture`
