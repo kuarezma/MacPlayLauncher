@@ -251,3 +251,13 @@ v0.23 starts eligible setup automation without requiring the user to press the K
 - CrossOver-configured profiles treat Wine, DXVK, and MoltenVK as CrossOver-managed runtime responsibilities instead of separate user-installed blockers.
 - Non-CrossOver Wine profiles keep the existing Homebrew Wine diagnostic behavior.
 - The security boundary is unchanged: no hidden shell pipeline, no credential handling, no CrossOver license bypass, and no Steam login automation.
+
+## v0.24 Wave 1 Code Health
+
+v0.24 focuses on code health, structural linting, and solidifying the command execution boundary.
+
+- The application is updated to cleanly compile with strict `swiftlint` rules (0 warnings target).
+- `ProcessCommandRunner` remains the strict boundary for process execution, with all external caller asynchronous bridging removed.
+- Diagnostic services (`DisplayResolutionService`, `GameProcessMonitor`, `WineSteamService`) are now purely asynchronous and natively use the `CommandRunning` boundary without falling back to raw `Process()` execution.
+- Command paths (like the CrossOver executable) are resolved exclusively via `AppEnvironment` wiring instead of hardcoded strings in services.
+- The `canLaunch` gate remains structurally locked to `false` in production, maintaining the safe diagnostic boundary.

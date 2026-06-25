@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 9/12 (%75)** · `▰▰▰▰▰▰▰▰▰▱▱▱`
+**İlerleme: 10/12 (%83)** · `▰▰▰▰▰▰▰▰▰▰▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -20,7 +20,7 @@
 | T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ✅ done |
 | T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ✅ done |
-| T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ⬜ todo |
+| T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ✅ done |
 | T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ⬜ todo |
 | T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
 

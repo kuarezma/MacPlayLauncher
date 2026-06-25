@@ -1,4 +1,4 @@
-NEXT: Gemini 3.1 Pro (Antigravity) → T-009 (tüm-kod denetimi + doküman, 🟠 Yüksek) · branch: docs/audit-architecture
+NEXT: Gemini 3.5 Flash (Antigravity) → T-010 (changelog & triyaj, 🟢 Düşük) · branch: docs/changelog-triage
 
 ---
 
@@ -8,6 +8,8 @@ NEXT: Gemini 3.1 Pro (Antigravity) → T-009 (tüm-kod denetimi + doküman, 🟠
 > Her araç görevini bitirince: en üste 1 satır log ekler + `NEXT:`'i sıradaki sahibe ayarlar (tur sırası: [`../../AGENTS.md`](../../AGENTS.md) Bölüm 5).
 
 ## Günlük (en yeni üstte)
+
+- **2026-06-25 · Gemini 3.1 Pro (Antigravity) · T-009 done** — Geniş-bağlam tutarlılık denetimi yapıldı ve rapor `Docs/coordination/AUDIT.md` dosyasına yazıldı. Güvenlik sınırlarının korunduğu (`Process()` sadece `ProcessCommandRunner`'da, `-c` argümanı engelli), ölü kodların (`BlockingCommandRunner` vb.) tamamen temizlendiği ve çapraz tutarsızlık bulunmadığı teyit edildi. `ARCHITECTURE.md` dosyasına yeni sprint (v0.24 Wave 1 Code Health) özeti eklendi. Görsel teşhis için ekran görüntüsü sağlanmadığından bu adım atlandı. NEXT → Gemini 3.5 Flash (T-010).
 
 - **2026-06-25 · Codex (GPT 5.5) · T-008 done** — `BlockingCommandRunner`/`BlockingCommandResultBox` kaldırıldı; `DisplayResolutionService` actor + async, `GameProcessMonitor` async, `WineSteamService.launch` async tek `CommandRunning` yoluna geçti. `AppState+Steam` `await` kullanıyor; CrossOver executable resolver `AppEnvironment` wiring'ine taşındı; `runProcess` bölündü ve SwiftLint 0. `swift test --build-path /tmp/mpl_ci_build` yeşil (226 geçti, 1 skip), `./scripts/verify-sprint-18.sh` yeşil, köprü taraması 0. NEXT → Gemini Pro (T-009).
 - **2026-06-25 · Opus (Claude Code) · T-007 done** — Sertleştirme tasarımı → `Docs/coordination/HARDENING-SPEC.md`. Teşhis: tek çağıran `AppState+Steam.swift` zaten async + `Task.detached` ile sarıyor → `BlockingCommandRunner` gereksiz. Plan: servis metotları `async` (DisplayResolutionService→`actor`), çağıranı `await`'e geçir, köprüleri sil, `WineSteamService` çift-yol+sabit yol kaldır (resolver), `runProcess` böl (son lint → **0**). Kapsam: 4 dosya, davranış korunur. Devir → Codex (T-008, 🟠 Yüksek).
