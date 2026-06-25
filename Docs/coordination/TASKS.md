@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 4/12 (%33)** · `▰▰▰▰▱▱▱▱▱▱▱▱`
+**İlerleme: 5/12 (~%42)** · `▰▰▰▰▰▱▱▱▱▱▱▱`
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -15,7 +15,7 @@
 | T-001 | Mekanik lint temizliği | Haiku (Claude Code) | 🟢 Düşük | ✅ done |
 | T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | 🟡 Orta | ✅ done |
 | T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | 🟠 Yüksek | ✅ done |
-| T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
+| T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
 | T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ⬜ todo |
 | T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
@@ -50,19 +50,19 @@
 - **verify:** ✅ `swift test --build-path /tmp/mpl_ci_build` yeşil (226 test)
 
 ### T-004 · Refactor tasarımı (spec)
-- **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-002, T-003 · **branch:** `docs/refactor-spec`
-- **iş:** Spec yaz (`Docs/coordination/REFACTOR-SPEC.md`): `AppState.swift` (356→<300, extension'lara böl), `DiagnosticsViewModel.swift` (415/509→alt-bileşenler), `SetupOrchestrator` (cyclomatic 13→<10). Alt görevleri bu panoya ekle.
-- **verify:** spec dosyası mevcut; alt görevler T-005 altında listeli
+- **sahip:** Opus (Claude Code) · **durum:** done · **bağımlı:** T-002, T-003 · **branch:** main
+- **iş:** Spec yazıldı → [`REFACTOR-SPEC.md`](REFACTOR-SPEC.md). 4 hedef + extension bölme planı + fonksiyon parçalama; orphan uyarılar T-006/T-008'e devredildi.
+- **verify:** ✅ `REFACTOR-SPEC.md` mevcut; T-005 alt-hedefleri aşağıda
 
 ### T-005 · Refactor uygulaması
 - **sahip:** Sonnet (Claude Code) · **durum:** todo · **bağımlı:** T-004 · **branch:** `refactor/appstate-diagnostics`
-- **iş:** T-004 spec'ini uygula. Davranış değişmez, public API korunur, testler yeşil kalır.
-- **verify:** `swift test` yeşil · `swiftlint lint --quiet` → type_body_length / function_body_length / cyclomatic_complexity 0
+- **iş:** [`REFACTOR-SPEC.md`](REFACTOR-SPEC.md)'i uygula — 4 hedef: ① `AppState` → `+AddGame/+Diagnostics/+Launch` extension'ları + `makeAddGameProfile` böl; ② `DiagnosticsViewModel` → `+NextStep/+Experimental/+Prefix/+Source/+Badges` extension'ları; ③ `SetupOrchestrator.runOrchestration` → `process`/`runAutomation` böl; ④ `ExperimentalRunReadinessEvaluator.evaluate` → yardımcılara böl. **Davranış/public API/string'ler birebir aynı.**
+- **verify:** `swift test --build-path /tmp/mpl_ci_build` yeşil · `swiftlint lint --quiet` → bu 4 dosyada type_body_length / file_length / function_body_length / cyclomatic_complexity 0
 
 ### T-006 · Kalan küçük yapısal lint
 - **sahip:** Haiku (Claude Code) · **durum:** todo · **bağımlı:** T-005 · **branch:** `chore/lint-structural`
-- **iş:** `WineDiagnosticProvider` 6 param → parametre struct'ına sar (≤5); large-tuple → adlandırılmış tip.
-- **verify:** `swiftlint lint --quiet` → function_parameter_count / large_tuple 0 · `swift test` yeşil
+- **iş:** `WineDiagnosticProvider` 6 param → parametre struct'ına sar (≤5); `SetupOrchestratorTests` large-tuple → adlandırılmış tip; `SelectableDependencyDiagnosticServiceTests` tip adını (>40 karakter) kısalt.
+- **verify:** `swiftlint lint --quiet` → function_parameter_count / large_tuple / type_name 0 · `swift test` yeşil
 
 ### T-007 · Sertleştirme tasarımı (spec)
 - **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-006 · **branch:** `docs/hardening-spec`

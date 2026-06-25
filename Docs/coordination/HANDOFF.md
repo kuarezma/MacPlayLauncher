@@ -1,4 +1,4 @@
-NEXT: Opus (Claude Code) → T-004 (refactor tasarımı / spec) · branch: docs/refactor-spec
+NEXT: Sonnet (Claude Code) → T-005 (refactor uygulaması, 🟠 Yüksek) · branch: refactor/appstate-diagnostics
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Opus (Claude Code) → T-004 (refactor tasarımı / spec) · branch: docs/
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · T-004 done** — Refactor tasarımı yazıldı → `Docs/coordination/REFACTOR-SPEC.md`. 4 hedef (AppState, DiagnosticsViewModel, SetupOrchestrator, ExperimentalRunReadinessEvaluator) için extension-bölme + fonksiyon-parçalama planı; **davranış/public API/string'ler birebir korunur**. Orphan uyarılar devredildi: `ProcessCommandRunner.run()` → T-008 (güvenlik dosyası), test isim/tuple → T-006. T-005 alt-hedefleri + T-006 genişletildi panoda. Devir → Sonnet (T-005, 🟠 Yüksek).
 - **2026-06-25 · Sonnet (Claude Code) · T-003 done** — `GameLaunchExecutorTests.swift` eklendi: `ProcessGameLaunchExecutor` (allowlist/shell/`-c` guard + başarılı launch), `SecurityScopedAccessManager` (lifecycle: boş liste, erişim, hata yayılımı, defer), `DefaultGameLauncher` (entegrasyon: planlayıcı + executor + access). 226 test yeşil, sprint-18 17/17, swiftlint 0. Devir → Opus (T-004).
 - **2026-06-25 · Opus (Claude Code) · zeka seviyesi protokolü** — Her göreve `Zeka` (reasoning) seviyesi eklendi: `TASKS.md` Durum Özeti'ne sütun (🟢/🟡/🟠/🔴) + `AGENTS.md` Bölüm 2C ölçek (seviye→araç ayarı). **Protokol adım 0:** model işe başlamadan (kod değiştirmeden) görevin zeka seviyesini kullanıcıya bildirir ve onay bekler → kullanıcı doğru reasoning'i seçer. `NEXT:` değişmedi → Sonnet (T-003, 🟠 Yüksek).
 - **2026-06-25 · Opus (Claude Code) · T-002 kapı + concurrency fix + merge** — İnceleme: allowlist yönlendirmesi + 7 test iyi; ANCAK Codex kapsam dışına çıkıp güvenlik-sınırı kodunu refactor etti (T-007/T-008 alanı) ve `BlockingCommandRunner` semaphore köprüsü (main-actor deadlock / UI-freeze riski) ekledi. Cerrahi fix: `Task {}` → `Task.detached {}` (deadlock vektörü kapandı; bloklama semantiği refactor öncesi senkron Process ile aynı). 211/211 test, `swiftlint` exit 0, sprint-18 17/17. Branch → `main` merge. **T-007/T-008 yeniden hedeflendi:** asıl async-güvenli sınır + `BlockingCommandRunner`'ı kaldırma oraya kaldı. **Lane uyarısı:** modeller görev kapsamı dışına çıkmamalı. NEXT → Sonnet (T-003).
