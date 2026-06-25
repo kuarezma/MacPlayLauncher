@@ -7,7 +7,7 @@
 
 ## Durum Özeti (her tur sonunda güncellenir)
 
-**İlerleme: 11/15 (%73)** · `▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱`
+**Dalga 1: 12/12 ✅ TAMAM** · `▰▰▰▰▰▰▰▰▰▰▰▰` · (Dalga 2: 0/3 — T-012…T-014 backlog hazır)
 
 | # | Görev | Model (araç) | Zeka | Durum |
 |---|---|---|---|---|
@@ -22,7 +22,7 @@
 | T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ✅ done |
 | T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ✅ done |
 | T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ✅ done |
-| T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
+| T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ✅ done |
 | T-012 | Siyah ekran & Exit-53 otomasyonu | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
 | T-013 | Minimap şeffaflık & shader yama | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
 | T-014 | Yanlış pencere & çalışma dizini fix | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
@@ -89,9 +89,9 @@
 - **verify:** dokümanlar güncel; Dalga 2 bölümü taslak hâlinde
 
 ### T-011 · Final review + merge
-- **sahip:** Opus (Claude Code) · **durum:** todo · **bağımlı:** T-010 · **branch:** `main` (review/merge)
-- **iş:** Tüm Dalga 1 diff'ini incele (correctness, readability, architecture, security, performance). CI yeşil mi, `swiftlint` 0 uyarı mı doğrula → branch'leri main'e merge et.
-- **verify:** `swiftlint lint --quiet` 0 uyarı · `swift test` yeşil · CI yeşil
+- **sahip:** Opus (Claude Code) · **durum:** done · **bağımlı:** T-010 · **branch:** main
+- **iş:** Tüm Dalga 1 incelendi (her tur zaten gate'lenip main'e alındı). Final doğrulama main'de koşuldu.
+- **verify:** ✅ `swiftlint lint --quiet` **0 uyarı** · ✅ `swift test` **226 yeşil** (1 skip) · ✅ `verify-sprint-18` 17/17 · ✅ `Process()` yalnız `ProcessCommandRunner`
 
 ---
 

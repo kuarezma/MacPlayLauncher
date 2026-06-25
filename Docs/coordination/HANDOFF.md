@@ -1,4 +1,4 @@
-NEXT: Opus (Claude Code) → T-011 (final review + merge, 🔴 Maksimum) · branch: main
+NEXT: ✅ DALGA 1 TAMAM — Dalga 2 hazır → Sonnet (Claude Code) → T-012 (siyah ekran & exit-53, 🟠 Yüksek) · branch: fix/blackscreen-exit53 · (kullanıcı başlatınca)
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Opus (Claude Code) → T-011 (final review + merge, 🔴 Maksimum) · bran
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · T-011 done — 🏁 DALGA 1 KAPANDI** — Final gate (main): `swiftlint` **0 uyarı (106→0)**, `swift test` **226 yeşil** (1 skip, başta 204), `verify-sprint-18` 17/17, `Process()` yalnız `ProcessCommandRunner` (güvenlik sınırı sağlam). 12 turun tamamı tur tur gate'lenip main'e alındı (18 commit, FastForward zinciri). **Dalga 1 (Kod Sağlığı) hedefleri eksiksiz.** Dalga 2 (hatalar: T-012 exit-53/siyah ekran, T-013 minimap/shader, T-014 pencere/workdir) backlog hazır. NEXT → Sonnet (T-012), kullanıcı başlatınca.
 - **2026-06-25 · Gemini 3.5 Flash (Antigravity) · T-010 done** — `README.md` Changelog güncellendi (v0.24 Wave 1 Code Health eklemeleri yapıldı). `Docs/coordination/TASKS.md` dosyası güncellenerek T-010 ve T-009 tamamlandı olarak işaretlendi; Dalga 2 (Hatalar) hedefleri T-012, T-013, T-014 olarak detaylandırılarak backlog taslağı oluşturuldu ve görev tablosu güncellendi. `HANDOFF.md` temizlendi ve devir teslim ayarlandı. NEXT → Opus (T-011, 🔴 Maksimum) on `main`.
 
 - **2026-06-25 · Gemini 3.1 Pro (Antigravity) · T-009 done** — Geniş-bağlam tutarlılık denetimi yapıldı ve rapor `Docs/coordination/AUDIT.md` dosyasına yazıldı. Güvenlik sınırlarının korunduğu (`Process()` sadece `ProcessCommandRunner`'da, `-c` argümanı engelli), ölü kodların (`BlockingCommandRunner` vb.) tamamen temizlendiği ve çapraz tutarsızlık bulunmadığı teyit edildi. `ARCHITECTURE.md` dosyasına yeni sprint (v0.24 Wave 1 Code Health) özeti eklendi. Görsel teşhis için ekran görüntüsü sağlanmadığından bu adım atlandı. NEXT → Gemini 3.5 Flash (T-010).
