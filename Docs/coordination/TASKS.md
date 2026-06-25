@@ -105,11 +105,14 @@
 - **⚠️ Opus kapsam notu:** **SİLME yok.** Geri-alınabilir şekilde `offline.txt → offline.txt.disabled` yeniden adlandır. Oyun klasörüne erişim **yalnız** `SecurityScopedAccessManager`/bookmark deseniyle (mevcut allowlist mimarisi); erişim yoksa UI rehber-uyarısına düş. `CossacksSetupService` tespit desenini yeniden kullan — yeni `Process()`/mutasyon yolu açma.
 - **verify:** `swift test` yeşil · offline.txt tespiti + rename + exit-53 için fake/mock testleri.
 
-### T-013 · Minimap Şeffaflık & Shader Yama İyileştirmesi
-- **sahip:** Sonnet (Claude Code) · **zeka:** 🟠 Yüksek · **durum:** todo · **bağımlı:** T-012 · **branch:** `fix/minimap-shaders`
-- **⚠️ Önce teşhis:** Bu görsel bir hata — **önce Gemini Pro görsel teşhisi** (kullanıcı ekran görüntüsü verir) veya mevcut `ShaderPatchService` davranış analizi. Kör kod yazma.
-- **iş:** `ShaderPatchService` shader yama logic'ini iyileştir; cavalry/unit render'ı bozmadığını doğrula (regresyon).
-- **verify:** `ShaderPatchServiceTests` yeşil + görsel onay (ekran görüntüsü).
+### T-013 · Atlı Birim (Binici) Render Hatası
+- **sahip:** Codex (GPT 5.5 — prior shader/WineCX bağlamı onda) · **zeka:** 🔴 Maksimum · **durum:** todo · **bağımlı:** — · **branch:** `fix/cavalry-rider`
+- **✅ Opus görsel teşhisi (2026-06-25, kullanıcı ekran görüntüsü):** Minimap artık **idare ediyor** (cossacks3.app ile geliyor) → **düşük öncelik**. Asıl hata: **atlı birimin binicisi atın üstünde değil, yanında/yerde duruyor.** Teşhis: binici mesh render ediliyor ama **eyer-kemiği (saddle bone) transform'u uygulanmıyor** → vertex'ler yerel orijinde kalıyor. = **vertex bone-skinning** sorunu (`ShaderPatchService` `unit.sm.b*.vert` bone shader alanı) **VEYA** WineCX GL/D3D bone-matrix çeviri sınırı.
+- **⚠️ Fizibilite (dürüst):** Kök neden WineCX-engine ise (önceki not: "daha yeni WineCX gerek"), **launcher'daki `ShaderPatchService` düzeltmesi YETMEZ** → fix `~/Cossacks3_Mac_Port` runtime/WineCX tarafında, bu repo DIŞINDA.
+- **iş — önce Codex'e danış:** (1) Codex prior bağlamıyla belirlesin: shader-yaması mı, WineCX mi? (2) **Shader ise** → `ShaderPatchService` bone-transform yamasını ekle, cavalry'yi bozmadan. **WineCX ise** → bu repo dışı; runtime'a/Dalga 3'e devret, launcher sadece teşhis/uyarı yapsın.
+- **verify:** `ShaderPatchServiceTests` yeşil + **gerçek oyunda görsel onay** (binici eyerde).
+
+> Not: Minimap şeffaflık işi tamamlandı sayılır (idare ediyor); ayrı tur gerekirse düşük öncelikli alt-görev açılır.
 
 ### T-014 · Yanlış Pencere & Çalışma Dizini Fix
 - **sahip:** Sonnet (Claude Code) · **zeka:** 🟡 Orta · **durum:** todo · **bağımlı:** T-013 · **branch:** `fix/workdir-window`
