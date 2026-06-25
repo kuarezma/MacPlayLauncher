@@ -1,4 +1,4 @@
-NEXT: ⚠️ Karar kullanıcıda — yüksek-değer (cavalry T-013 + FPS T-015) ikisi de ⛔ WineCX-engine sınırı, repo-DIŞI. Repo-içi kalan minör: T-012 exit-53 (Sonnet), T-014 pencere (Sonnet), T-016 render-teşhis (opsiyonel). Engine yolu = CX26 (paralı, repo-dışı).
+NEXT: Sonnet (Claude Code) → T-012 (exit-53/siyah ekran tespiti, 🟠 Yüksek) · branch: fix/blackscreen-exit53 · (sonra T-014 pencere/workdir). Karar: minör launcher cilası; T-013/T-015 ⛔ engine (atlandı).
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: ⚠️ Karar kullanıcıda — yüksek-değer (cavalry T-013 + FPS T-015) 
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · Karar: minör launcher cilası** — Kullanıcı kararı: cavalry/FPS engine-bloklu olduğu için onları bırak, **repo-içi gerçekten yapılabilir** işleri bitir: **T-012** (exit-53/offline.txt tespiti + UI uyarısı) → **T-014** (pencere/workdir normalizasyonu). T-013/T-015 ⛔ blocked kalır, T-016 opsiyonel. T-014 bağımlılığı T-013→T-012 güncellendi. NEXT → Sonnet (T-012).
 - **2026-06-25 · Codex (GPT 5.5) · T-015 runtime teşhisi — FPS de engine sınırı** — Kanıt: Cossacks 3 ana 3D'yi **D3D9 değil OpenGL/GLSL** ile çiziyor (`DEVAM_NOTU.md:72`); aktif yol WineCX 23.7 + builtin WineD3D. DXVK **yanlış katman**, MoltenVK var ama render yolunda değil → DXVK fayda düşük ihtimal. **Opus'un DXVK→MoltenVK ~2-5× hipotezi düzeltildi** (Codex runtime bağlamı kazandı). Gerçek darboğaz: OpenGL→Apple çeviri + CPU. Free engine alternatifleri çalışmıyor; iyileşme CX26 (paralı). T-015 ⛔ blocked; T-016 (render-teşhis, opsiyonel) açıldı. **Launcher'ın oyun-içi sorunlara katkısı tükendi** — kalan repo-içi iş minör.
 - **2026-06-25 · Codex (GPT 5.5) · T-013 verdikti — engine sınırı** — `DEVAM_NOTU.md` kanıtı: cavalry binici hatası shader-side tükenmiş; dinamik `boneMatrices[index]` Apple/Wine GL'de bozuluyor → **WineCX 23.7 engine sınırı**, CrossOver 26 gerektirir (ücretsiz build yok). `ShaderPatchService` artık yalnız geri-yükleme/fragment/teşhis. **T-013 launcher-scope KAPANDI** (⛔ blocked). Odak FPS'e (T-015) kaydı.
 - **2026-06-25 · Opus (Claude Code) · T-015 performans teşhisi** — Kullanıcı: kalabalıkta FPS **0-10** (idle ~17). Teşhis: muhtemelen WineD3D→OpenGL render yolu (yavaş) — **DXVK→MoltenVK** kaldıracı (~2-5×) + Wine/Rosetta CPU yükü. **Scope:** launcher Swift kodunda doğrudan çözülmez; runtime/WineCX config işi (launcher sadece DXVK/MoltenVK tespit+rehberlik yapabilir). Codex sorusuna eklendi. T-015 açıldı (🔴, Codex).

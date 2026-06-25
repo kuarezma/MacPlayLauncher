@@ -115,7 +115,7 @@
 > Referans shader aileleri: `unit.sm.b{1,3,5,16,18,20,22,24,27,42}.id*.vert` + shadow/prefixsiz `b*.vert` + `unit.smx{3,9}.id8.frag`.
 
 ### T-014 · Yanlış Pencere & Çalışma Dizini Fix
-- **sahip:** Sonnet (Claude Code) · **zeka:** 🟡 Orta · **durum:** todo · **bağımlı:** T-013 · **branch:** `fix/workdir-window`
+- **sahip:** Sonnet (Claude Code) · **zeka:** 🟡 Orta · **durum:** todo · **bağımlı:** T-012 (T-013 engine-bloklu, atlandı) · **branch:** `fix/workdir-window`
 - **iş:** `GameLaunchPlanner` working directory çözümlemesi + pencere argümanlarını normalize et (oyun doğru dizinde/pencere modunda açılsın).
 - **verify:** `GameLaunchPlannerTests` yeşil.
 
