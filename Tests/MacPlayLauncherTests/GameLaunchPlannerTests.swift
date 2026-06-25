@@ -31,6 +31,96 @@ final class GameLaunchPlannerTests: XCTestCase {
         XCTAssertEqual(plan.workingDirectoryURL, gameFolder)
     }
 
+    func testMakeLaunchPlanUsesWorkingDirectoryPathWhenBookmarkIsNil() throws {
+        let gameFolder = URL(
+            fileURLWithPath: NSTemporaryDirectory(),
+            isDirectory: true
+        ).appending(path: UUID().uuidString, directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: gameFolder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: gameFolder) }
+
+        let executable = gameFolder.appending(path: "cossacks3.exe")
+        let prefixURL = URL(fileURLWithPath: "/tmp/AppSupport/Prefixes/test")
+
+        let planner = DefaultGameLaunchPlanner(
+            bookmarkManager: FakeLaunchBookmarkManager(
+                executableURL: executable,
+                workingDirectoryURL: gameFolder
+            ),
+            prefixManager: FakeLaunchPrefixManager(prefixURL: prefixURL),
+            wineResolver: WineExecutableResolver(
+                fileChecker: FakeLaunchFileChecker(existingExecutables: ["/opt/homebrew/bin/wine"]),
+                allowedWineURLs: [URL(fileURLWithPath: "/opt/homebrew/bin/wine")]
+            )
+        )
+
+        var profile = makeProfile()
+        profile.workingDirectory = gameFolder.path
+        profile.workingDirectoryBookmarkData = nil
+
+        let plan = try planner.makeLaunchPlan(for: profile)
+
+        XCTAssertEqual(plan.workingDirectoryURL, gameFolder)
+    }
+
+    func testMakeLaunchPlanFallsBackToExecutableParentWhenWorkingDirectoryMissing() throws {
+        let gameFolder = URL(
+            fileURLWithPath: NSTemporaryDirectory(),
+            isDirectory: true
+        ).appending(path: UUID().uuidString, directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: gameFolder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: gameFolder) }
+
+        let executable = gameFolder.appending(path: "cossacks3.exe")
+        let prefixURL = URL(fileURLWithPath: "/tmp/AppSupport/Prefixes/test")
+
+        let planner = DefaultGameLaunchPlanner(
+            bookmarkManager: FakeLaunchBookmarkManager(
+                executableURL: executable,
+                workingDirectoryURL: gameFolder
+            ),
+            prefixManager: FakeLaunchPrefixManager(prefixURL: prefixURL),
+            wineResolver: WineExecutableResolver(
+                fileChecker: FakeLaunchFileChecker(existingExecutables: ["/opt/homebrew/bin/wine"]),
+                allowedWineURLs: [URL(fileURLWithPath: "/opt/homebrew/bin/wine")]
+            )
+        )
+
+        var profile = makeProfile()
+        profile.workingDirectory = nil
+        profile.workingDirectoryBookmarkData = nil
+
+        let plan = try planner.makeLaunchPlan(for: profile)
+
+        XCTAssertEqual(plan.workingDirectoryURL, gameFolder)
+    }
+
+    func testMakeLaunchPlanDeduplicatesExecutableInArguments() throws {
+        let gameFolder = URL(fileURLWithPath: "/tmp/game", isDirectory: true)
+        let executable = gameFolder.appending(path: "cossacks3.exe")
+        let prefixURL = URL(fileURLWithPath: "/tmp/AppSupport/Prefixes/test-game")
+
+        let planner = DefaultGameLaunchPlanner(
+            bookmarkManager: FakeLaunchBookmarkManager(
+                executableURL: executable,
+                workingDirectoryURL: gameFolder
+            ),
+            prefixManager: FakeLaunchPrefixManager(prefixURL: prefixURL),
+            wineResolver: WineExecutableResolver(
+                fileChecker: FakeLaunchFileChecker(existingExecutables: ["/opt/homebrew/bin/wine"]),
+                allowedWineURLs: [URL(fileURLWithPath: "/opt/homebrew/bin/wine")]
+            )
+        )
+
+        var profile = makeProfile()
+        profile.launchArguments = [executable.path]
+
+        let plan = try planner.makeLaunchPlan(for: profile)
+
+        XCTAssertEqual(plan.arguments.filter { $0 == executable.path }.count, 1)
+        XCTAssertEqual(plan.arguments.last, executable.path)
+    }
+
     func testMakeLaunchPlanRequiresExistingPrefix() {
         let planner = DefaultGameLaunchPlanner(
             bookmarkManager: FakeLaunchBookmarkManager(

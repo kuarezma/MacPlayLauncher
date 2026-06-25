@@ -30,8 +30,7 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
     }
 
     private func makeWineLaunchPlan(for profile: GameProfile) throws -> GameLaunchPlan {
-        guard let executableBookmarkData = profile.executableBookmarkData,
-              let workingDirectoryBookmarkData = profile.workingDirectoryBookmarkData else {
+        guard let executableBookmarkData = profile.executableBookmarkData else {
             throw MacPlayError.launchPreparationFailed
         }
 
@@ -45,12 +44,16 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
         }
 
         let executableURL = try bookmarkManager.resolveBookmark(executableBookmarkData)
-        let workingDirectoryURL = try bookmarkManager.resolveBookmark(workingDirectoryBookmarkData)
+        let workingDirectoryURL = resolveWineWorkingDirectory(
+            profile: profile,
+            executableURL: executableURL
+        )
 
         try PathContainmentValidator.validateExecutable(executableURL, isInside: workingDirectoryURL)
         try validateLaunchArguments(profile.launchArguments)
 
-        let arguments = profile.launchArguments + [executableURL.path]
+        let executablePath = executableURL.path
+        let arguments = profile.launchArguments.filter { $0 != executablePath } + [executablePath]
         let environment = LaunchEnvironmentBuilder.make(
             profile: profile,
             winePrefix: prefixState.absolutePath
@@ -64,6 +67,25 @@ struct DefaultGameLaunchPlanner: GameLaunchPlanning {
             executableURL: executableURL,
             workingDirectoryURL: workingDirectoryURL
         )
+    }
+
+    private func resolveWineWorkingDirectory(profile: GameProfile, executableURL: URL) -> URL {
+        if let data = profile.workingDirectoryBookmarkData,
+           let resolved = try? bookmarkManager.resolveBookmark(data) {
+            return resolved
+        }
+
+        if let workingDirectory = profile.workingDirectory?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !workingDirectory.isEmpty {
+            let expanded = (workingDirectory as NSString).expandingTildeInPath
+            var isDirectory: ObjCBool = false
+            if FileManager.default.fileExists(atPath: expanded, isDirectory: &isDirectory),
+               isDirectory.boolValue {
+                return URL(fileURLWithPath: expanded, isDirectory: true)
+            }
+        }
+
+        return executableURL.deletingLastPathComponent()
     }
 
     private func makeCrossOverLaunchPlan(for profile: GameProfile) throws -> GameLaunchPlan {
