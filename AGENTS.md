@@ -68,10 +68,26 @@ KULLANICI ──(yeni istek)──► OPUS ──(görev+atama)──► HANDOFF
 
 ---
 
+## 2C. Zeka (reasoning) Seviyesi Ölçeği
+
+Her görevin gerektirdiği **zeka seviyesi** [`TASKS.md`](Docs/coordination/TASKS.md) Durum Özeti'ndedir. Model **işe başlamadan önce** bunu kullanıcıya bildirir (Bölüm 3, adım 0) ki kullanıcı doğru reasoning ayarını seçebilsin.
+
+| Seviye | Ne zaman | Claude Code | Codex (GPT 5.5) | Antigravity (Gemini) |
+|---|---|---|---|---|
+| 🟢 **Düşük** | mekanik/deterministik (lint, format, changelog) | Haiku · normal (gerekirse `/fast`) | reasoning: **low** | Flash |
+| 🟡 **Orta** | standart uygulama / test yazımı | Sonnet · normal | reasoning: **medium** | Flash veya Pro |
+| 🟠 **Yüksek** | çok-dosya/ince refactor & test, geniş analiz | Opus/Sonnet + "**think hard**" | reasoning: **high** | Pro |
+| 🔴 **Maksimum** | mimari tasarım, güvenlik sınırı, kritik review | Opus + "**ultrathink**" | reasoning: **high/xhigh** | Pro + üst düzey thinking |
+
+> Model (Opus/Sonnet/Haiku, Pro/Flash) zaten role göre sabit; bu ölçek o modelin **düşünme/reasoning derinliğini** belirtir. İkisi birlikte "zeka düzeyi"ni verir.
+
+---
+
 ## 3. Görev Döngüsü Protokolü (HER araç başlangıçta uygular)
 
 > **Tek komut yeterli:** Kullanıcı sana yalnızca "**T-XXX yap**" veya "**sıradaki görevini yap**" derse, aşağıdaki adımları **baştan sona kendin** uygula — ek talimat/onay bekleme. Görevin tüm detayı (`iş`, `verify`, `branch`, `bağımlı`) [`TASKS.md`](Docs/coordination/TASKS.md)'de; güncel durum tablosu da oradadır.
 
+0. **Zeka seviyesini bildir — işe BAŞLAMADAN.** `TASKS.md` Durum Özeti'nden görevinin `Zeka` seviyesini oku. Kullanıcıya tek satır söyle: *"Bu görev **&lt;seviye&gt;** ister (Bölüm 2C). Reasoning ayarın uygun değilse ayarla; hazırsan 'devam' de."* Kod/dosya değiştirmeden **önce dur ve kullanıcının onayını bekle.** Onay gelince adım 1'e geç.
 1. **Sıra sende mi?** [`HANDOFF.md`](Docs/coordination/HANDOFF.md) en üst `NEXT:` satırını oku. Senin model/araç adın yazıyorsa devam et; değilse kullanıcıyı bilgilendir ve dur.
 2. **Görevini al.** [`TASKS.md`](Docs/coordination/TASKS.md)'de sana atanmış, `durum: todo`, bağımlılığı (`bağımlı:`) karşılanmış görev(ler)i bul.
 3. **Branch aç.** Görevdeki `branch:` adını kullan (`git switch -c <branch>`). `main`'e doğrudan asla yazma.

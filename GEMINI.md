@@ -5,6 +5,7 @@
 
 ## Başlarken
 > Kullanıcı sadece "**T-XXX yap**" / "**sıradaki görevini yap**" diyebilir — görev detayı `TASKS.md`'de; protokolü (`AGENTS.md` Bölüm 3) baştan sona kendin uygula.
+> **İşe başlamadan** görevin `Zeka` seviyesini (TASKS.md Durum Özeti, ölçek Bölüm 2C) kullanıcıya bildir ve onay bekle. Örn. T-009 = 🟠 Yüksek → Gemini 3.1 Pro; T-010 = 🟢 Düşük → Gemini 3.5 Flash.
 
 1. `HANDOFF.md` `NEXT:` satırına bak. Senin rolün (Gemini Pro / Gemini Flash) yazıyorsa devam et.
 2. `TASKS.md`'den görevini al, `branch:`'ini aç, `verify:`'ini çalıştır, board'u güncelle, `NEXT:`'i devret (`AGENTS.md` Bölüm 3 & 5).

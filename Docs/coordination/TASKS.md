@@ -9,21 +9,22 @@
 
 **İlerleme: 3/12 (%25)** · `▰▰▰▱▱▱▱▱▱▱▱▱`
 
-| # | Görev | Model (araç) | Durum |
-|---|---|---|---|
-| T-000 | Koordinasyon sistemi kurulumu | Opus (Claude Code) | ✅ done |
-| T-001 | Mekanik lint temizliği | Haiku (Claude Code) | ✅ done |
-| T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | ✅ done |
-| T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | ⬜ todo |
-| T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | ⬜ todo |
-| T-005 | Refactor uygulaması | Sonnet (Claude Code) | ⬜ todo |
-| T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | ⬜ todo |
-| T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | ⬜ todo |
-| T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | ⬜ todo |
-| T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | ⬜ todo |
-| T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | ⬜ todo |
-| T-011 | Final review + merge | Opus (Claude Code) | ⬜ todo |
+| # | Görev | Model (araç) | Zeka | Durum |
+|---|---|---|---|---|
+| T-000 | Koordinasyon sistemi kurulumu | Opus (Claude Code) | 🟠 Yüksek | ✅ done |
+| T-001 | Mekanik lint temizliği | Haiku (Claude Code) | 🟢 Düşük | ✅ done |
+| T-002 | Servis testleri (otonom TDD) | Codex (GPT 5.5) | 🟡 Orta | ✅ done |
+| T-003 | Launch & bookmark testleri | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-004 | Refactor tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
+| T-005 | Refactor uygulaması | Sonnet (Claude Code) | 🟠 Yüksek | ⬜ todo |
+| T-006 | Kalan küçük yapısal lint | Haiku (Claude Code) | 🟡 Orta | ⬜ todo |
+| T-007 | Sertleştirme tasarımı (spec) | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
+| T-008 | Sertleştirme uygulaması | Codex (GPT 5.5) | 🟠 Yüksek | ⬜ todo |
+| T-009 | Tüm-kod denetimi + doküman + görsel | Gemini 3.1 Pro (Antigravity) | 🟠 Yüksek | ⬜ todo |
+| T-010 | Changelog & triyaj | Gemini 3.5 Flash (Antigravity) | 🟢 Düşük | ⬜ todo |
+| T-011 | Final review + merge | Opus (Claude Code) | 🔴 Maksimum | ⬜ todo |
 
+> Zeka seviyesi ölçeği + araç ayarları: [`../../AGENTS.md`](../../AGENTS.md) Bölüm 2C. Model başlamadan önce bu seviyeyi kullanıcıya bildirir (protokol Bölüm 3, adım 0).
 > Bir görevi tamamlayınca **hem** bu özet satırını **hem** aşağıdaki detay bloğunu güncelle.
 
 ## Dalga 1 — Kod Sağlığı

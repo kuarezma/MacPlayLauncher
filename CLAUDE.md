@@ -5,6 +5,7 @@
 
 ## Başlarken
 > Kullanıcı sadece "**T-XXX yap**" / "**sıradaki görevini yap**" diyebilir — görev detayı `TASKS.md`'de; protokolü (`AGENTS.md` Bölüm 3) baştan sona kendin uygula.
+> **İşe başlamadan** (kod/dosya değiştirmeden) görevin `Zeka` seviyesini (TASKS.md Durum Özeti, ölçek Bölüm 2C) kullanıcıya bildir ve onay bekle. Örn. T-004/T-007/T-011 = 🔴 Maksimum → Opus + "ultrathink"; T-001 = 🟢 Düşük → Haiku normal.
 
 1. `HANDOFF.md` `NEXT:` satırına bak. Senin rolün (Opus / Sonnet / Haiku) yazıyorsa devam et.
 2. `TASKS.md`'den sana atanmış `todo` görevi al, `branch:`'ini aç, `verify:`'ini yeşile boya, board'u güncelle, `NEXT:`'i devret (`AGENTS.md` Bölüm 3 & 5).
