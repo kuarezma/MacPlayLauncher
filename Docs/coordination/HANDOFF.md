@@ -1,4 +1,4 @@
-NEXT: Codex (GPT 5.5) → T-013 TEŞHİS (atlı binici eyerde değil: shader-yaması mı WineCX-engine mi?) 🔴 · (T-012/Sonnet exit-53 de bağımsız & hazır)
+NEXT: Codex (GPT 5.5) → T-013 + T-015 TEŞHİS (atlı binici skinning + kalabalıkta FPS 0-10/DXVK-MoltenVK: shader/launcher mı, WineCX-runtime mi?) 🔴 · (T-012/Sonnet exit-53 de bağımsız & hazır)
 
 ---
 
@@ -9,6 +9,7 @@ NEXT: Codex (GPT 5.5) → T-013 TEŞHİS (atlı binici eyerde değil: shader-yam
 
 ## Günlük (en yeni üstte)
 
+- **2026-06-25 · Opus (Claude Code) · T-015 performans teşhisi** — Kullanıcı: kalabalıkta FPS **0-10** (idle ~17). Teşhis: muhtemelen WineD3D→OpenGL render yolu (yavaş) — **DXVK→MoltenVK** kaldıracı (~2-5×) + Wine/Rosetta CPU yükü. **Scope:** launcher Swift kodunda doğrudan çözülmez; runtime/WineCX config işi (launcher sadece DXVK/MoltenVK tespit+rehberlik yapabilir). Codex sorusuna eklendi. T-015 açıldı (🔴, Codex).
 - **2026-06-25 · Opus (Claude Code) · T-013 görsel teşhis (kullanıcı ekran görüntüsü)** — Minimap **idare ediyor** (cossacks3.app ile) → düşük öncelik. Asıl hata: **atlı binici eyerde değil, yerde/yanında** = saddle-bone transform uygulanmıyor (vertex bone-skinning). Fizibilite **belirsiz**: `ShaderPatchService` shader-yaması mı, yoksa WineCX-engine GL bone-matrix sınırı mı (önceki not: "daha yeni WineCX gerek"). Kullanıcı: Codex'in prior shader/WineCX bağlamı var → **önce Codex'e danış.** T-013 sahibi Codex'e alındı (🔴). NEXT → Codex (T-013 teşhis).
 - **2026-06-25 · Opus (Claude Code) · Dalga 2 rafine + CI yeşil** — Dalga 1 push edildi (`origin/main`, 20 commit), CI `macOS Build and Test` **success** (1m33s). Dalga 2 backlog (Flash taslağı) rafine edildi: T-012 **silme → geri-alınabilir rename + security-scoped** (kapsam-güvenliği), T-013 **önce görsel teşhis (Gemini Pro)**, zeka seviyeleri eklendi (🟠/🟠/🟡). NEXT → Sonnet (T-012).
 - **2026-06-25 · Opus (Claude Code) · T-011 done — 🏁 DALGA 1 KAPANDI** — Final gate (main): `swiftlint` **0 uyarı (106→0)**, `swift test` **226 yeşil** (1 skip, başta 204), `verify-sprint-18` 17/17, `Process()` yalnız `ProcessCommandRunner` (güvenlik sınırı sağlam). 12 turun tamamı tur tur gate'lenip main'e alındı (18 commit, FastForward zinciri). **Dalga 1 (Kod Sağlığı) hedefleri eksiksiz.** Dalga 2 (hatalar: T-012 exit-53/siyah ekran, T-013 minimap/shader, T-014 pencere/workdir) backlog hazır. NEXT → Sonnet (T-012), kullanıcı başlatınca.

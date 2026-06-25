@@ -119,6 +119,13 @@
 - **iş:** `GameLaunchPlanner` working directory çözümlemesi + pencere argümanlarını normalize et (oyun doğru dizinde/pencere modunda açılsın).
 - **verify:** `GameLaunchPlannerTests` yeşil.
 
+### T-015 · Performans — kalabalıkta FPS 0-10 (DXVK/MoltenVK render yolu)
+- **sahip:** Codex (GPT 5.5 — runtime bağlamı) · **zeka:** 🔴 Maksimum · **durum:** todo · **bağımlı:** — · **branch:** (büyük ihtimalle runtime/repo-dışı)
+- **✅ Opus teşhisi (kullanıcı: kalabalıkta 0-10 FPS, idle ~17):** Muhtemel kök neden: (a) **render yolu** — oyun WineD3D→OpenGL'de koşuyor olabilir (`WINEDLLOVERRIDES=…=b` builtin/software D3D); hızlı yol **DXVK→MoltenVK** (D3D→Vulkan→Metal), ~2-5× kazanç; (b) **CPU** — Wine+Rosetta+binlerce birim, daha az düzeltilebilir.
+- **⚠️ Scope:** FPS launcher Swift kodunda **doğrudan çözülmez** — render yolu WineCX/prefix config'inde. Launcher rolü: **DXVK/MoltenVK tespit + etkinleştirme rehberliği** (mevcut passive diagnostics → aksiyon-önerili). Asıl fix runtime tarafında (Dalga 3 "DXVK/MoltenVK" ile örtüşür).
+- **iş — Codex'e danış:** Cossacks3 prefix'inde DXVK+MoltenVK kurulu/aktif mi? Değilse etkinleştirme adımları → FPS kazancı; launcher diagnostics'ini buna göre aksiyon-önerili yap.
+- **verify:** gerçek oyunda kalabalık-sahne FPS ölçümü iyileşti.
+
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.
 - Akış: Opus tasarım → Codex/Sonnet uygula → Opus review.
