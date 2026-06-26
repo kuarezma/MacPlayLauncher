@@ -147,10 +147,10 @@
 - **verify:** CX26'nın sorunu çözmediği görsel olarak doğrulandı. Görev kapatıldı.
 
 ### T-019 · [RUNTIME] Cavalry forensik saldırı (enstrümante — multi-model döngü)
-- **sahip (döngü):** Opus tasarım → Codex uygula/render → **Gemini 3.1 Pro görsel yargı** → Opus fix · **zeka:** 🔴 Maksimum · **durum:** Opus tasarımı ✅ done → **Faz A (Codex) bekliyor** · **kapsam:** `~/Cossacks3_Mac_Port` (repo DIŞI)
+- **sahip (döngü):** Opus tasarım → Codex uygula/render → **Gemini 3.1 Pro görsel yargı** → Opus fix · **zeka: FAZ-BAZLI** (Faz A 🟡 · Faz B 🟠 · görsel yargı 🟠 · fix tasarımı 🔴) — bütün-task değil, fazına bak · **durum:** Opus tasarımı ✅ done → **Faz A (Codex) bekliyor** · **kapsam:** `~/Cossacks3_Mac_Port` (repo DIŞI)
 - **Tasarım:** ✅ [`CAVALRY-SPEC.md`](CAVALRY-SPEC.md) — **teşhis düzeltmesi:** if-chain dinamik indekslemeyi zaten kaldırmış ama rider hâlâ oturmuyor → eski "dinamik-indeks" teşhisi YANLIŞ, gerçek sebep bilinmiyor. Prime hipotez: **eksik multi-bone blending** (shader yalnız `.x` okuyor). 3-soruyu-tek-karede çözen debug-renk shader: **R=index · G=2.weight · B=guard** → torso yeşilse multi-bone, maviyse guard.
-- **Faz A (Codex):** GLSL log (`+wgl`) + debug-renk shader'ları (KOPYA) uygula+render → PNG seti.
-- **Faz B (Codex):** otomatik screenshot harness (15-20s manuel döngü → tek komut).
+- **Faz A (Codex · 🟡 Orta — MEKANİK: shader uygula/render/screenshot; GPT 5.4 ya da 5.4-mini YETER, 5.5 gerekmez):** GLSL log (`+wgl`) + debug-renk shader'ları (KOPYA) uygula+render → PNG seti.
+- **Faz B (Codex · 🟠 Yüksek — cavalry auto-load mantığı çözülecek; GPT 5.4/5.5):** otomatik screenshot harness (15-20s manuel döngü → tek komut).
 - **Görsel yargı (Gemini 3.1 Pro, multimodal):** PNG'lere bak — torso yeşil mi(multi-bone)/mavi mi(guard)/index tuhaf mı? → en iyi varyant.
 - **Faz C (Opus→Codex):** veriye göre fix (prime: 2-bone blend `w0*b0*v + w1*b1*v`).
 - **çıktı:** `~/Cossacks3_Mac_Port/CAVALRY_FORENSIK_NOTU.md` + screenshot seti.

@@ -82,6 +82,8 @@ Her görevin gerektirdiği **zeka seviyesi** [`TASKS.md`](Docs/coordination/TASK
 > Model (Opus/Sonnet/Haiku, Pro/Flash) zaten role göre sabit; bu ölçek o modelin **düşünme/reasoning derinliğini** belirtir. İkisi birlikte "zeka düzeyi"ni verir.
 >
 > **Codex ailesi içi maliyet kademesi (iş-iş, proje-proje — sabit atama DEĞİL):** Codex'te **GPT 5.5 / GPT 5.4 / GPT 5.4-mini** mevcut. Varsayılan 5.5; ama bir işi **5.4 ya da 5.4-mini de yapabiliyorsa onu seç** → 5.5 limitini koru. Yön: mekanik/scriptsel runtime (log çek, screenshot loop, dosya işi) → **mini** · standart otonom uygulama/test → **5.4** · zor otonom/forensik/sertleştirme/build → **5.5**. Karar göreve göre; gerekmiyorsa ekleme.
+>
+> **Çok-fazlı görevlerde zeka FAZ-BAZLI olabilir:** model kendi **fazının** seviyesini okur, bütün-task'ı değil. (Örn. T-019: Faz A 🟡 mekanik → GPT 5.4 yeter; ama fix tasarımı 🔴 → Opus.) Görevde faz-bazlı seviye yazılıysa ona uy.
 
 ---
 
