@@ -89,3 +89,25 @@ Her fix Faz B harness'ıyla render edilir, Gemini Pro "oturdu mu" der, döngü.
 ## Başarı / bitiş
 - **Başarı:** harness PNG'sinde rider eyerde; debug'da torso ne yeşil(çözüldü) ne mavi(guard) kalır.
 - **Kanıtlı limit:** debug, sebebin shader-dışı (Wine-GL attribute aktarımı) olduğunu gösterirse → bone-texture interposer ileri seçenek, yoksa VERİYLE kapat.
+
+---
+
+## Faz A SONUCU (2026-06-26) + Faz A.2 tasarımı
+
+**Faz A bulgusu (Opus, PNG'leri doğrudan okudu):** Debug-renk sahnesinde **hiç YEŞİL yok** (`MultiTexCoord1.y=0` → 2. bone influence YOK → **multi-bone hipotezi ÇÜRÜK**), **hiç MAVİ yok** (guard fire etmiyor → **guard hipotezi ÇÜRÜK**), biniciler **düz kırmızı** (tek, yüksek bone index), atlar **düz siyah** (index 0). → **Tek-bone rigid skinning + doğru index + sağlam matris (guard tetiklenmedi).** İki üst hipotez veriyle elendi (kör fix önlendi).
+
+**Kalan şüpheli:** `boneMatrices[riderIndex]` İÇERİĞİ — doğru eyer transform'u mu, yoksa bind-pose/Wine-GL yüksek-index matris-yükleme sorunu mu?
+
+### Faz A.2 — "bone vs no-bone" (en keskin ayraç; Codex harness ile, 🟡/🟠)
+Rider bone shader'larının (`b16/b20/b42`) KOPYA debug'unda **iki varyant** render et + screenshot:
+- **V1 (no-bone):** `gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;` — bone'u tamamen yok say, rider'ın HAM model vertex'i nereye düşüyor?
+- **V2 (bone, mevcut):** `gl_Position = MVP * (bone*gl_Vertex);`
+
+**Yorum:**
+- no-bone rider'ı **doğru oturtuyorsa** → bone matrisi onu yanlış taşıyor = **matris/bind sorunu** (muhtemelen Wine-GL yüksek-index uniform matris yüklemesi). Workaround yolları: rider bone'unu **düşük index'e remap**, matris bileşenini düzelt, ya da bone-texture.
+- no-bone **da yanlışsa** → sorun mesh/model yerleşiminde, bone değil.
+
+### Faz A.2 yan test — matris içeriği
+Rider bone'unun translation'ını renge bas: `gl_FrontColor=vec4(fract(abs(bone[3].xyz)*0.01),1.0);` → rider vs horse bone translation tutarlı mı, sıfır/çöp mü.
+
+Çıktı: V1/V2 + matris PNG'leri → Opus/Gemini karşılaştırır → **matris mi, mesh mi** netleşir, Faz C fix ona göre.
