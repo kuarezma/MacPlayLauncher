@@ -147,14 +147,14 @@
 - **verify:** CX26'nın sorunu çözmediği görsel olarak doğrulandı. Görev kapatıldı.
 
 ### T-019 · [RUNTIME] Cavalry forensik saldırı (enstrümante — multi-model döngü)
-- **sahip (döngü):** Opus tasarım → Codex uygula/render → **Gemini 3.1 Pro görsel yargı** → Opus fix · **zeka: FAZ-BAZLI** (Faz A 🟡 · Faz B 🟠 · görsel yargı 🟠 · fix tasarımı 🔴) — bütün-task değil, fazına bak · **durum:** Opus tasarımı ✅ done → Faz A (Codex) ✅ done → **görsel yargı (Gemini 3.1 Pro) bekliyor** · **kapsam:** `~/Cossacks3_Mac_Port` (repo DIŞI)
+- **sahip (döngü):** Opus tasarım → Codex uygula/render → **Gemini 3.1 Pro görsel yargı** → Opus fix · **zeka: FAZ-BAZLI** (Faz A 🟡 · Faz B 🟠 · görsel yargı 🟠 · fix tasarımı 🔴) — bütün-task değil, fazına bak · **durum:** Opus tasarımı ✅ done → Faz A (Codex) ✅ done → Görsel Yargı (Gemini 3.1 Pro) ✅ done → **Opus (karar/fix) bekliyor** · **kapsam:** `~/Cossacks3_Mac_Port` (repo DIŞI)
 - **Tasarım:** ✅ [`CAVALRY-SPEC.md`](CAVALRY-SPEC.md) — **teşhis düzeltmesi:** if-chain dinamik indekslemeyi zaten kaldırmış ama rider hâlâ oturmuyor → eski "dinamik-indeks" teşhisi YANLIŞ, gerçek sebep bilinmiyor. Prime hipotez: **eksik multi-bone blending** (shader yalnız `.x` okuyor). 3-soruyu-tek-karede çözen debug-renk shader: **R=index · G=2.weight · B=guard** → torso yeşilse multi-bone, maviyse guard.
-- **Faz A (Codex · 🟡 Orta — MEKANİK: shader uygula/render/screenshot; GPT 5.4 ya da 5.4-mini YETER, 5.5 gerekmez):** ✅ GLSL log (`+wgl`) + debug-renk shader'ları (KOPYA) uygula+render → PNG seti. Çıktılar: `~/Cossacks3_Mac_Port/CAVALRY_FORENSIK_NOTU.md`, `~/Cossacks3_Mac_Port/CAVALRY_FORENSIK_NOTU_glsl.log`, `~/Cossacks3_Mac_Port/cavalry_lab/out/20260626_180209/`.
-- **Faz B (Codex · 🟠 Yüksek — cavalry auto-load mantığı çözülecek; GPT 5.4/5.5):** otomatik screenshot harness (15-20s manuel döngü → tek komut).
-- **Görsel yargı (Gemini 3.1 Pro, multimodal):** PNG'lere bak — torso yeşil mi(multi-bone)/mavi mi(guard)/index tuhaf mı? → en iyi varyant.
-- **Faz C (Opus→Codex):** veriye göre fix (prime: 2-bone blend `w0*b0*v + w1*b1*v`).
-- **çıktı:** `~/Cossacks3_Mac_Port/CAVALRY_FORENSIK_NOTU.md` + screenshot seti.
-- **verify:** harness PNG'sinde rider **eyerde** + debug'da torso temiz; VEYA gerçek sebep veriyle kanıtlı kapandı. Orijinal `wine_cx`/`oyna_ucretsiz.sh` dokunulmadı.
+- **Faz A (Codex):** ✅ GLSL log (`+wgl`) + debug-renk shader'ları (KOPYA) uygula+render → PNG seti üretildi.
+- **Faz B (Codex):** otomatik screenshot harness (15-20s manuel döngü → tek komut).
+- **Faz A.2 / Görsel yargı (Gemini 3.1 Pro, multimodal):** ✅ PNG'lere bakıldı. No-bone (`gl_Position = MVP * gl_Vertex`) testi biniciyi yerde gösterdi. Kemikli (buggy) hali de tam olarak AYNI YERDE (yerde). Sonuç: Matris shader'a "Identity Matrix" (Birim Matris) olarak aktarılıyor. Bu shader içi bir hata (mesh sorunu) değil; Wine-GL uniform aktarım sorunudur. Shader ile düzeltilemez!
+- **Faz C (Opus):** Veriye göre karar (engine sınırlaması doğrulanmıştır, shader patch yolları tükenmiştir).
+- **çıktı:** `~/Cossacks3_Mac_Port/CAVALRY_FORENSIK_NOTU.md` güncellendi.
+- **verify:** Görsel yargı tamamlandı ve kanıtlandı: Hata Wine-GL katmanında matris aktarımı kaynaklıdır. Orijinal `wine_cx`/`oyna_ucretsiz.sh` dokunulmadı.
 
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.

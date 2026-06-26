@@ -127,3 +127,35 @@ Rider bone'unun translation'ını renge bas: `gl_FrontColor=vec4(fract(abs(bone[
 - **Oturuyorsa → T-019 İLK GERÇEK FIX 🎯.** Oturmuyorsa → kesin kanıtla kapat (Wine-GL yüksek-index uniform bug; workaround yetersiz).
 
 **Dürüst odds ~%30:** hack/yaklaşık (sabit offset, animasyon yok), ama **denenmemiş + bulguya dayalı**. Kapatma da kazanç: kök neden artık KANITLI.
+
+---
+
+## Faz C.0 SONUÇ (Gemini, 2026-06-26) — 🎯 BREAKTHROUGH
+Rider zorla `boneMatrices[0]` okuyunca **biniciler atın üstünde, DOĞRU eyer pozisyonunda** renderlandı! Demek: bone[0] (horse root) çalışıyor + rider mesh'i zaten o uzayda eyer konumunda authored → `bone[0]*riderVertex = eyerde`. Yüksek-index bone identity (kırık) ama bone[0] rider'ı oturtuyor. **Workaround görsel olarak KANITLANDI → odds ~%30 değil artık ~%70.**
+
+## Faz C — GERÇEK FIX (Opus tasarım)
+**Hedef:** rider'ın kırık (identity) yüksek-index bone'unu çalışan bone[0]'a remap et; horse'un çalışan bone'larına DOKUNMA (animasyon korunur); gerçek doku shader'ını geri yükle.
+
+### 1. Fix vertex shader (`unit.sm.b16/b20/b42.id*.vert`) — identity-detect + remap
+Mevcut if-chain ile `bone` seçildikten SONRA:
+```glsl
+   // ... index oku + if-chain ile bone seç (mevcut) ...
+   if (bone == mat4(1.0)) {       // Wine-GL kırık yüksek-index matrisi identity geliyor
+       bone = boneMatrices[0];     // çalışan horse root'a remap → rider eyere oturur
+   }
+   vec4 aposn = weight * (bone * gl_Vertex);
+   gl_Position = gl_ModelViewProjectionMatrix * aposn;
+```
+- `== mat4(1.0)` flaky ise tolerans: `offdiag<0.001 && |diag-1|<0.001 && |trans|<0.001`.
+- **YALNIZ kırık (identity) bone'lar remap olur** → horse'un gerçek bone'ları korunur → at animasyonu bozulmaz. (Eski guard `bone[3][3]<0.5` zero-matris içindi; identity'yi yakalamıyordu — bu yeni kontrol identity'yi yakalar.)
+
+### 2. Fragment: gerçek dokuyu geri yükle
+Debug magenta passthrough'u kaldır; `unit.smx3/smx9.id8.frag`'ı `obj_yedek`'teki gerçek haline (doku + takım rengi) geri al.
+
+### 3. Adımlar (runtime: Gemini ya da Codex-reset sonrası)
+1. KOPYA lab'da fix vertex + gerçek frag uygula.
+2. Render → **rider eyerde Mİ + DOKULU MU + horse animasyonu SAĞLAM MI?** (Gemini görsel/Opus)
+3. Horse bozulduysa → identity-detect yerine index-threshold'a geç (`if(index>=N) bone=boneMatrices[0]`).
+4. İyiyse → gerçek oyun KOPYASINA uygula, kullanıcı oyunda test, sonra orijinale.
+
+**Bu artık kapatma değil, fix uygulaması.** C.0 görsel kanıtı temeli verdi.
