@@ -146,6 +146,16 @@
 - **çıktı/karar:** "Farkı ücretsiz motora taşıma" planı düştü çünkü ortada taşınacak bir çözüm (fix) yok. Süvari hatası şu an macOS üzerinde (Apple GL hattında) çözülemez durumda. T-018 iptal edildi. `Docs/coordination/CX26-DIFF.md` dosyası oluşturulmayacak.
 - **verify:** CX26'nın sorunu çözmediği görsel olarak doğrulandı. Görev kapatıldı.
 
+### T-019 · [RUNTIME] Cavalry forensik saldırı (enstrümante — multi-model döngü)
+- **sahip (döngü):** Opus tasarım → Codex uygula/render → **Gemini 3.1 Pro görsel yargı** → Opus fix · **zeka:** 🔴 Maksimum · **durum:** Opus tasarımı ✅ done → **Faz A (Codex) bekliyor** · **kapsam:** `~/Cossacks3_Mac_Port` (repo DIŞI)
+- **Tasarım:** ✅ [`CAVALRY-SPEC.md`](CAVALRY-SPEC.md) — **teşhis düzeltmesi:** if-chain dinamik indekslemeyi zaten kaldırmış ama rider hâlâ oturmuyor → eski "dinamik-indeks" teşhisi YANLIŞ, gerçek sebep bilinmiyor. Prime hipotez: **eksik multi-bone blending** (shader yalnız `.x` okuyor). 3-soruyu-tek-karede çözen debug-renk shader: **R=index · G=2.weight · B=guard** → torso yeşilse multi-bone, maviyse guard.
+- **Faz A (Codex):** GLSL log (`+wgl`) + debug-renk shader'ları (KOPYA) uygula+render → PNG seti.
+- **Faz B (Codex):** otomatik screenshot harness (15-20s manuel döngü → tek komut).
+- **Görsel yargı (Gemini 3.1 Pro, multimodal):** PNG'lere bak — torso yeşil mi(multi-bone)/mavi mi(guard)/index tuhaf mı? → en iyi varyant.
+- **Faz C (Opus→Codex):** veriye göre fix (prime: 2-bone blend `w0*b0*v + w1*b1*v`).
+- **çıktı:** `~/Cossacks3_Mac_Port/CAVALRY_FORENSIK_NOTU.md` + screenshot seti.
+- **verify:** harness PNG'sinde rider **eyerde** + debug'da torso temiz; VEYA gerçek sebep veriyle kanıtlı kapandı. Orijinal `wine_cx`/`oyna_ucretsiz.sh` dokunulmadı.
+
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.
 - Akış: Opus tasarım → Codex/Sonnet uygula → Opus review.
