@@ -80,6 +80,8 @@ Her görevin gerektirdiği **zeka seviyesi** [`TASKS.md`](Docs/coordination/TASK
 | 🔴 **Maksimum** | mimari tasarım, güvenlik sınırı, kritik review | Opus + "**ultrathink**" | reasoning: **high/xhigh** | Pro + üst düzey thinking |
 
 > Model (Opus/Sonnet/Haiku, Pro/Flash) zaten role göre sabit; bu ölçek o modelin **düşünme/reasoning derinliğini** belirtir. İkisi birlikte "zeka düzeyi"ni verir.
+>
+> **Codex ailesi içi maliyet kademesi (iş-iş, proje-proje — sabit atama DEĞİL):** Codex'te **GPT 5.5 / GPT 5.4 / GPT 5.4-mini** mevcut. Varsayılan 5.5; ama bir işi **5.4 ya da 5.4-mini de yapabiliyorsa onu seç** → 5.5 limitini koru. Yön: mekanik/scriptsel runtime (log çek, screenshot loop, dosya işi) → **mini** · standart otonom uygulama/test → **5.4** · zor otonom/forensik/sertleştirme/build → **5.5**. Karar göreve göre; gerekmiyorsa ekleme.
 
 ---
 
