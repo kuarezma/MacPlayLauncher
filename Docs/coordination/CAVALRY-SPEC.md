@@ -111,3 +111,19 @@ Rider bone shader'larının (`b16/b20/b42`) KOPYA debug'unda **iki varyant** ren
 Rider bone'unun translation'ını renge bas: `gl_FrontColor=vec4(fract(abs(bone[3].xyz)*0.01),1.0);` → rider vs horse bone translation tutarlı mı, sıfır/çöp mü.
 
 Çıktı: V1/V2 + matris PNG'leri → Opus/Gemini karşılaştırır → **matris mi, mesh mi** netleşir, Faz C fix ona göre.
+
+---
+
+## Faz A.2 SONUÇ (Gemini Pro, 2026-06-26) + Faz C tasarımı (Opus)
+
+**KESİN BULGU:** no-bone (V1) ile bone (V2) çıktıları **BİREBİR AYNI** → `bone*vertex == vertex` → rider'ın `boneMatrices[yüksek_index]`'i **IDENTITY** geliyor. Index doğru (kırmızı), ama **Wine-GL yüksek-index uniform-matris verisini identity/boş aktarıyor** → KANITLI kök neden (guard fire etmemesiyle de tutarlı: identity'nin [3][3]=1 ≥ 0.5). Olmayan veriyi shader yaratamaz → düz shader fix yok.
+
+**AMA bulgu bir WORKAROUND açıyor (Opus):** `boneMatrices[0]` (horse root) DOĞRU geliyor. Rider'ı, kırık yüksek-index bone yerine **çalışan horse bone[0] + sabit eyer-offset** ile yeniden konumla → rider eyere oturur (asıl görünür bug), tam binme-animasyonu olmasa da.
+
+### Faz C — adımlar (runtime: Gemini, ya da Codex reset sonrası)
+1. **Hızlı doğrula (düşük-index çalışıyor mu):** rider shader'ında `index`'i zorla `0` yap → rider non-identity matris alıp HAREKET ediyor mu? Hangi index'ten sonra identity başladığını bul (b16'nın max'ı 15 → b16 süvarileri çalışıyor olabilir; b42 patlıyor).
+2. **Reconstruction:** rider'ı `aposn = boneMatrices[0] * SADDLE_OFFSET * gl_Vertex` ile çiz (kırık bone baypas). `SADDLE_OFFSET` (yukarı+geri translation) harness ile **empirik** ayarla (saniyede bir dene).
+3. Görsel (Gemini/Opus): rider eyerde mi?
+- **Oturuyorsa → T-019 İLK GERÇEK FIX 🎯.** Oturmuyorsa → kesin kanıtla kapat (Wine-GL yüksek-index uniform bug; workaround yetersiz).
+
+**Dürüst odds ~%30:** hack/yaklaşık (sabit offset, animasyon yok), ama **denenmemiş + bulguya dayalı**. Kapatma da kazanç: kök neden artık KANITLI.
