@@ -196,3 +196,33 @@ okumayı **tamamen baypas** edip herkese `bone[0]` verdi. ⇒ İçeriğe göre t
   Rider single-bone olduğundan rigid oturur (rider-içi animasyon yok); bu kabul edilebilir kozmetik kazanç.
 - **Olmazsa:** C.0 (force-all-bone[0]) cavalry-özel doku frag ile "kanıtlı ama temiz-entegre değil"
   fallback olarak kalır → kullanıcı kararı: cavalry-only force-all kabul mü, yoksa engine-sınırı kapat.
+
+---
+
+## Faz C.2 SONUÇ (Codex, Opus görsel yargı, 2026-06-28) — ❌ geniş threshold = yan hasar
+Codex tahmini threshold'lar uyguladı (`b16>=8`, `b20>=10`, `b42>=30`, 3 shader'a birden).
+Render `out/20260628_213925`. **Opus yargısı:** doku ✅; rider hâlâ temiz oturmuyor (at sırtında
+çökmüş kırmızı blob); **yan hasar** — paylaşılan shader'ı kullanan diğer birimler totem/dik-kolon
+deformasyonu. **Teşhis: paylaşılan-shader duvarı** — `b16/b20/b42` çok birim tipince paylaşılıyor,
+geniş `index>=N` kırık cavalry bone'unu diğer birimlerin meşru bone'larından ayıramıyor. Ayrıca N'ler
+**ölçülmedi, tahmin edildi** → C.0(temiz) vs C.2(blob) tutarsızlığı çözülemedi.
+
+## Faz C.3 — exact-index dar fix (Opus tasarım, SON forensik tur — kullanıcı onayı 2026-06-28)
+**Amaç:** cavalry rider'ın GERÇEK shader+index'ini ölç, YALNIZ onu remap et → yapısal olarak yan hasarsız.
+**Adımlar (runtime: Codex GPT-5.4; tıkanırsa 5.5):**
+1. **İzole et:** sahneye SADECE cavalry koy (tek tip süvari spawn / sadece-cavalry kayıt) → index-color
+   okuması net olsun (karışık birim yok).
+2. **Ölç:** Faz A debug-renk shader'ını (R=index/41) b16/b20/b42'ye geri uygula. **Her shader'a ayrı
+   sabit tint ekle** (b16→+kırmızı bias, b20→+yeşil, b42→+mavi) ki cavalry'nin HANGİ shader+index
+   olduğu renkten okunsun. Render → Opus PNG'den rider'ın shader'ını (hue) + index'ini (R≈idx/41) okur.
+3. **Dar remap:** SADECE cavalry'nin shader'ında `if(index==RIDER_IDX) bone=boneMatrices[0];`
+   (rider bitişik blok kullanıyorsa `>=RIDER_IDX`). Diğer 2 shader'ı `obj_yedek` orijinaline DÖNDÜR
+   (dokunma). Gerçek minimal-doku frag (Faz C'deki, custColor) kalsın.
+4. **Render (KARIŞIK sahne: cavalry+piyade+musket):** Opus yargılar → **(a)** rider eyerde+dokulu MU
+   **(b)** diğer birimler SAĞLAM MI (totem yok). Her ikisi ✅ → gerçek oyun kopyasına, kullanıcı testi.
+**Gerçekçi odds ~%45.** En iyi sonuç: rider RİGİD oturur+dokulu (rider tek-bone → animasyon yok, kabul).
+**Tanısal değer (sonuç ne olursa):** exact index, C.0-vs-C.2 tutarsızlığını da çözer — eğer cavalry b42
+& idx∈[30,41] çıkarsa `b42>=30` zaten onu vurmuştu ⇒ force-bone[0] gerçek-yolda temiz oturtMUYOR
+(C.0'ın temizliği magenta-passthrough'un maskelemesiydi) ⇒ duvar kanıtlı, kapat.
+**Olmazsa → KAPAT:** forensik shader yolu kanıtla tükendi (kök neden + C.0 + paylaşılan-shader duvarı +
+exact-index). Cavalry kozmetik kabul. Launcher zaten sağlam/bitti.
