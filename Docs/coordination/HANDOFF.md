@@ -7,6 +7,15 @@ NEXT: **Gemini 3.1 Pro** (devamlılık) ya da **Codex** (limiti döndü, lab'ı 
 > En üstteki `NEXT:` satırı sıranın kimde olduğunu söyler. Kullanıcı: o aracı aç, "HANDOFF.md ve TASKS.md'den sıradaki görevini al ve tamamla" de.
 > Her araç görevini bitirince: en üste 1 satır log ekler + `NEXT:`'i sıradaki sahibe ayarlar (tur sırası: [`../../AGENTS.md`](../../AGENTS.md) Bölüm 5).
 
+## 📍 Durum Özeti (YENİ SESSION BURADAN BAŞLASIN)
+
+- **Proje:** MacPlayLauncher (Swift macOS launcher, Cossacks 3). **Dalga 1+2 BİTTİ** — 0 lint, 238 test, concurrency hardening, CI yeşil, hepsi `main`'de.
+- **Çalışma modu:** **multi-model** (bkz `AGENTS.md`). Opus=şef/tasarım/gate/merge (kullanıcının muhatabı) · Codex(GPT-5.x)=runtime/kod · Gemini Pro=multimodal görsel · Sonnet/Haiku=Claude Code. Akış: `NEXT:`'e bak → o modeli aç → "T-XXX yap".
+- **AKTİF İŞ: T-019** — Cossacks 3 cavalry binici hatası forensik fix. **RUNTIME** (`~/Cossacks3_Mac_Port`, bu repo DIŞI). Detay tasarım: `CAVALRY-SPEC.md`.
+- **Nerede kaldık:** Kök neden KANITLANDI (Wine-GL yüksek-index bone matrisi = identity). **C.0 BREAKTHROUGH:** rider'ı `boneMatrices[0]`'a zorlayınca eyere DOĞRU oturdu. Faz C gerçek fix tasarlandı: **identity-detect remap** (`if(bone==mat4(1.0)) bone=boneMatrices[0];`) + gerçek doku frag.
+- **SIRADAKİ:** en üstteki `NEXT:` → **Codex `GPT-5.3-Codex`** ile "T-019 Faz C yap" (KOPYA lab'da fix uygula+render → rider eyerde+dokulu+at animasyonu sağlam mı?).
+- **Geçmiş:** Engine yolları (DXVK/Zink/KosmicKrisp/CX26) tükendi (hepsi kanıtlı); shader-forensik yolu açık. Tüm karar geçmişi aşağıdaki günlükte.
+
 ## Günlük (en yeni üstte)
 
 - **2026-06-27 · Opus (Claude Code) · Faz C GERÇEK FIX tasarımı (C.0 breakthrough sonrası)** — Gemini'nin C.0'ı kanıtladı: rider zorla bone[0] okuyunca **eyere oturdu**. Demek rider mesh'i o uzayda zaten eyerde authored; kırık yüksek-index yerine çalışan bone[0] doğru oturtuyor. Opus fix tasarladı (`CAVALRY-SPEC.md` Faz C): **identity-detect remap** — `if(bone==mat4(1.0)) bone=boneMatrices[0];` (YALNIZ kırık identity bone'ları remap → horse'un çalışan bone'ları + animasyonu korunur) + gerçek doku frag geri. Odds ~%30→~%70. NEXT → Gemini/Codex Faz C uygula+render.
