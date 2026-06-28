@@ -159,3 +159,40 @@ Debug magenta passthrough'u kaldır; `unit.smx3/smx9.id8.frag`'ı `obj_yedek`'te
 4. İyiyse → gerçek oyun KOPYASINA uygula, kullanıcı oyunda test, sonra orijinale.
 
 **Bu artık kapatma değil, fix uygulaması.** C.0 görsel kanıtı temeli verdi.
+
+---
+
+## Faz C SONUÇ (Codex GPT-5.4 uyguladı, Opus görsel yargı, 2026-06-28) — ❌ identity-detect ÇALIŞMADI
+**Uygulama doğru:** gerçek vertex shader (b16/b20/b42) + tolerans identity-detect
+(`boneIsIdentity` offdiag/diag<0.001) + gerçek doku frag geri yüklendi. İki set render edildi:
+`out/20260628_200709` (exact `==mat4(1.0)`) ve `out/20260628_201332` (tolerans).
+
+**Opus bağımsız görsel yargı (multimodal, her iki set):**
+- **Doku ✅ EVET** — birimler tam dokulu (kırmızı üniforma, mavi şalvar, dokulu at). Magenta yok.
+- **Horse geometrisi ✅ SAĞLAM** — atlar normal, bozulmamış.
+- **Rider ❌ HAYIR** — at sırtları BOŞ; biniciler atların yanında/önünde ayrı yerde. Eyerde oturan yok.
+
+**Teşhis (KESİN):** identity-detect YANLIŞ tetikleyici. Faz A index-boyaması (R=index/41) kanıtı:
+**horse = index 0 (siyah), rider = tek yüksek index (kırmızı).** Rider'ın yüksek-index bone'u
+`boneMatrices[index]` ile okununca temiz identity DEĞİL, tolerans testini geçmeyen bozuk/garbage
+geliyor → `boneIsIdentity=false` → kırık bone kalıyor → rider oturmuyor. C.0 çalıştı çünkü index
+okumayı **tamamen baypas** edip herkese `bone[0]` verdi. ⇒ İçeriğe göre tetikleme güvenilmez;
+**index'e göre tetikle.**
+
+## Faz C.2 — index-threshold (Opus tasarım, bir sonraki tur)
+**Hedef:** identity içerik kontrolünü bırak; rider'ın yüksek index'ini koşulsuz bone[0]'a zorla
+(C.0'ın seçici/dokulu hali). Mevcut Faz C shader'ında `boneIsIdentity` bloğunu şununla DEĞİŞTİR:
+```glsl
+   int index = int(gl_MultiTexCoord2.x);
+   mat4 bone = boneMatrices[index];
+   if (index >= RIDER_INDEX) bone = boneMatrices[0];   // kırık yüksek-index -> çalışan horse root
+```
+- **N (`RIDER_INDEX`) ampirik:** Faz A index-color PNG'sinde rider'ın R tonundan index'i oku
+  (R≈index/41). İlk deneme N = o index; rider oturmazsa N'i düşür, fazla unit bozulursa N'i yükselt.
+- **PAYLAŞILAN SHADER RİSKİ:** `unit.sm.b16/b20/b42` piyade/diğer birimlerce de kullanılıyor olabilir.
+  N çok düşükse çok-bone'lu piyade animasyonu bone[0]'a çöker. ∴ render'da SADECE cavalry değil
+  **piyade/diğer birimler de hâlâ doğru mu** kontrol et. (Horse zaten tek index-0 → ona N etkisi yok.)
+- **Beklenen:** rider eyerde + dokulu (C.0 görsel kanıtı + temiz horse/rider index ayrımı) → ~%65.
+  Rider single-bone olduğundan rigid oturur (rider-içi animasyon yok); bu kabul edilebilir kozmetik kazanç.
+- **Olmazsa:** C.0 (force-all-bone[0]) cavalry-özel doku frag ile "kanıtlı ama temiz-entegre değil"
+  fallback olarak kalır → kullanıcı kararı: cavalry-only force-all kabul mü, yoksa engine-sınırı kapat.

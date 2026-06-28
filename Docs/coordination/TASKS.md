@@ -147,14 +147,15 @@
 - **verify:** CX26'nın sorunu çözmediği görsel olarak doğrulandı. Görev kapatıldı.
 
 ### T-019 · [RUNTIME] Cavalry forensik saldırı (enstrümante — multi-model döngü)
-- **sahip (döngü):** Opus tasarım → Codex uygula/render → **Gemini 3.1 Pro görsel yargı** → Opus fix · **zeka: FAZ-BAZLI** (Faz A 🟡 · Faz B 🟠 · görsel yargı 🟠 · fix tasarımı 🔴) — bütün-task değil, fazına bak · **durum:** Opus tasarımı ✅ done → Faz A (Codex) ✅ done → Görsel Yargı (Gemini 3.1 Pro) ✅ done → **Opus (karar/fix) bekliyor** · **kapsam:** `~/Cossacks3_Mac_Port` (repo DIŞI)
+- **sahip (döngü):** Opus tasarım → Codex uygula/render → **Gemini 3.1 Pro görsel yargı** → Opus fix · **zeka: FAZ-BAZLI** (Faz A 🟡 · Faz B 🟠 · görsel yargı 🟠 · fix tasarımı 🔴) — bütün-task değil, fazına bak · **durum:** Faz C identity-remap ❌ (Opus görsel yargı: doku✅ horse✅ rider❌) → **Faz C.2 index-threshold (Codex GPT-5.4) bekliyor** · **kapsam:** `~/Cossacks3_Mac_Port` (repo DIŞI)
 - **Tasarım:** ✅ [`CAVALRY-SPEC.md`](CAVALRY-SPEC.md) — **teşhis düzeltmesi:** if-chain dinamik indekslemeyi zaten kaldırmış ama rider hâlâ oturmuyor → eski "dinamik-indeks" teşhisi YANLIŞ, gerçek sebep bilinmiyor. Prime hipotez: **eksik multi-bone blending** (shader yalnız `.x` okuyor). 3-soruyu-tek-karede çözen debug-renk shader: **R=index · G=2.weight · B=guard** → torso yeşilse multi-bone, maviyse guard.
 - **Faz A (Codex):** ✅ GLSL log (`+wgl`) + debug-renk shader'ları (KOPYA) uygula+render → PNG seti üretildi.
 - **Faz B (Codex):** otomatik screenshot harness (15-20s manuel döngü → tek komut).
 - **Faz A.2 / Görsel yargı (Gemini 3.1 Pro, multimodal):** ✅ PNG'lere bakıldı. No-bone (`gl_Position = MVP * gl_Vertex`) testi biniciyi yerde gösterdi. Kemikli (buggy) hali de tam olarak AYNI YERDE (yerde). Sonuç: Matris shader'a "Identity Matrix" (Birim Matris) olarak aktarılıyor. Bu shader içi bir hata (mesh sorunu) değil; Wine-GL uniform aktarım sorunudur. Shader ile düzeltilemez!
-- **Faz C (Opus):** Veriye göre karar (engine sınırlaması doğrulanmıştır, shader patch yolları tükenmiştir).
+- **Faz C (Codex uygula / Opus görsel yargı):** ❌ Exact + `0.001` toleranslı identity-remap uygulandı; doku/horse düzeldi ama **rider oturmadı.** Opus PNG yargısı: doku ✅, horse ✅, rider ❌. Teşhis KESİN: rider yüksek-index bone'u temiz identity gelmiyor → içerik-kontrolü güvenilmez (Faz A: horse=index0, rider=tek yüksek index). (Not: tam `obj_yedek` frag Wine-GL lighting bug'ı → siyah; minimal doku+custColor frag kullanıldı.)
+- **Faz C.2 (Codex GPT-5.4, NEXT):** index-threshold `if(index>=N) bone=boneMatrices[0]` — içeriğe değil index'e göre tetikle. N ampirik (Faz A R-tonu ≈ index/41). **Paylaşılan-shader piyade riski** render'da kontrol. Odds ~%65. Olmazsa → C.0 cavalry-only force-all fallback / kapatma (Opus).
 - **çıktı:** `~/Cossacks3_Mac_Port/CAVALRY_FORENSIK_NOTU.md` güncellendi.
-- **verify:** Görsel yargı tamamlandı ve kanıtlandı: Hata Wine-GL katmanında matris aktarımı kaynaklıdır. Orijinal `wine_cx`/`oyna_ucretsiz.sh` dokunulmadı.
+- **verify:** Faz C setleri: `cavalry_lab/out/20260628_195726`, `20260628_200709`, `20260628_201332`. Orijinal `wine_cx`/`oyna_ucretsiz.sh` hashleri değişmedi. NEXT: Gemini bağımsız görsel yargı → Opus threshold kararı.
 
 ## Dalga 3 — Yeni yetenek (taslak)
 - `canLaunch` kapısını aç, Wine prefix bootstrap, DXVK/MoltenVK gerçek tespiti, log kalıcılığı.
