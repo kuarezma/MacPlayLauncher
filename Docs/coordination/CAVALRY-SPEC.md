@@ -226,3 +226,16 @@ geniş `index>=N` kırık cavalry bone'unu diğer birimlerin meşru bone'larınd
 (C.0'ın temizliği magenta-passthrough'un maskelemesiydi) ⇒ duvar kanıtlı, kapat.
 **Olmazsa → KAPAT:** forensik shader yolu kanıtla tükendi (kök neden + C.0 + paylaşılan-shader duvarı +
 exact-index). Cavalry kozmetik kabul. Launcher zaten sağlam/bitti.
+
+## Faz C.3 SONUÇ (Codex, 2026-07-01) — ❌ exact family/index yolu da tükendi
+
+Üç statik shader birlikte Apple GL sınırına takıldığı için aileler tek tek ölçüldü. Geçerli `b42`
+setinde (`out/20260630_230424`) süvaride mavi tint yoktu. Geçerli `b16` setinde
+(`out/20260630_234159`) at `index=0`, rider parçaları `index={4,5,6,11,12,14,15}` çıktı. Bu,
+C.2 `b16>=8` denemesinin neden yalnız rider'ın bir kısmını blob'a çevirdiğini açıklıyor.
+
+Yalnız `b16` için ölçülmüş rider bloğu `index>=4 → boneMatrices[0]` uygulandı; `b20/b42`
+`obj_yedek` sürümüne döndürüldü. Karışık sahne `out/20260701_000119`: doku ✅, diğer birimlerde
+totem yok ✅, fakat rider hâlâ atın altında/yanında ❌. Sonuç: C.0'ın magenta passthrough'u temiz
+oturmayı maskelemiş; gerçek dokulu yolda force-`bone[0]` çözüm değil. Spec'teki kapanış kapısı
+tetiklendi → Opus kapanış kararı.
